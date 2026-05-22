@@ -21,11 +21,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .field{padding:12px 16px;border-bottom:0.5px solid #E5E5EA;display:flex;align-items:center;justify-content:space-between;min-height:48px}
 .field:last-child{border-bottom:none}
 .field label{font-size:15px;color:#1C1C1E;flex:1}
-.field input[type="date"],.field input[type="time"],.field select,.field input[type="text"],.field input[type="number"]{border:none;outline:none;font-size:15px;color:#1C1C1E;text-align:right;background:transparent;max-width:55%;font-family:inherit}
+.field input[type="date"],.field input[type="time"],.field select,.field input[type="text"],.field input[type="number"]{border:none;outline:none;font-size:15px;color:#1C1C1E;text-align:right;background:transparent;max-width:60%;font-family:inherit}
 .field input[type="date"],.field input[type="time"]{color:#007AFF}
 .field select{color:#007AFF;-webkit-appearance:none}
-.field textarea{border:none;outline:none;font-size:15px;color:#1C1C1E;background:transparent;width:100%;resize:none;height:72px;margin-top:8px;font-family:inherit;line-height:1.5}
-.field-vertical{flex-direction:column;align-items:flex-start}
+.field input[type="number"]{max-width:80px;text-align:right}
+.field textarea{border:none;outline:none;font-size:14px;color:#1C1C1E;background:transparent;width:100%;resize:none;height:64px;margin-top:6px;font-family:inherit;line-height:1.5}
+.field-vertical{flex-direction:column;align-items:flex-start;gap:4px}
 .field-desc{padding:10px 16px;background:#EBF3FB;border-bottom:0.5px solid #E5E5EA}
 .field-desc p{font-size:12px;color:#16375C;font-weight:500;line-height:1.4}
 .toggle-wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
@@ -35,13 +36,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .slider:before{content:"";position:absolute;width:27px;height:27px;left:2px;top:2px;background:white;border-radius:50%;transition:0.3s;box-shadow:0 2px 4px rgba(0,0,0,0.2)}
 input:checked+.slider{background:#34C759}
 input:checked+.slider:before{transform:translateX(20px)}
-.btn-submit{width:100%;padding:16px;background:#16375C;color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:600;cursor:pointer;margin-top:8px;font-family:inherit}
-.btn-submit:active{opacity:0.8}
-.btn-submit:disabled{opacity:0.5}
+.btn-primary{width:100%;padding:14px;background:#16375C;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
+.btn-secondary{width:100%;padding:10px;background:#EBF3FB;color:#16375C;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
+.btn-remove{padding:4px 10px;background:#FFEBEE;color:#8B1A1A;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
+.btn-primary:active,.btn-secondary:active{opacity:0.8}
+.btn-primary:disabled{opacity:0.5}
 .toast{position:fixed;bottom:max(32px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#16375C;color:#fff;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:500;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:100;white-space:nowrap;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 .toast.error{background:#C0392B}
-.num-control{text-align:center;padding:10px;background:#EBF3FB;border-radius:8px;margin-bottom:8px;font-size:12px;color:#16375C;font-weight:600}
+.item-block{background:#F9F9F9;border:0.5px solid #E5E5EA;border-radius:10px;padding:12px;margin-bottom:8px}
+.item-block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.item-block-title{font-size:13px;font-weight:600;color:#16375C}
+.visita-block{background:#F9F9F9;border:0.5px solid #E5E5EA;border-radius:10px;padding:12px;margin-bottom:8px}
+.visita-block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.inner-field{padding:8px 0;border-bottom:0.5px solid #E5E5EA;display:flex;align-items:center;justify-content:space-between;min-height:40px}
+.inner-field:last-child{border-bottom:none}
+.inner-field label{font-size:14px;color:#1C1C1E;flex:1}
+.inner-field select,.inner-field input[type="text"],.inner-field input[type="time"],.inner-field input[type="number"]{border:none;outline:none;font-size:14px;color:#1C1C1E;text-align:right;background:transparent;max-width:55%;font-family:inherit}
+.inner-field select{color:#007AFF;-webkit-appearance:none}
+.inner-field input[type="number"]{max-width:70px}
+.num-control{text-align:center;padding:8px 12px;background:#EBF3FB;border-radius:8px;margin-bottom:10px;font-size:12px;color:#16375C;font-weight:600;letter-spacing:0.03em}
+.conforme-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-top:4px}
+.badge-ok{background:#E8F8EE;color:#1A5C2E}
+.badge-no{background:#FFEBEE;color:#8B1A1A}
 </style>
 </head>
 <body>
@@ -54,10 +71,7 @@ input:checked+.slider:before{transform:translateX(20px)}
   <div class="section">
     <div class="section-title">Identificación</div>
     <div class="card">
-      <div class="field">
-        <label>Fecha</label>
-        <input type="date" id="f-fecha">
-      </div>
+      <div class="field"><label>Fecha</label><input type="date" id="f-fecha"></div>
       <div class="field">
         <label>Inspector</label>
         <select id="f-inspector" onchange="actualizarCodigo()">
@@ -70,21 +84,24 @@ input:checked+.slider:before{transform:translateX(20px)}
         </select>
       </div>
       <div class="field">
-        <label>Empresa ejecutora</label>
-        <input type="text" id="f-empresa" placeholder="Ej: MECO">
+        <label>Contrato</label>
+        <select id="f-contrato" onchange="filtrarItems()">
+          <option value="">Seleccionar...</option>
+          <option value="2022CD-000145-0006000001">2022CD-000145-0006000001</option>
+          <option value="2022CD-000128-0006000001">2022CD-000128-0006000001</option>
+        </select>
       </div>
+      <div class="field"><label>Empresa ejecutora</label><input type="text" id="f-empresa" placeholder="Ej: MECO"></div>
       <div class="field">
         <label>Clima</label>
         <select id="f-clima">
           <option value="">Seleccionar...</option>
-          <option>Soleado</option>
-          <option>Nublado</option>
-          <option>Lluvia leve</option>
-          <option>Lluvia fuerte</option>
-          <option>Variable</option>
+          <option>Soleado</option><option>Nublado</option>
+          <option>Lluvia leve</option><option>Lluvia fuerte</option><option>Variable</option>
         </select>
       </div>
     </div>
+    <div class="num-control" id="num-control-display">Número de control: —</div>
   </div>
 
   <div class="section">
@@ -105,41 +122,24 @@ input:checked+.slider:before{transform:translateX(20px)}
       <div class="field-desc" id="desc-seccion" style="display:none">
         <p id="desc-texto"></p>
       </div>
-      <div class="field">
-        <label>Km inicio</label>
-        <input type="text" id="f-km-inicio" placeholder="Ej: 12+890">
-      </div>
-      <div class="field">
-        <label>Km final</label>
-        <input type="text" id="f-km-final" placeholder="Ej: 15+470">
-      </div>
-      <div class="field">
-        <label>Localización referencia</label>
-        <input type="text" id="f-localizacion" placeholder="Ej: Frente al puente">
-      </div>
+      <div class="field"><label>Km inicio</label><input type="text" id="f-km-inicio" placeholder="Ej: 12+890"></div>
+      <div class="field"><label>Km final</label><input type="text" id="f-km-final" placeholder="Ej: 15+470"></div>
+      <div class="field"><label>Localización referencia</label><input type="text" id="f-localizacion" placeholder="Ej: Frente al puente"></div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Actividad</div>
+    <div class="section-title">Horario</div>
     <div class="card">
-      <div class="field">
-        <label>Ítem(s)</label>
-        <input type="text" id="f-items" placeholder="Ej: CV.202.01">
-      </div>
-      <div class="field field-vertical">
-        <label>Descripción de la actividad</label>
-        <textarea id="f-actividad" placeholder="Descripción de la actividad que se realiza..."></textarea>
-      </div>
-      <div class="field">
-        <label>Hora inicio</label>
-        <input type="time" id="f-hora-inicio">
-      </div>
-      <div class="field">
-        <label>Hora final</label>
-        <input type="time" id="f-hora-final">
-      </div>
+      <div class="field"><label>Hora inicio</label><input type="time" id="f-hora-inicio"></div>
+      <div class="field"><label>Hora final</label><input type="time" id="f-hora-final"></div>
     </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Ítems inspeccionados</div>
+    <div id="items-container"></div>
+    <button class="btn-secondary" onclick="agregarItem()">+ Agregar ítem</button>
   </div>
 
   <div class="section">
@@ -149,23 +149,85 @@ input:checked+.slider:before{transform:translateX(20px)}
         <label>Velocidad de diseño (km/h)</label>
         <select id="f-velocidad">
           <option value="">Seleccionar...</option>
-          <option>20</option><option>30</option><option>40</option>
-          <option>60</option><option>80</option>
+          <option>20</option><option>30</option><option>40</option><option>60</option><option>80</option>
         </select>
       </div>
-      <div class="field"><div class="toggle-wrap"><label>Dispositivos conformes</label><label class="toggle"><input type="checkbox" id="c-dispositivos"><span class="slider"></span></label></div></div>
+      <div style="padding:10px 16px;border-bottom:0.5px solid #E5E5EA">
+        <div style="font-size:13px;font-weight:600;color:#6D6D72;margin-bottom:8px">RÓTULOS</div>
+        <div class="inner-field"><label>Rótulos lado derecho (LD)</label><input type="number" id="f-rotulos-ld" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Rótulos lado izquierdo (LI)</label><input type="number" id="f-rotulos-li" min="0" placeholder="0"></div>
+        <div class="inner-field"><div class="toggle-wrap"><label>Rótulos conformes</label><label class="toggle"><input type="checkbox" id="c-rotulos-conformes" onchange="verificarDispositivosConformes()"><span class="slider"></span></label></div></div>
+      </div>
+      <div style="padding:10px 16px;border-bottom:0.5px solid #E5E5EA">
+        <div style="font-size:13px;font-weight:600;color:#6D6D72;margin-bottom:8px">CONOS</div>
+        <div class="inner-field"><label>Cantidad de conos</label><input type="number" id="f-conos-cantidad" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Distancia entre conos (m)</label><input type="number" id="f-conos-distancia" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Altura de conos (m)</label><input type="number" id="f-conos-altura" step="0.01" placeholder="0.00"></div>
+        <div class="inner-field"><div class="toggle-wrap"><label>Conos conformes</label><label class="toggle"><input type="checkbox" id="c-conos-conformes" onchange="verificarDispositivosConformes()"><span class="slider"></span></label></div></div>
+      </div>
+      <div class="field">
+        <label>Dispositivos conformes (general)</label>
+        <span class="conforme-badge" id="badge-dispositivos">—</span>
+      </div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Personal y maquinaria</div>
+    <div class="section-title">Personal en frente de trabajo</div>
     <div class="card">
-      <div class="field"><div class="toggle-wrap"><label>Personal conforme en frente</label><label class="toggle"><input type="checkbox" id="c-personal"><span class="slider"></span></label></div></div>
-      <div class="field"><div class="toggle-wrap"><label>Maquinaria conforme en frente</label><label class="toggle"><input type="checkbox" id="c-maquinaria"><span class="slider"></span></label></div></div>
-      <div class="field">
-        <label>Equipo de medición</label>
-        <input type="text" id="f-equipo" placeholder="Ej: Nivel, flexómetro">
+      <div class="field"><div class="toggle-wrap"><label>¿Hay personal en el frente?</label><label class="toggle"><input type="checkbox" id="c-personal" onchange="togglePersonal()"><span class="slider"></span></label></div></div>
+      <div id="bloque-personal" style="display:none;padding:0 16px 12px">
+        <div style="font-size:12px;color:#6D6D72;padding:8px 0 6px;font-weight:600">PERSONAL</div>
+        <div class="inner-field"><label>Encargado</label><input type="number" id="p-encargado" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Chofer</label><input type="number" id="p-chofer" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Operador de maquinaria</label><input type="number" id="p-operador" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Ayudantes</label><input type="number" id="p-ayudantes" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Peones</label><input type="number" id="p-peones" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Banderilleros</label><input type="number" id="p-banderilleros" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Personal calificado</label><input type="number" id="p-calificado" min="0" placeholder="0"></div>
+        <div class="inner-field" style="margin-top:6px"><div class="toggle-wrap"><label>¿Personal conforme?</label><label class="toggle"><input type="checkbox" id="c-personal-conforme"><span class="slider"></span></label></div></div>
       </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Maquinaria en frente de trabajo</div>
+    <div class="card">
+      <div class="field"><div class="toggle-wrap"><label>¿Hay maquinaria en el frente?</label><label class="toggle"><input type="checkbox" id="c-maquinaria" onchange="toggleMaquinaria()"><span class="slider"></span></label></div></div>
+      <div id="bloque-maquinaria" style="display:none;padding:0 16px 12px">
+        <div style="font-size:12px;color:#6D6D72;padding:8px 0 6px;font-weight:600">MAQUINARIA</div>
+        <div class="inner-field"><label>Camión Brigada</label><input type="number" id="m-camion" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Compresor</label><input type="number" id="m-compresor" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Rompedora</label><input type="number" id="m-rompedora" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Retroexcavador</label><input type="number" id="m-retroexcavador" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Perfiladora</label><input type="number" id="m-perfiladora" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Pala Cargadora</label><input type="number" id="m-pala" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Martillo Hidráulico</label><input type="number" id="m-martillo" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Cargadores</label><input type="number" id="m-cargadores" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Tanque de Agua</label><input type="number" id="m-tanque-agua" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Niveladora</label><input type="number" id="m-niveladora" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Vagonetas</label><input type="number" id="m-vagonetas" min="0" placeholder="0"></div>
+        <div class="inner-field"><label>Tanque de Asfalto</label><input type="number" id="m-tanque-asfalto" min="0" placeholder="0"></div>
+        <div class="inner-field" style="margin-top:6px"><div class="toggle-wrap"><label>¿Maquinaria conforme?</label><label class="toggle"><input type="checkbox" id="c-maquinaria-conforme"><span class="slider"></span></label></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Equipo de medición</div>
+    <div class="card">
+      <div class="field"><label>Equipo utilizado</label><input type="text" id="f-equipo" placeholder="Ej: Nivel, flexómetro, regla"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Visitas al frente de trabajo</div>
+    <div class="card">
+      <div class="field"><div class="toggle-wrap"><label>¿Se recibieron visitas?</label><label class="toggle"><input type="checkbox" id="c-visitas" onchange="toggleVisitas()"><span class="slider"></span></label></div></div>
+    </div>
+    <div id="visitas-container" style="display:none">
+      <div id="visitas-lista"></div>
+      <button class="btn-secondary" onclick="agregarVisita()">+ Agregar visita</button>
     </div>
   </div>
 
@@ -176,12 +238,20 @@ input:checked+.slider:before{transform:translateX(20px)}
       <div id="bloque-problema" style="display:none">
         <div class="field">
           <label>Tipo de problema</label>
-          <input type="text" id="f-tipo-problema" placeholder="Ej: Deficiencia en compactación">
+          <input type="text" id="f-tipo-problema" placeholder="Ej: Compactación deficiente">
         </div>
         <div class="field">
           <label>Severidad</label>
           <select id="f-severidad-problema">
             <option>Baja</option><option>Media</option><option>Alta</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Observación generada</label>
+          <select id="f-observacion-tipo">
+            <option>Verbal</option>
+            <option>Escrita en bitácora</option>
+            <option>Memorando</option>
           </select>
         </div>
         <div class="field field-vertical">
@@ -198,39 +268,24 @@ input:checked+.slider:before{transform:translateX(20px)}
     <div class="card">
       <div class="field"><div class="toggle-wrap"><label>¿Se utilizó botadero?</label><label class="toggle"><input type="checkbox" id="c-botadero" onchange="toggleBotadero()"><span class="slider"></span></label></div></div>
       <div id="bloque-botadero" style="display:none">
-        <div class="field">
-          <label>Ubicación</label>
-          <input type="text" id="f-botadero-ubicacion" placeholder="Ubicación del botadero">
-        </div>
-        <div class="field">
-          <label>Propietario y contacto</label>
-          <input type="text" id="f-botadero-propietario" placeholder="Nombre y teléfono">
-        </div>
+        <div class="field"><label>Ubicación del botadero</label><input type="text" id="f-botadero-ubicacion" placeholder="Dirección o referencia"></div>
+        <div class="field"><label>Nombre y contacto propietario</label><input type="text" id="f-botadero-propietario" placeholder="Nombre y teléfono"></div>
         <div class="field"><div class="toggle-wrap"><label>¿Cuenta con autorización?</label><label class="toggle"><input type="checkbox" id="c-botadero-autorizado"><span class="slider"></span></label></div></div>
         <div class="field">
-          <label>Tipo de material</label>
-          <input type="text" id="f-botadero-material" placeholder="Ej: Material de excavación">
+          <label>Tipo de material dispuesto</label>
+          <select id="f-botadero-material">
+            <option value="">Seleccionar...</option>
+            <option>Orgánico</option><option>Escombros</option>
+            <option>Basura inorgánica</option><option>Tierra</option>
+            <option>Sedimentos</option><option>Madera</option>
+          </select>
         </div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Cantidades y registro</div>
-    <div class="card">
-      <div class="field field-vertical">
-        <label>Cantidades totales diarias por ítem</label>
-        <textarea id="f-cantidades" placeholder="Ej: CV.202.01 → 250 m2&#10;CR.301.01 → 120 m3"></textarea>
-      </div>
-      <div class="field">
-        <label>No. Informe diario</label>
-        <input type="text" id="f-num-informe" placeholder="Ej: 001">
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Observaciones</div>
+    <div class="section-title">Observaciones generales</div>
     <div class="card">
       <div class="field field-vertical">
         <label>Observaciones y memoria de cálculo</label>
@@ -239,19 +294,22 @@ input:checked+.slider:before{transform:translateX(20px)}
     </div>
   </div>
 
-  <button class="btn-submit" id="btn-guardar" onclick="guardar()">Guardar registro de bitácora</button>
+  <button class="btn-primary" id="btn-guardar" onclick="guardar()">Guardar registro de bitácora</button>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwj650JXXiwj0U3Gu3V-D2vGdWT-nWrTIgdUoEnTqFVGVqDZZCJQDopPAqzcqab1--Z0g/exec';
-const INSPECTORES_COD={'Jaime Vargas':'06','Juan Diego Aguero':'20','Jairo Mendez':'22','Robnel Ugalde':'24','Jose A. Madriz':'13'};
+const KPI_SCRIPT='https://script.google.com/macros/s/AKfycbzGTAhyRU1YXEc4DkIyMYe2gH5j7hHXcwlzwAg5-Ud_vuL55a59JDo8Erif3ZSQwx-OSQ/exec';
+
 let rutasData=[];
+let itemsData=[];
+let itemCount=0;
+let visitaCount=0;
 
 async function cargarRutas(){
   try{
-    const RUTAS_URL='https://script.google.com/macros/s/AKfycbzGTAhyRU1YXEc4DkIyMYe2gH5j7hHXcwlzwAg5-Ud_vuL55a59JDo8Erif3ZSQwx-OSQ/exec';
-    const res=await fetch(RUTAS_URL+'?sheet=RUTAS&t='+Date.now());
+    const res=await fetch(KPI_SCRIPT+'?sheet=RUTAS&t='+Date.now());
     const json=await res.json();
     const rows=(json.data||[]).slice(1).filter(r=>r[0]);
     rutasData=rows.map(r=>({ruta:String(r[0]),seccion:String(r[1]),desc:String(r[2]||'')}));
@@ -259,6 +317,108 @@ async function cargarRutas(){
     const sel=document.getElementById('f-ruta');
     rutas.forEach(r=>{const opt=document.createElement('option');opt.value=r;opt.textContent='Ruta '+r;sel.appendChild(opt);});
   }catch(e){console.log('Error rutas',e);}
+}
+
+async function cargarItems(){
+  try{
+    const res=await fetch(SCRIPT_URL+'?sheet=ITEMS&t='+Date.now());
+    const json=await res.json();
+    itemsData=(json.data||[]).slice(1).filter(r=>r[0]).map(r=>({
+      codigo:String(r[0]),desc:String(r[1]),unidad:String(r[2]),contrato:String(r[3])
+    }));
+    agregarItem();
+  }catch(e){console.log('Error items',e);agregarItem();}
+}
+
+function filtrarItems(){
+  document.querySelectorAll('.item-select').forEach(sel=>{
+    const contrato=document.getElementById('f-contrato').value;
+    const currentVal=sel.value;
+    sel.innerHTML='<option value="">Seleccionar ítem...</option>';
+    const filtrados=contrato?itemsData.filter(i=>i.contrato===contrato):itemsData;
+    filtrados.forEach(i=>{
+      const opt=document.createElement('option');
+      opt.value=i.codigo+'|'+i.unidad;
+      opt.textContent=i.codigo+' – '+i.desc;
+      opt.dataset.unidad=i.unidad;
+      if(i.codigo+'|'+i.unidad===currentVal) opt.selected=true;
+      sel.appendChild(opt);
+    });
+  });
+}
+
+function agregarItem(){
+  itemCount++;
+  const id=itemCount;
+  const contrato=document.getElementById('f-contrato').value;
+  const filtrados=contrato?itemsData.filter(i=>i.contrato===contrato):itemsData;
+  let opts=filtrados.map(i=>`<option value="${i.codigo}|${i.unidad}" data-unidad="${i.unidad}">${i.codigo} – ${i.desc}</option>`).join('');
+
+  const div=document.createElement('div');
+  div.className='item-block';
+  div.id='item-block-'+id;
+  div.innerHTML=`
+    <div class="item-block-header">
+      <span class="item-block-title">Ítem ${id}</span>
+      ${id>1?`<button class="btn-remove" onclick="eliminarItem(${id})">Eliminar</button>`:''}
+    </div>
+    <div class="inner-field">
+      <label>Ítem</label>
+      <select class="item-select" id="item-sel-${id}" onchange="actualizarUnidad(${id})" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit">
+        <option value="">Seleccionar ítem...</option>
+        ${opts}
+      </select>
+    </div>
+    <div class="inner-field"><label>Unidad</label><input type="text" id="item-unidad-${id}" placeholder="—" readonly style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#6D6D72;font-family:inherit"></div>
+    <div class="inner-field"><label>Cantidad</label><input type="number" id="item-cant-${id}" min="0" step="0.01" placeholder="0.00"></div>
+    <div class="inner-field"><label>No. Informe diario</label><input type="text" id="item-informe-${id}" placeholder="Ej: 001"></div>
+    <div class="inner-field"><label>No. Registro de medición</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001 (si aplica)"></div>
+  `;
+  document.getElementById('items-container').appendChild(div);
+}
+
+function actualizarUnidad(id){
+  const sel=document.getElementById('item-sel-'+id);
+  const opt=sel.options[sel.selectedIndex];
+  const unidad=opt?opt.dataset.unidad||'':'';
+  document.getElementById('item-unidad-'+id).value=unidad;
+}
+
+function eliminarItem(id){
+  const el=document.getElementById('item-block-'+id);
+  if(el) el.remove();
+}
+
+function agregarVisita(){
+  visitaCount++;
+  const id=visitaCount;
+  const div=document.createElement('div');
+  div.className='visita-block';
+  div.id='visita-block-'+id;
+  div.innerHTML=`
+    <div class="visita-block-header">
+      <span class="item-block-title">Visita ${id}</span>
+      ${id>1?`<button class="btn-remove" onclick="eliminarVisita(${id})">Eliminar</button>`:''}
+    </div>
+    <div class="inner-field">
+      <label>Tipo de visita</label>
+      <select id="visita-tipo-${id}" style="max-width:55%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit">
+        <option value="">Seleccionar...</option>
+        <option>CONAVI</option><option>Supervisión FAMCOVA</option>
+        <option>Contratista</option><option>Auditoría</option>
+        <option>SETENA</option><option>Otra</option>
+      </select>
+    </div>
+    <div class="inner-field"><label>Nombre del visitante</label><input type="text" id="visita-nombre-${id}" placeholder="Nombre completo" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
+    <div class="inner-field"><label>Hora</label><input type="time" id="visita-hora-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#007AFF;font-family:inherit"></div>
+    <div class="inner-field"><label>Motivo de la visita</label><input type="text" id="visita-motivo-${id}" placeholder="Motivo" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
+  `;
+  document.getElementById('visitas-lista').appendChild(div);
+}
+
+function eliminarVisita(id){
+  const el=document.getElementById('visita-block-'+id);
+  if(el) el.remove();
 }
 
 function actualizarSecciones(){
@@ -283,40 +443,101 @@ function mostrarDescripcion(){
   else box.style.display='none';
 }
 
-function actualizarCodigo(){}
-
-function toggleProblema(){
-  const checked=document.getElementById('c-problema').checked;
-  document.getElementById('bloque-problema').style.display=checked?'block':'none';
+function actualizarCodigo(){
+  const inspVal=document.getElementById('f-inspector').value;
+  const fecha=document.getElementById('f-fecha').value;
+  if(!inspVal||!fecha){document.getElementById('num-control-display').textContent='Número de control: —';return;}
+  const cod=inspVal.split('|')[1]||'00';
+  const mes=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');
+  const anio=new Date(fecha+'T12:00:00').getFullYear();
+  const nc=`COFEC(1-4)-INS${cod}-${mes}-${anio}`;
+  document.getElementById('num-control-display').textContent='Número de control: '+nc;
 }
 
-function toggleBotadero(){
-  const checked=document.getElementById('c-botadero').checked;
-  document.getElementById('bloque-botadero').style.display=checked?'block':'none';
+function verificarDispositivosConformes(){
+  const rotulos=document.getElementById('c-rotulos-conformes').checked;
+  const conos=document.getElementById('c-conos-conformes').checked;
+  const badge=document.getElementById('badge-dispositivos');
+  if(rotulos&&conos){badge.textContent='✓ Conformes';badge.className='conforme-badge badge-ok';}
+  else{badge.textContent='✗ No conformes';badge.className='conforme-badge badge-no';}
+}
+
+function togglePersonal(){document.getElementById('bloque-personal').style.display=document.getElementById('c-personal').checked?'block':'none';}
+function toggleMaquinaria(){document.getElementById('bloque-maquinaria').style.display=document.getElementById('c-maquinaria').checked?'block':'none';}
+function toggleProblema(){document.getElementById('bloque-problema').style.display=document.getElementById('c-problema').checked?'block':'none';}
+function toggleBotadero(){document.getElementById('bloque-botadero').style.display=document.getElementById('c-botadero').checked?'block':'none';}
+function toggleVisitas(){
+  const show=document.getElementById('c-visitas').checked;
+  document.getElementById('visitas-container').style.display=show?'block':'none';
+  if(show&&visitaCount===0) agregarVisita();
 }
 
 function toast(msg,err=false){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast'+(err?' error':'')+' show';
-  setTimeout(()=>t.className='toast',3000);
+  setTimeout(()=>t.className='toast',3500);
 }
 
 function si(v){return v?'Sí':'No';}
 
-function generarNumControl(inspVal, fecha){
-  const cod=inspVal.split('|')[1]||'00';
-  const mes=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');
-  const anio=new Date(fecha+'T12:00:00').getFullYear();
-  return `COFEC(1-4)-INS${cod}-${mes}-${anio}`;
+function recopilarItems(){
+  const items=[];
+  document.querySelectorAll('.item-block').forEach(block=>{
+    const id=block.id.replace('item-block-','');
+    const sel=document.getElementById('item-sel-'+id);
+    if(!sel||!sel.value)return;
+    items.push({
+      codigo:sel.value.split('|')[0],
+      unidad:document.getElementById('item-unidad-'+id).value,
+      cantidad:document.getElementById('item-cant-'+id).value,
+      informe:document.getElementById('item-informe-'+id).value,
+      regmed:document.getElementById('item-regmed-'+id).value,
+    });
+  });
+  return items;
+}
+
+function recopilarVisitas(){
+  const visitas=[];
+  document.querySelectorAll('.visita-block').forEach(block=>{
+    const id=block.id.replace('visita-block-','');
+    visitas.push({
+      tipo:document.getElementById('visita-tipo-'+id).value,
+      nombre:document.getElementById('visita-nombre-'+id).value,
+      hora:document.getElementById('visita-hora-'+id).value,
+      motivo:document.getElementById('visita-motivo-'+id).value,
+    });
+  });
+  return visitas;
+}
+
+function personalResumen(){
+  if(!document.getElementById('c-personal').checked) return '';
+  const campos=[['Encargado','p-encargado'],['Chofer','p-chofer'],['Operador','p-operador'],
+    ['Ayudantes','p-ayudantes'],['Peones','p-peones'],['Banderilleros','p-banderilleros'],['Calificado','p-calificado']];
+  return campos.filter(([_,id])=>document.getElementById(id).value>0)
+    .map(([n,id])=>n+':'+document.getElementById(id).value).join(', ');
+}
+
+function maquinariaResumen(){
+  if(!document.getElementById('c-maquinaria').checked) return '';
+  const campos=[['Camión','m-camion'],['Compresor','m-compresor'],['Rompedora','m-rompedora'],
+    ['Retroexcavador','m-retroexcavador'],['Perfiladora','m-perfiladora'],['Pala','m-pala'],
+    ['Martillo','m-martillo'],['Cargadores','m-cargadores'],['TanqueAgua','m-tanque-agua'],
+    ['Niveladora','m-niveladora'],['Vagonetas','m-vagonetas'],['TanqueAsfalto','m-tanque-asfalto']];
+  return campos.filter(([_,id])=>document.getElementById(id).value>0)
+    .map(([n,id])=>n+':'+document.getElementById(id).value).join(', ');
 }
 
 async function guardar(){
   const fecha=document.getElementById('f-fecha').value;
   const inspVal=document.getElementById('f-inspector').value;
   const ruta=document.getElementById('f-ruta').value;
+  const contrato=document.getElementById('f-contrato').value;
   if(!fecha){toast('Ingresá la fecha',true);return;}
   if(!inspVal){toast('Seleccioná un inspector',true);return;}
   if(!ruta){toast('Seleccioná una ruta',true);return;}
+  if(!contrato){toast('Seleccioná un contrato',true);return;}
 
   const btn=document.getElementById('btn-guardar');
   btn.disabled=true;btn.textContent='Guardando...';
@@ -327,69 +548,119 @@ async function guardar(){
   const secSel=document.getElementById('f-seccion');
   const secOpt=secSel.options[secSel.selectedIndex];
   const descripcion=secOpt?secOpt.dataset.desc||'':'';
-  const numControl=generarNumControl(inspVal,fecha);
+  const cod=inspVal.split('|')[1]||'00';
+  const mesNum=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');
+  const anio=new Date(fecha+'T12:00:00').getFullYear();
+  const numControl=`COFEC(1-4)-INS${cod}-${mesNum}-${anio}`;
+
+  const items=recopilarItems();
+  const visitas=recopilarVisitas();
   const tieneProblema=document.getElementById('c-problema').checked;
   const tieneBotadero=document.getElementById('c-botadero').checked;
+  const tieneVisitas=document.getElementById('c-visitas').checked;
+  const rotulos=document.getElementById('c-rotulos-conformes').checked;
+  const conos=document.getElementById('c-conos-conformes').checked;
 
   const row=[
-    fecha, mes, inspNombre, inspCod, ruta,
+    fecha, mes, inspNombre, inspCod, contrato, ruta,
     secSel.value, descripcion,
     document.getElementById('f-km-inicio').value,
     document.getElementById('f-km-final').value,
-    document.getElementById('f-clima').value,
-    document.getElementById('f-items').value,
-    document.getElementById('f-actividad').value,
+    document.getElementById('f-localizacion').value,
     document.getElementById('f-hora-inicio').value,
     document.getElementById('f-hora-final').value,
-    document.getElementById('f-localizacion').value,
+    document.getElementById('f-clima').value,
+    document.getElementById('f-empresa').value,
+    // Items como JSON
+    JSON.stringify(items),
+    // Dispositivos
     document.getElementById('f-velocidad').value,
-    si(document.getElementById('c-dispositivos').checked),
+    document.getElementById('f-rotulos-ld').value||'0',
+    document.getElementById('f-rotulos-li').value||'0',
+    si(rotulos),
+    document.getElementById('f-conos-cantidad').value||'0',
+    document.getElementById('f-conos-distancia').value||'0',
+    document.getElementById('f-conos-altura').value||'0',
+    si(conos),
+    si(rotulos&&conos),
+    // Personal
     si(document.getElementById('c-personal').checked),
+    personalResumen(),
+    si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),
+    // Maquinaria
     si(document.getElementById('c-maquinaria').checked),
+    maquinariaResumen(),
+    si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),
+    // Equipo
     document.getElementById('f-equipo').value,
+    // Visitas
+    si(tieneVisitas),
+    tieneVisitas?JSON.stringify(visitas):'',
+    // Problemas
     si(tieneProblema),
     tieneProblema?document.getElementById('f-tipo-problema').value:'',
     tieneProblema?document.getElementById('f-severidad-problema').value:'',
+    tieneProblema?document.getElementById('f-observacion-tipo').value:'',
     tieneProblema?document.getElementById('f-desc-problema').value:'',
     tieneProblema?si(document.getElementById('c-corregido').checked):'',
+    // Botadero
     si(tieneBotadero),
     tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',
     tieneBotadero?document.getElementById('f-botadero-propietario').value:'',
     tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',
     tieneBotadero?document.getElementById('f-botadero-material').value:'',
-    document.getElementById('f-cantidades').value,
-    document.getElementById('f-num-informe').value,
+    // Observaciones y control
     document.getElementById('f-observaciones').value,
-    '', // FotosURL - se agrega desde PC después
+    '', // FotosURL
     numControl
   ];
 
   try{
     await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row}),headers:{'Content-Type':'application/json'}});
-    toast('Bitácora guardada · '+numControl);
+    toast('✓ Bitácora guardada · '+numControl);
     resetForm();
   }catch(e){toast('Error de conexión',true);}
   btn.disabled=false;btn.textContent='Guardar registro de bitácora';
 }
 
 function resetForm(){
-  ['f-empresa','f-km-inicio','f-km-final','f-localizacion','f-items',
-   'f-hora-inicio','f-hora-final','f-equipo','f-tipo-problema',
-   'f-desc-problema','f-cantidades','f-num-informe','f-observaciones',
-   'f-botadero-ubicacion','f-botadero-propietario','f-botadero-material'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.value='';
-  });
-  ['f-inspector','f-ruta','f-clima','f-velocidad'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-inspector').value='';
+  document.getElementById('f-contrato').value='';
+  document.getElementById('f-empresa').value='';
+  document.getElementById('f-clima').value='';
+  document.getElementById('f-ruta').value='';
   document.getElementById('f-seccion').innerHTML='<option value="">Seleccionar...</option>';
   document.getElementById('desc-seccion').style.display='none';
-  document.getElementById('bloque-problema').style.display='none';
-  document.getElementById('bloque-botadero').style.display='none';
+  document.getElementById('f-km-inicio').value='';
+  document.getElementById('f-km-final').value='';
+  document.getElementById('f-localizacion').value='';
+  document.getElementById('f-hora-inicio').value='';
+  document.getElementById('f-hora-final').value='';
+  document.getElementById('f-velocidad').value='';
+  document.getElementById('f-rotulos-ld').value='';
+  document.getElementById('f-rotulos-li').value='';
+  document.getElementById('f-conos-cantidad').value='';
+  document.getElementById('f-conos-distancia').value='';
+  document.getElementById('f-conos-altura').value='';
+  document.getElementById('f-equipo').value='';
+  document.getElementById('f-observaciones').value='';
+  document.getElementById('num-control-display').textContent='Número de control: —';
+  document.getElementById('badge-dispositivos').textContent='—';
+  document.getElementById('badge-dispositivos').className='conforme-badge';
   document.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);
+  ['bloque-personal','bloque-maquinaria','bloque-problema','bloque-botadero','visitas-container'].forEach(id=>{
+    document.getElementById(id).style.display='none';
+  });
+  document.getElementById('items-container').innerHTML='';
+  document.getElementById('visitas-lista').innerHTML='';
+  itemCount=0;visitaCount=0;
+  agregarItem();
 }
 
 document.getElementById('f-fecha').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-fecha').addEventListener('change',actualizarCodigo);
 cargarRutas();
+cargarItems();
 </script>
 </body>
 </html>
