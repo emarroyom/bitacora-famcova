@@ -38,12 +38,14 @@ input:checked+.slider{background:#34C759}
 input:checked+.slider:before{transform:translateX(20px)}
 .btn-primary{width:100%;padding:14px;background:#16375C;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
 .btn-secondary{width:100%;padding:10px;background:#EBF3FB;color:#16375C;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
+.btn-borrador{width:100%;padding:10px;background:#FFF3E0;color:#7A4500;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
 .btn-remove{padding:4px 10px;background:#FFEBEE;color:#8B1A1A;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
-.btn-primary:active,.btn-secondary:active{opacity:0.8}
-.btn-primary:disabled{opacity:0.5}
+.btn-primary:active,.btn-secondary:active,.btn-borrador:active{opacity:0.8}
+.btn-primary:disabled,.btn-borrador:disabled{opacity:0.5}
 .toast{position:fixed;bottom:max(32px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#16375C;color:#fff;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:500;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:100;white-space:nowrap;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 .toast.error{background:#C0392B}
+.toast.success{background:#1A5C2E}
 .item-block{background:#F9F9F9;border:0.5px solid #E5E5EA;border-radius:10px;padding:12px;margin-bottom:8px}
 .item-block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .item-block-title{font-size:13px;font-weight:600;color:#16375C}
@@ -59,6 +61,8 @@ input:checked+.slider:before{transform:translateX(20px)}
 .conforme-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-top:4px}
 .badge-ok{background:#E8F8EE;color:#1A5C2E}
 .badge-no{background:#FFEBEE;color:#8B1A1A}
+.borradores-banner{background:#FFF3E0;border-radius:12px;padding:12px 16px;margin-bottom:8px;display:none;align-items:center;justify-content:space-between}
+.borradores-banner.visible{display:flex}
 </style>
 </head>
 <body>
@@ -68,10 +72,18 @@ input:checked+.slider:before{transform:translateX(20px)}
 </div>
 <div class="content">
 
+  <div class="borradores-banner" id="borradores-banner">
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#7A4500">📋 Borradores pendientes</div>
+      <div style="font-size:12px;color:#7A4500;margin-top:2px" id="borradores-count">0 registros sin enviar</div>
+    </div>
+    <button onclick="enviarBorradores()" style="padding:6px 14px;background:#FF9500;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Enviar ahora</button>
+  </div>
+
   <div class="section">
     <div class="section-title">Identificación</div>
     <div class="card">
-      <div class="field"><label>Fecha</label><input type="date" id="f-fecha"></div>
+      <div class="field"><label>Fecha</label><input type="date" id="f-fecha" onchange="actualizarCodigo()"></div>
       <div class="field">
         <label>Inspector</label>
         <select id="f-inspector" onchange="actualizarCodigo()">
@@ -236,23 +248,14 @@ input:checked+.slider:before{transform:translateX(20px)}
     <div class="card">
       <div class="field"><div class="toggle-wrap"><label>¿Se detectaron problemas?</label><label class="toggle"><input type="checkbox" id="c-problema" onchange="toggleProblema()"><span class="slider"></span></label></div></div>
       <div id="bloque-problema" style="display:none">
-        <div class="field">
-          <label>Tipo de problema</label>
-          <input type="text" id="f-tipo-problema" placeholder="Ej: Compactación deficiente">
-        </div>
+        <div class="field"><label>Tipo de problema</label><input type="text" id="f-tipo-problema" placeholder="Ej: Compactación deficiente"></div>
         <div class="field">
           <label>Severidad</label>
-          <select id="f-severidad-problema">
-            <option>Baja</option><option>Media</option><option>Alta</option>
-          </select>
+          <select id="f-severidad-problema"><option>Baja</option><option>Media</option><option>Alta</option></select>
         </div>
         <div class="field">
           <label>Observación generada</label>
-          <select id="f-observacion-tipo">
-            <option>Verbal</option>
-            <option>Escrita en bitácora</option>
-            <option>Memorando</option>
-          </select>
+          <select id="f-observacion-tipo"><option>Verbal</option><option>Escrita en bitácora</option><option>Memorando</option></select>
         </div>
         <div class="field field-vertical">
           <label>Descripción del problema</label>
@@ -294,6 +297,7 @@ input:checked+.slider:before{transform:translateX(20px)}
     </div>
   </div>
 
+  <button class="btn-borrador" id="btn-borrador" onclick="guardarBorrador()">💾 Guardar como borrador</button>
   <button class="btn-primary" id="btn-guardar" onclick="guardar()">Guardar registro de bitácora</button>
 </div>
 <div class="toast" id="toast"></div>
@@ -301,11 +305,7 @@ input:checked+.slider:before{transform:translateX(20px)}
 <script>
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwj650JXXiwj0U3Gu3V-D2vGdWT-nWrTIgdUoEnTqFVGVqDZZCJQDopPAqzcqab1--Z0g/exec';
 const KPI_SCRIPT='https://script.google.com/macros/s/AKfycbzGTAhyRU1YXEc4DkIyMYe2gH5j7hHXcwlzwAg5-Ud_vuL55a59JDo8Erif3ZSQwx-OSQ/exec';
-
-let rutasData=[];
-let itemsData=[];
-let itemCount=0;
-let visitaCount=0;
+let rutasData=[],itemsData=[],itemCount=0,visitaCount=0;
 
 async function cargarRutas(){
   try{
@@ -326,8 +326,8 @@ async function cargarItems(){
     itemsData=(json.data||[]).slice(1).filter(r=>r[0]).map(r=>({
       codigo:String(r[0]),desc:String(r[1]),unidad:String(r[2]),contrato:String(r[3])
     }));
-    agregarItem();
-  }catch(e){console.log('Error items',e);agregarItem();}
+  }catch(e){console.log('Error items',e);}
+  agregarItem();
 }
 
 function filtrarItems(){
@@ -341,7 +341,7 @@ function filtrarItems(){
       opt.value=i.codigo+'|'+i.unidad;
       opt.textContent=i.codigo+' – '+i.desc;
       opt.dataset.unidad=i.unidad;
-      if(i.codigo+'|'+i.unidad===currentVal) opt.selected=true;
+      if(i.codigo+'|'+i.unidad===currentVal)opt.selected=true;
       sel.appendChild(opt);
     });
   });
@@ -352,8 +352,7 @@ function agregarItem(){
   const id=itemCount;
   const contrato=document.getElementById('f-contrato').value;
   const filtrados=contrato?itemsData.filter(i=>i.contrato===contrato):itemsData;
-  let opts=filtrados.map(i=>`<option value="${i.codigo}|${i.unidad}" data-unidad="${i.unidad}">${i.codigo} – ${i.desc}</option>`).join('');
-
+  const opts=filtrados.map(i=>`<option value="${i.codigo}|${i.unidad}" data-unidad="${i.unidad}">${i.codigo} – ${i.desc}</option>`).join('');
   const div=document.createElement('div');
   div.className='item-block';
   div.id='item-block-'+id;
@@ -365,29 +364,23 @@ function agregarItem(){
     <div class="inner-field">
       <label>Ítem</label>
       <select class="item-select" id="item-sel-${id}" onchange="actualizarUnidad(${id})" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit">
-        <option value="">Seleccionar ítem...</option>
-        ${opts}
+        <option value="">Seleccionar ítem...</option>${opts}
       </select>
     </div>
     <div class="inner-field"><label>Unidad</label><input type="text" id="item-unidad-${id}" placeholder="—" readonly style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#6D6D72;font-family:inherit"></div>
     <div class="inner-field"><label>Cantidad</label><input type="number" id="item-cant-${id}" min="0" step="0.01" placeholder="0.00"></div>
     <div class="inner-field"><label>No. Informe diario</label><input type="text" id="item-informe-${id}" placeholder="Ej: 001"></div>
-    <div class="inner-field"><label>No. Registro de medición</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001 (si aplica)"></div>
-  `;
+    <div class="inner-field"><label>No. Registro de medición</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001 (si aplica)"></div>`;
   document.getElementById('items-container').appendChild(div);
 }
 
 function actualizarUnidad(id){
   const sel=document.getElementById('item-sel-'+id);
   const opt=sel.options[sel.selectedIndex];
-  const unidad=opt?opt.dataset.unidad||'':'';
-  document.getElementById('item-unidad-'+id).value=unidad;
+  document.getElementById('item-unidad-'+id).value=opt?opt.dataset.unidad||'':'';
 }
 
-function eliminarItem(id){
-  const el=document.getElementById('item-block-'+id);
-  if(el) el.remove();
-}
+function eliminarItem(id){const el=document.getElementById('item-block-'+id);if(el)el.remove();}
 
 function agregarVisita(){
   visitaCount++;
@@ -410,16 +403,12 @@ function agregarVisita(){
       </select>
     </div>
     <div class="inner-field"><label>Nombre del visitante</label><input type="text" id="visita-nombre-${id}" placeholder="Nombre completo" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
-    <div class="inner-field"><label>Hora</label><input type="time" id="visita-hora-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#007AFF;font-family:inherit"></div>
-    <div class="inner-field"><label>Motivo de la visita</label><input type="text" id="visita-motivo-${id}" placeholder="Motivo" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
-  `;
+    <div class="inner-field"><label>Hora</label><input type="time" id="visita-hora-${id}" style="color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
+    <div class="inner-field"><label>Motivo de la visita</label><input type="text" id="visita-motivo-${id}" placeholder="Motivo" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>`;
   document.getElementById('visitas-lista').appendChild(div);
 }
 
-function eliminarVisita(id){
-  const el=document.getElementById('visita-block-'+id);
-  if(el) el.remove();
-}
+function eliminarVisita(id){const el=document.getElementById('visita-block-'+id);if(el)el.remove();}
 
 function actualizarSecciones(){
   const ruta=document.getElementById('f-ruta').value;
@@ -450,8 +439,7 @@ function actualizarCodigo(){
   const cod=inspVal.split('|')[1]||'00';
   const mes=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');
   const anio=new Date(fecha+'T12:00:00').getFullYear();
-  const nc=`COFEC(1-4)-INS${cod}-${mes}-${anio}`;
-  document.getElementById('num-control-display').textContent='Número de control: '+nc;
+  document.getElementById('num-control-display').textContent='Número de control: COFEC(1-4)-INS'+cod+'-'+mes+'-'+anio;
 }
 
 function verificarDispositivosConformes(){
@@ -469,12 +457,13 @@ function toggleBotadero(){document.getElementById('bloque-botadero').style.displ
 function toggleVisitas(){
   const show=document.getElementById('c-visitas').checked;
   document.getElementById('visitas-container').style.display=show?'block':'none';
-  if(show&&visitaCount===0) agregarVisita();
+  if(show&&visitaCount===0)agregarVisita();
 }
 
-function toast(msg,err=false){
+function toast(msg,err=false,ok=false){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast'+(err?' error':'')+' show';
+  t.textContent=msg;
+  t.className='toast'+(err?' error':ok?' success':'')+' show';
   setTimeout(()=>t.className='toast',3500);
 }
 
@@ -512,21 +501,133 @@ function recopilarVisitas(){
 }
 
 function personalResumen(){
-  if(!document.getElementById('c-personal').checked) return '';
-  const campos=[['Encargado','p-encargado'],['Chofer','p-chofer'],['Operador','p-operador'],
-    ['Ayudantes','p-ayudantes'],['Peones','p-peones'],['Banderilleros','p-banderilleros'],['Calificado','p-calificado']];
-  return campos.filter(([_,id])=>document.getElementById(id).value>0)
+  if(!document.getElementById('c-personal').checked)return'';
+  return[['Encargado','p-encargado'],['Chofer','p-chofer'],['Operador','p-operador'],
+    ['Ayudantes','p-ayudantes'],['Peones','p-peones'],['Banderilleros','p-banderilleros'],
+    ['Calificado','p-calificado']].filter(([_,id])=>+document.getElementById(id).value>0)
     .map(([n,id])=>n+':'+document.getElementById(id).value).join(', ');
 }
 
 function maquinariaResumen(){
-  if(!document.getElementById('c-maquinaria').checked) return '';
-  const campos=[['Camión','m-camion'],['Compresor','m-compresor'],['Rompedora','m-rompedora'],
+  if(!document.getElementById('c-maquinaria').checked)return'';
+  return[['Camión','m-camion'],['Compresor','m-compresor'],['Rompedora','m-rompedora'],
     ['Retroexcavador','m-retroexcavador'],['Perfiladora','m-perfiladora'],['Pala','m-pala'],
     ['Martillo','m-martillo'],['Cargadores','m-cargadores'],['TanqueAgua','m-tanque-agua'],
-    ['Niveladora','m-niveladora'],['Vagonetas','m-vagonetas'],['TanqueAsfalto','m-tanque-asfalto']];
-  return campos.filter(([_,id])=>document.getElementById(id).value>0)
+    ['Niveladora','m-niveladora'],['Vagonetas','m-vagonetas'],['TanqueAsfalto','m-tanque-asfalto']]
+    .filter(([_,id])=>+document.getElementById(id).value>0)
     .map(([n,id])=>n+':'+document.getElementById(id).value).join(', ');
+}
+
+function generarNumControl(){
+  const inspVal=document.getElementById('f-inspector').value;
+  const fecha=document.getElementById('f-fecha').value;
+  if(!inspVal||!fecha)return'';
+  const cod=inspVal.split('|')[1]||'00';
+  const mes=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');
+  const anio=new Date(fecha+'T12:00:00').getFullYear();
+  return`COFEC(1-4)-INS${cod}-${mes}-${anio}`;
+}
+
+function construirRow(){
+  const fecha=document.getElementById('f-fecha').value;
+  const inspVal=document.getElementById('f-inspector').value;
+  const secSel=document.getElementById('f-seccion');
+  const secOpt=secSel.options[secSel.selectedIndex];
+  const descripcion=secOpt?secOpt.dataset.desc||'':'';
+  const tieneProblema=document.getElementById('c-problema').checked;
+  const tieneBotadero=document.getElementById('c-botadero').checked;
+  const tieneVisitas=document.getElementById('c-visitas').checked;
+  const rotulos=document.getElementById('c-rotulos-conformes').checked;
+  const conos=document.getElementById('c-conos-conformes').checked;
+  const mes=new Date(fecha+'T12:00:00').toLocaleString('es-CR',{month:'long',year:'numeric'});
+  return[
+    fecha,mes,inspVal.split('|')[0],inspVal.split('|')[1],
+    document.getElementById('f-contrato').value,
+    document.getElementById('f-ruta').value,
+    secSel.value,descripcion,
+    document.getElementById('f-km-inicio').value,
+    document.getElementById('f-km-final').value,
+    document.getElementById('f-localizacion').value,
+    document.getElementById('f-hora-inicio').value,
+    document.getElementById('f-hora-final').value,
+    document.getElementById('f-clima').value,
+    document.getElementById('f-empresa').value,
+    JSON.stringify(recopilarItems()),
+    document.getElementById('f-velocidad').value,
+    document.getElementById('f-rotulos-ld').value||'0',
+    document.getElementById('f-rotulos-li').value||'0',
+    si(rotulos),
+    document.getElementById('f-conos-cantidad').value||'0',
+    document.getElementById('f-conos-distancia').value||'0',
+    document.getElementById('f-conos-altura').value||'0',
+    si(conos),
+    si(rotulos&&conos),
+    si(document.getElementById('c-personal').checked),
+    personalResumen(),
+    si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),
+    si(document.getElementById('c-maquinaria').checked),
+    maquinariaResumen(),
+    si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),
+    document.getElementById('f-equipo').value,
+    si(tieneVisitas),
+    tieneVisitas?JSON.stringify(recopilarVisitas()):'',
+    si(tieneProblema),
+    tieneProblema?document.getElementById('f-tipo-problema').value:'',
+    tieneProblema?document.getElementById('f-severidad-problema').value:'',
+    tieneProblema?document.getElementById('f-observacion-tipo').value:'',
+    tieneProblema?document.getElementById('f-desc-problema').value:'',
+    tieneProblema?si(document.getElementById('c-corregido').checked):'',
+    si(tieneBotadero),
+    tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',
+    tieneBotadero?document.getElementById('f-botadero-propietario').value:'',
+    tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',
+    tieneBotadero?document.getElementById('f-botadero-material').value:'',
+    document.getElementById('f-observaciones').value,
+    '',
+    generarNumControl()
+  ];
+}
+
+function guardarBorrador(){
+  const fecha=document.getElementById('f-fecha').value;
+  const inspVal=document.getElementById('f-inspector').value;
+  if(!fecha||!inspVal){toast('Fecha e inspector son obligatorios',true);return;}
+  try{
+    const borradores=JSON.parse(localStorage.getItem('bitacora_borradores')||'[]');
+    borradores.push({id:Date.now(),timestamp:new Date().toISOString(),row:construirRow()});
+    localStorage.setItem('bitacora_borradores',JSON.stringify(borradores));
+    actualizarBannerBorradores();
+    toast('💾 Borrador guardado localmente');
+  }catch(e){toast('Error al guardar borrador',true);}
+}
+
+async function enviarBorradores(){
+  const borradores=JSON.parse(localStorage.getItem('bitacora_borradores')||'[]');
+  if(!borradores.length){toast('No hay borradores pendientes');return;}
+  const btn=document.querySelector('[onclick="enviarBorradores()"]');
+  if(btn){btn.textContent='Enviando...';btn.disabled=true;}
+  let enviados=0;
+  const pendientes=[];
+  for(const b of borradores){
+    try{
+      await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:b.row}),headers:{'Content-Type':'application/json'}});
+      enviados++;
+    }catch(e){pendientes.push(b);}
+  }
+  localStorage.setItem('bitacora_borradores',JSON.stringify(pendientes));
+  actualizarBannerBorradores();
+  if(btn){btn.textContent='Enviar ahora';btn.disabled=false;}
+  if(enviados>0)toast(`✓ ${enviados} borrador(es) enviado(s)`,false,true);
+  else toast('Sin conexión – borradores pendientes',true);
+}
+
+function actualizarBannerBorradores(){
+  try{
+    const borradores=JSON.parse(localStorage.getItem('bitacora_borradores')||'[]');
+    const banner=document.getElementById('borradores-banner');
+    document.getElementById('borradores-count').textContent=borradores.length+' registro(s) sin enviar';
+    banner.className='borradores-banner'+(borradores.length>0?' visible':'');
+  }catch(e){}
 }
 
 async function guardar(){
@@ -538,127 +639,49 @@ async function guardar(){
   if(!inspVal){toast('Seleccioná un inspector',true);return;}
   if(!ruta){toast('Seleccioná una ruta',true);return;}
   if(!contrato){toast('Seleccioná un contrato',true);return;}
-
   const btn=document.getElementById('btn-guardar');
   btn.disabled=true;btn.textContent='Guardando...';
-
-  const inspNombre=inspVal.split('|')[0];
-  const inspCod=inspVal.split('|')[1];
-  const mes=new Date(fecha+'T12:00:00').toLocaleString('es-CR',{month:'long',year:'numeric'});
-  const secSel=document.getElementById('f-seccion');
-  const secOpt=secSel.options[secSel.selectedIndex];
-  const descripcion=secOpt?secOpt.dataset.desc||'':'';
-  const cod=inspVal.split('|')[1]||'00';
-  const mesNum=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');
-  const anio=new Date(fecha+'T12:00:00').getFullYear();
-  const numControl=`COFEC(1-4)-INS${cod}-${mesNum}-${anio}`;
-
-  const items=recopilarItems();
-  const visitas=recopilarVisitas();
-  const tieneProblema=document.getElementById('c-problema').checked;
-  const tieneBotadero=document.getElementById('c-botadero').checked;
-  const tieneVisitas=document.getElementById('c-visitas').checked;
-  const rotulos=document.getElementById('c-rotulos-conformes').checked;
-  const conos=document.getElementById('c-conos-conformes').checked;
-
-  const row=[
-    fecha, mes, inspNombre, inspCod, contrato, ruta,
-    secSel.value, descripcion,
-    document.getElementById('f-km-inicio').value,
-    document.getElementById('f-km-final').value,
-    document.getElementById('f-localizacion').value,
-    document.getElementById('f-hora-inicio').value,
-    document.getElementById('f-hora-final').value,
-    document.getElementById('f-clima').value,
-    document.getElementById('f-empresa').value,
-    // Items como JSON
-    JSON.stringify(items),
-    // Dispositivos
-    document.getElementById('f-velocidad').value,
-    document.getElementById('f-rotulos-ld').value||'0',
-    document.getElementById('f-rotulos-li').value||'0',
-    si(rotulos),
-    document.getElementById('f-conos-cantidad').value||'0',
-    document.getElementById('f-conos-distancia').value||'0',
-    document.getElementById('f-conos-altura').value||'0',
-    si(conos),
-    si(rotulos&&conos),
-    // Personal
-    si(document.getElementById('c-personal').checked),
-    personalResumen(),
-    si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),
-    // Maquinaria
-    si(document.getElementById('c-maquinaria').checked),
-    maquinariaResumen(),
-    si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),
-    // Equipo
-    document.getElementById('f-equipo').value,
-    // Visitas
-    si(tieneVisitas),
-    tieneVisitas?JSON.stringify(visitas):'',
-    // Problemas
-    si(tieneProblema),
-    tieneProblema?document.getElementById('f-tipo-problema').value:'',
-    tieneProblema?document.getElementById('f-severidad-problema').value:'',
-    tieneProblema?document.getElementById('f-observacion-tipo').value:'',
-    tieneProblema?document.getElementById('f-desc-problema').value:'',
-    tieneProblema?si(document.getElementById('c-corregido').checked):'',
-    // Botadero
-    si(tieneBotadero),
-    tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',
-    tieneBotadero?document.getElementById('f-botadero-propietario').value:'',
-    tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',
-    tieneBotadero?document.getElementById('f-botadero-material').value:'',
-    // Observaciones y control
-    document.getElementById('f-observaciones').value,
-    '', // FotosURL
-    numControl
-  ];
-
   try{
-    await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row}),headers:{'Content-Type':'application/json'}});
-    toast('✓ Bitácora guardada · '+numControl);
+    await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:construirRow()}),headers:{'Content-Type':'application/json'}});
+    toast('✓ Bitácora guardada correctamente',false,true);
     resetForm();
-  }catch(e){toast('Error de conexión',true);}
+  }catch(e){toast('Error de conexión – usá Guardar borrador',true);}
   btn.disabled=false;btn.textContent='Guardar registro de bitácora';
 }
 
 function resetForm(){
-  document.getElementById('f-inspector').value='';
-  document.getElementById('f-contrato').value='';
-  document.getElementById('f-empresa').value='';
-  document.getElementById('f-clima').value='';
-  document.getElementById('f-ruta').value='';
+  ['f-empresa','f-km-inicio','f-km-final','f-localizacion',
+   'f-hora-inicio','f-hora-final','f-equipo','f-tipo-problema',
+   'f-desc-problema','f-observaciones','f-botadero-ubicacion',
+   'f-botadero-propietario'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-inspector','f-contrato','f-ruta','f-clima','f-velocidad',
+   'f-botadero-material'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-seccion').innerHTML='<option value="">Seleccionar...</option>';
   document.getElementById('desc-seccion').style.display='none';
-  document.getElementById('f-km-inicio').value='';
-  document.getElementById('f-km-final').value='';
-  document.getElementById('f-localizacion').value='';
-  document.getElementById('f-hora-inicio').value='';
-  document.getElementById('f-hora-final').value='';
-  document.getElementById('f-velocidad').value='';
-  document.getElementById('f-rotulos-ld').value='';
-  document.getElementById('f-rotulos-li').value='';
-  document.getElementById('f-conos-cantidad').value='';
-  document.getElementById('f-conos-distancia').value='';
-  document.getElementById('f-conos-altura').value='';
-  document.getElementById('f-equipo').value='';
-  document.getElementById('f-observaciones').value='';
   document.getElementById('num-control-display').textContent='Número de control: —';
   document.getElementById('badge-dispositivos').textContent='—';
   document.getElementById('badge-dispositivos').className='conforme-badge';
+  ['f-rotulos-ld','f-rotulos-li','f-conos-cantidad','f-conos-distancia','f-conos-altura'].forEach(id=>document.getElementById(id).value='');
+  ['p-encargado','p-chofer','p-operador','p-ayudantes','p-peones','p-banderilleros','p-calificado',
+   'm-camion','m-compresor','m-rompedora','m-retroexcavador','m-perfiladora','m-pala',
+   'm-martillo','m-cargadores','m-tanque-agua','m-niveladora','m-vagonetas','m-tanque-asfalto']
+   .forEach(id=>document.getElementById(id).value='');
   document.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);
-  ['bloque-personal','bloque-maquinaria','bloque-problema','bloque-botadero','visitas-container'].forEach(id=>{
-    document.getElementById(id).style.display='none';
-  });
+  ['bloque-personal','bloque-maquinaria','bloque-problema','bloque-botadero','visitas-container']
+    .forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('items-container').innerHTML='';
   document.getElementById('visitas-lista').innerHTML='';
   itemCount=0;visitaCount=0;
   agregarItem();
 }
 
+window.addEventListener('online',()=>{
+  const borradores=JSON.parse(localStorage.getItem('bitacora_borradores')||'[]');
+  if(borradores.length>0){toast('Conexión detectada – enviando borradores...');setTimeout(enviarBorradores,1500);}
+});
+
 document.getElementById('f-fecha').value=new Date().toISOString().split('T')[0];
-document.getElementById('f-fecha').addEventListener('change',actualizarCodigo);
+actualizarBannerBorradores();
 cargarRutas();
 cargarItems();
 </script>
