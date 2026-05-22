@@ -96,6 +96,10 @@ input:checked+.slider:before{transform:translateX(20px)}
         <div class="home-btn-icon" style="background:#EBF3FB">📝</div>
         <div><div class="home-btn-title">Nuevo registro</div><div class="home-btn-sub">Registrar una nueva jornada de inspección</div></div>
       </button>
+      <button class="home-btn" onclick="abrirGeneradorInforme()">
+        <div class="home-btn-icon" style="background:#FFF3E0">📄</div>
+        <div><div class="home-btn-title">Generar informe mensual</div><div class="home-btn-sub">Crear informe mensual desde la bitácora</div></div>
+      </button>
       <button class="home-btn" onclick="mostrarBuscador()">
         <div class="home-btn-icon" style="background:#E8F8EE">🔍</div>
         <div><div class="home-btn-title">Editar registro enviado</div><div class="home-btn-sub">Buscar y editar un registro ya guardado en Sheets</div></div>
@@ -109,8 +113,7 @@ input:checked+.slider:before{transform:translateX(20px)}
     <div class="section" id="seccion-buscador" style="display:none">
       <div class="section-title">Buscar registro enviado</div>
       <div class="card">
-        <div class="field">
-          <label>Inspector</label>
+        <div class="field"><label>Inspector</label>
           <select id="buscar-inspector" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;-webkit-appearance:none;font-family:inherit">
             <option value="">Seleccionar...</option>
             <option>Jaime Vargas</option><option>Juan Diego Aguero</option>
@@ -137,7 +140,6 @@ input:checked+.slider:before{transform:translateX(20px)}
   </div>
   <div class="content">
     <div class="edit-banner" id="edit-banner" style="display:none">✏️ Modo edición — guardá para actualizar el registro</div>
-
     <div class="section">
       <div class="section-title">Identificación</div>
       <div class="card">
@@ -170,23 +172,17 @@ input:checked+.slider:before{transform:translateX(20px)}
       </div>
       <div class="num-control" id="num-control-display">Número de control: —</div>
     </div>
-
     <div class="section">
       <div class="section-title">Ubicación</div>
       <div class="card">
-        <div class="field"><label>Ruta</label>
-          <select id="f-ruta" onchange="actualizarSecciones()"><option value="">Seleccionar...</option></select>
-        </div>
-        <div class="field"><label>Sección de control</label>
-          <select id="f-seccion" onchange="mostrarDescripcion()"><option value="">Seleccionar...</option></select>
-        </div>
+        <div class="field"><label>Ruta</label><select id="f-ruta" onchange="actualizarSecciones()"><option value="">Seleccionar...</option></select></div>
+        <div class="field"><label>Sección de control</label><select id="f-seccion" onchange="mostrarDescripcion()"><option value="">Seleccionar...</option></select></div>
         <div class="field-desc" id="desc-seccion" style="display:none"><p id="desc-texto"></p></div>
         <div class="field"><label>Km inicio</label><input type="text" id="f-km-inicio" placeholder="Ej: 12+890"></div>
         <div class="field"><label>Km final</label><input type="text" id="f-km-final" placeholder="Ej: 15+470"></div>
         <div class="field"><label>Localización referencia</label><input type="text" id="f-localizacion" placeholder="Ej: Frente al puente"></div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Horario</div>
       <div class="card">
@@ -194,13 +190,11 @@ input:checked+.slider:before{transform:translateX(20px)}
         <div class="field"><label>Hora final</label><input type="time" id="f-hora-final"></div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Ítems inspeccionados</div>
       <div id="items-container"></div>
       <button class="btn-secondary" onclick="agregarItem()">+ Agregar ítem</button>
     </div>
-
     <div class="section">
       <div class="section-title">Dispositivos de seguridad</div>
       <div class="card">
@@ -223,7 +217,6 @@ input:checked+.slider:before{transform:translateX(20px)}
         <div class="field"><label>Dispositivos conformes (general)</label><span class="conforme-badge" id="badge-dispositivos">—</span></div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Personal en frente de trabajo</div>
       <div class="card">
@@ -241,7 +234,6 @@ input:checked+.slider:before{transform:translateX(20px)}
         </div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Maquinaria en frente de trabajo</div>
       <div class="card">
@@ -264,14 +256,12 @@ input:checked+.slider:before{transform:translateX(20px)}
         </div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Equipo de medición</div>
       <div class="card">
         <div class="field"><label>Equipo utilizado</label><input type="text" id="f-equipo" placeholder="Ej: Nivel, flexómetro"></div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Visitas al frente de trabajo</div>
       <div class="card">
@@ -282,7 +272,6 @@ input:checked+.slider:before{transform:translateX(20px)}
         <button class="btn-secondary" onclick="agregarVisita()">+ Agregar visita</button>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Problemas técnicos</div>
       <div class="card">
@@ -296,7 +285,6 @@ input:checked+.slider:before{transform:translateX(20px)}
         </div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Botadero</div>
       <div class="card">
@@ -315,7 +303,6 @@ input:checked+.slider:before{transform:translateX(20px)}
         </div>
       </div>
     </div>
-
     <div class="section">
       <div class="section-title">Observaciones generales</div>
       <div class="card">
@@ -325,11 +312,107 @@ input:checked+.slider:before{transform:translateX(20px)}
         </div>
       </div>
     </div>
-
     <button class="btn-borrador" onclick="guardarBorrador()">💾 Guardar como borrador</button>
     <button class="btn-primary" id="btn-guardar" onclick="guardar()">Guardar registro de bitácora</button>
     <button class="btn-danger" id="btn-cancelar-edit" style="display:none" onclick="volverHome()">Cancelar edición</button>
   </div>
+</div>
+
+<div class="page" id="page-informe">
+  <div class="header">
+    <div class="header-actions">
+      <button class="btn-back" onclick="volverHome()">← Inicio</button>
+      <span style="color:#fff;font-size:13px;font-weight:500">Informe Mensual</span>
+      <div style="width:60px"></div>
+    </div>
+    <h1 style="margin-top:6px">Generador de Informe</h1>
+    <p>FAMCOVA – Informe mensual de gestión</p>
+  </div>
+  <div class="content">
+    <div class="section">
+      <div class="section-title">Selección</div>
+      <div class="card">
+        <div class="field"><label>Inspector</label>
+          <select id="inf-inspector" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;-webkit-appearance:none;font-family:inherit">
+            <option value="">Seleccionar...</option>
+            <option value="Jaime Vargas|06">Jaime Vargas</option>
+            <option value="Juan Diego Aguero|20">Juan Diego Aguero</option>
+            <option value="Jairo Mendez|22">Jairo Mendez</option>
+            <option value="Robnel Ugalde|24">Robnel Ugalde</option>
+            <option value="Jose A. Madriz|13">Jose A. Madriz</option>
+          </select>
+        </div>
+        <div class="field"><label>Mes</label>
+          <select id="inf-mes" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;-webkit-appearance:none;font-family:inherit">
+            <option value="">Seleccionar...</option>
+            <option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option>
+            <option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option>
+            <option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option>
+            <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+          </select>
+        </div>
+        <div class="field"><label>Año</label>
+          <select id="inf-anio" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;-webkit-appearance:none;font-family:inherit">
+            <option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="cargarDatosInforme()">Cargar datos del mes</button>
+    </div>
+    <div id="informe-form" style="display:none">
+      <div class="section">
+        <div class="section-title">Resumen ejecutivo</div>
+        <div class="card">
+          <div class="field field-vertical"><label style="font-weight:600">Síntesis de actividades ejecutadas</label><textarea id="inf-sintesis" style="height:100px" placeholder="Describir brevemente las principales actividades..."></textarea></div>
+          <div class="field field-vertical"><label style="font-weight:600">Principales resultados</label><textarea id="inf-resultados" style="height:100px" placeholder="Describir los principales resultados obtenidos..."></textarea></div>
+          <div class="field field-vertical"><label style="font-weight:600">Hallazgos o incidencias relevantes</label><textarea id="inf-hallazgos" style="height:80px" placeholder="Describir hallazgos o incidencias relevantes..."></textarea></div>
+          <div class="field field-vertical"><label style="font-weight:600">Riesgos identificados</label><textarea id="inf-riesgos" style="height:80px" placeholder="Describir riesgos identificados..."></textarea></div>
+          <div class="field field-vertical"><label style="font-weight:600">Acciones correctivas o recomendaciones</label><textarea id="inf-acciones" style="height:80px" placeholder="Describir acciones correctivas..."></textarea></div>
+          <div class="field"><label>Estado general del servicio</label>
+            <select id="inf-estado" style="max-width:55%;color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;-webkit-appearance:none;font-family:inherit">
+              <option>Cumple</option><option>Cumple parcialmente</option><option>No cumple</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Datos generales del período</div>
+        <div class="card">
+          <div class="field"><label>Período cubierto</label><input type="text" id="inf-periodo" placeholder="Del XX/MM/AAAA al XX/MM/AAAA" style="max-width:55%"></div>
+          <div class="field"><label>Días laborados</label><input type="number" id="inf-dias" min="0" placeholder="0" style="max-width:80px"></div>
+          <div class="field"><label>Jornadas realizadas</label><input type="text" id="inf-jornadas" placeholder="Ej: 6:00 am a 4:00 pm" style="max-width:55%"></div>
+          <div class="field"><label>Frentes atendidos</label><input type="number" id="inf-frentes" min="0" placeholder="0" style="max-width:80px"></div>
+          <div class="field"><label>Solicitudes de Administración</label><input type="number" id="inf-solicitudes" min="0" value="0" style="max-width:80px"></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Actividades ejecutadas <span id="inf-act-count" style="background:#16375C;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:4px"></span></div>
+        <div id="inf-actividades-lista"></div>
+      </div>
+      <div class="section" id="inf-problemas-section" style="display:none">
+        <div class="section-title">Problemas técnicos <span id="inf-prob-count" style="background:#C0392B;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:4px"></span></div>
+        <div id="inf-problemas-lista"></div>
+      </div>
+      <div class="section" id="inf-visitas-section" style="display:none">
+        <div class="section-title">Visitas al frente <span id="inf-vis-count" style="background:#1A5C2E;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:4px"></span></div>
+        <div id="inf-visitas-lista"></div>
+      </div>
+      <button class="btn-primary" onclick="generarInforme()" style="margin-top:8px">📄 Generar y ver informe</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-preview">
+  <div class="header">
+    <div class="header-actions">
+      <button class="btn-back" onclick="showPage('page-informe')">← Volver</button>
+      <span style="color:#fff;font-size:13px;font-weight:500">Vista previa</span>
+      <button class="btn-back" onclick="window.print()">🖨️ Imprimir/PDF</button>
+    </div>
+    <h1 style="margin-top:6px">Informe Mensual</h1>
+    <p>Presioná Imprimir/PDF para guardar</p>
+  </div>
+  <div id="informe-preview-content" style="padding:16px;padding-bottom:40px"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -339,14 +422,14 @@ const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwBxQZq2XzRM9mhMvfwdte
 const KPI_SCRIPT='https://script.google.com/macros/s/AKfycbzGTAhyRU1YXEc4DkIyMYe2gH5j7hHXcwlzwAg5-Ud_vuL55a59JDo8Erif3ZSQwx-OSQ/exec';
 let rutasData=[],itemsData=[],itemCount=0,visitaCount=0;
 let modoEdicion=null,editBorradorId=null,editSheetRowIndex=null;
+let informeData=[];
+const MESES_ES=['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-
 function volverHome(){modoEdicion=null;editBorradorId=null;editSheetRowIndex=null;resetForm();renderBorradores();showPage('page-home');}
-
 function nuevoRegistro(){modoEdicion=null;editBorradorId=null;editSheetRowIndex=null;resetForm();document.getElementById('form-mode-label').textContent='Nuevo registro';document.getElementById('edit-banner').style.display='none';document.getElementById('btn-guardar').textContent='Guardar registro de bitácora';document.getElementById('btn-cancelar-edit').style.display='none';showPage('page-form');}
-
 function mostrarBuscador(){const s=document.getElementById('seccion-buscador');s.style.display=s.style.display==='none'?'block':'none';}
+function abrirGeneradorInforme(){document.getElementById('informe-form').style.display='none';showPage('page-informe');}
 
 function getBorradores(){try{return JSON.parse(localStorage.getItem('bitacora_borradores')||'[]');}catch(e){return[];}}
 function setBorradores(b){localStorage.setItem('bitacora_borradores',JSON.stringify(b));}
@@ -359,20 +442,17 @@ function renderBorradores(){
   badge.textContent=borradores.length>0?borradores.length:'';
   btnEnviar.style.display=borradores.length>0?'block':'none';
   if(!borradores.length){lista.innerHTML='<div class="empty-state">Sin borradores pendientes</div>';return;}
-  lista.innerHTML=borradores.map(b=>{
-    const row=b.row;
-    return`<div class="borrador-item">
-      <div class="borrador-item-info">
-        <div class="borrador-item-title">${row[2]||'—'} · ${row[0]||'—'}</div>
-        <div class="borrador-item-sub">${row[5]?'Ruta '+row[5]:''} ${row[row.length-1]?'· '+row[row.length-1]:''}</div>
-      </div>
-      <div class="borrador-item-actions">
-        <button class="btn-sm btn-sm-edit" onclick="editarBorrador(${b.id})">Editar</button>
-        <button class="btn-sm btn-sm-del" onclick="eliminarBorrador(${b.id})">Borrar</button>
-        <button class="btn-sm" style="background:#E8F8EE;color:#1A5C2E" onclick="enviarBorrador(${b.id})">Enviar</button>
-      </div>
-    </div>`;
-  }).join('');
+  lista.innerHTML=borradores.map(b=>`<div class="borrador-item">
+    <div class="borrador-item-info">
+      <div class="borrador-item-title">${b.row[2]||'—'} · ${b.row[0]||'—'}</div>
+      <div class="borrador-item-sub">${b.row[5]?'Ruta '+b.row[5]:''} ${b.row[b.row.length-1]?'· '+b.row[b.row.length-1]:''}</div>
+    </div>
+    <div class="borrador-item-actions">
+      <button class="btn-sm btn-sm-edit" onclick="editarBorrador(${b.id})">Editar</button>
+      <button class="btn-sm btn-sm-del" onclick="eliminarBorrador(${b.id})">Borrar</button>
+      <button class="btn-sm" style="background:#E8F8EE;color:#1A5C2E" onclick="enviarBorrador(${b.id})">Enviar</button>
+    </div>
+  </div>`).join('');
 }
 
 function guardarBorrador(){
@@ -385,17 +465,14 @@ function guardarBorrador(){
     const idx=borradores.findIndex(b=>b.id===editBorradorId);
     if(idx>=0)borradores[idx]={...borradores[idx],row,timestamp:new Date().toISOString()};
     else borradores.push({id:Date.now(),timestamp:new Date().toISOString(),row});
-  }else{
-    borradores.push({id:Date.now(),timestamp:new Date().toISOString(),row});
-  }
+  }else{borradores.push({id:Date.now(),timestamp:new Date().toISOString(),row});}
   setBorradores(borradores);
   toast('💾 Borrador guardado');
   resetForm();volverHome();
 }
 
 function editarBorrador(id){
-  const b=getBorradores().find(x=>x.id===id);
-  if(!b)return;
+  const b=getBorradores().find(x=>x.id===id);if(!b)return;
   modoEdicion='borrador';editBorradorId=id;
   cargarRowEnFormulario(b.row);
   document.getElementById('form-mode-label').textContent='Editando borrador';
@@ -412,28 +489,20 @@ function eliminarBorrador(id){
 }
 
 async function enviarBorrador(id){
-  const borradores=getBorradores();
-  const b=borradores.find(x=>x.id===id);
-  if(!b)return;
+  const borradores=getBorradores();const b=borradores.find(x=>x.id===id);if(!b)return;
   try{
     await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:b.row}),headers:{'Content-Type':'application/json'}});
-    setBorradores(borradores.filter(x=>x.id!==id));
-    renderBorradores();
+    setBorradores(borradores.filter(x=>x.id!==id));renderBorradores();
     toast('✓ Registro enviado',false,true);
   }catch(e){toast('Error de conexión',true);}
 }
 
 async function enviarTodosBorradores(){
-  const borradores=getBorradores();
-  if(!borradores.length)return;
+  const borradores=getBorradores();if(!borradores.length)return;
   let enviados=0;const pendientes=[];
-  for(const b of borradores){
-    try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:b.row}),headers:{'Content-Type':'application/json'}});enviados++;}
-    catch(e){pendientes.push(b);}
-  }
+  for(const b of borradores){try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:b.row}),headers:{'Content-Type':'application/json'}});enviados++;}catch(e){pendientes.push(b);}}
   setBorradores(pendientes);renderBorradores();
-  if(enviados>0)toast(`✓ ${enviados} borrador(es) enviado(s)`,false,true);
-  else toast('Sin conexión',true);
+  if(enviados>0)toast(`✓ ${enviados} borrador(es) enviado(s)`,false,true);else toast('Sin conexión',true);
 }
 
 async function buscarRegistro(){
@@ -448,12 +517,11 @@ async function buscarRegistro(){
     const rows=(json.data||[]).slice(1);
     const encontrados=rows.map((r,i)=>({r,i:i+1})).filter(({r})=>r[2]===insp&&String(r[0]).split('T')[0]===fecha);
     if(!encontrados.length){div.innerHTML='<div class="empty-state">No se encontraron registros</div>';return;}
-    div.innerHTML=encontrados.map(({r,i})=>`
-      <div class="resultado-item" onclick="editarRegistroSheet(${i})">
-        <div class="resultado-title">${r[2]} · ${String(r[0]).split('T')[0]}</div>
-        <div class="resultado-sub">Ruta ${r[5]||'—'} · Sec. ${r[6]||'—'} · ${r[r.length-1]||''}</div>
-        <div style="font-size:11px;color:#007AFF;margin-top:4px">Tocar para editar →</div>
-      </div>`).join('');
+    div.innerHTML=encontrados.map(({r,i})=>`<div class="resultado-item" onclick="editarRegistroSheet(${i})">
+      <div class="resultado-title">${r[2]} · ${String(r[0]).split('T')[0]}</div>
+      <div class="resultado-sub">Ruta ${r[5]||'—'} · Sec. ${r[6]||'—'} · ${r[r.length-1]||''}</div>
+      <div style="font-size:11px;color:#007AFF;margin-top:4px">Tocar para editar →</div>
+    </div>`).join('');
   }catch(e){div.innerHTML='<div class="empty-state">Error de conexión</div>';}
 }
 
@@ -462,8 +530,7 @@ async function editarRegistroSheet(rowIndex){
   try{
     const res=await fetch(SCRIPT_URL+'?t='+Date.now());
     const json=await res.json();
-    const row=(json.data||[]).slice(1)[rowIndex-1];
-    if(!row)return;
+    const row=(json.data||[]).slice(1)[rowIndex-1];if(!row)return;
     modoEdicion='sheet';editSheetRowIndex=rowIndex;
     cargarRowEnFormulario(row);
     document.getElementById('form-mode-label').textContent='Editando registro';
@@ -680,13 +747,7 @@ function verificarDispositivosConformes(){
 }
 
 function toggleBloque(nombre){document.getElementById('bloque-'+nombre).style.display=document.getElementById('c-'+nombre).checked?'block':'none';}
-
-function toggleVisitas(){
-  const show=document.getElementById('c-visitas').checked;
-  document.getElementById('visitas-container').style.display=show?'block':'none';
-  if(show&&visitaCount===0)agregarVisita();
-}
-
+function toggleVisitas(){const show=document.getElementById('c-visitas').checked;document.getElementById('visitas-container').style.display=show?'block':'none';if(show&&visitaCount===0)agregarVisita();}
 function si(v){return v?'Sí':'No';}
 
 function recopilarItems(){
@@ -776,10 +837,178 @@ function toast(msg,err=false,ok=false){
   setTimeout(()=>t.className='toast',3500);
 }
 
-window.addEventListener('online',()=>{
-  if(getBorradores().length>0){toast('Conexión detectada – enviando borradores...');setTimeout(enviarTodosBorradores,1500);}
-});
+// ══ GENERADOR DE INFORME MENSUAL ══
+async function cargarDatosInforme(){
+  const inspVal=document.getElementById('inf-inspector').value;
+  const mes=parseInt(document.getElementById('inf-mes').value);
+  const anio=parseInt(document.getElementById('inf-anio').value);
+  if(!inspVal){toast('Seleccioná un inspector',true);return;}
+  if(!mes){toast('Seleccioná un mes',true);return;}
+  const inspNombre=inspVal.split('|')[0];
+  const btn=document.querySelector('[onclick="cargarDatosInforme()"]');
+  btn.textContent='Cargando...';btn.disabled=true;
+  try{
+    const res=await fetch(SCRIPT_URL+'?t='+Date.now());
+    const json=await res.json();
+    const rows=(json.data||[]).slice(1);
+    informeData=rows.filter(r=>{
+      if(r[2]!==inspNombre)return false;
+      const fecha=new Date(String(r[0]).split('T')[0]+'T12:00:00');
+      return fecha.getMonth()+1===mes&&fecha.getFullYear()===anio;
+    });
+    if(!informeData.length){toast('No hay registros para ese mes',true);btn.textContent='Cargar datos del mes';btn.disabled=false;return;}
+    const fechas=informeData.map(r=>new Date(String(r[0]).split('T')[0]+'T12:00:00')).sort((a,b)=>a-b);
+    const fmt=d=>`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+    document.getElementById('inf-periodo').value=`Del ${fmt(fechas[0])} al ${fmt(fechas[fechas.length-1])}`;
+    document.getElementById('inf-dias').value=informeData.length;
+    document.getElementById('inf-frentes').value=[...new Set(informeData.map(r=>r[5]+'-'+r[6]))].length;
+    document.getElementById('inf-jornadas').value='6:00 am a 4:00 pm';
+    renderActividadesInforme();renderProblemasInforme();renderVisitasInforme();
+    document.getElementById('informe-form').style.display='block';
+    document.getElementById('informe-form').scrollIntoView({behavior:'smooth'});
+    toast(`✓ ${informeData.length} registros cargados`,false,true);
+  }catch(e){toast('Error de conexión',true);}
+  btn.textContent='Cargar datos del mes';btn.disabled=false;
+}
 
+function renderActividadesInforme(){
+  document.getElementById('inf-act-count').textContent=informeData.length;
+  document.getElementById('inf-actividades-lista').innerHTML=informeData.map((r,i)=>{
+    let items=[];try{items=JSON.parse(r[15]||'[]');}catch(e){}
+    const itemsStr=items.map(it=>`${it.codigo}: ${it.cantidad} ${it.unidad}`).join(', ')||'—';
+    return`<div class="item-block">
+      <div class="block-header"><span class="block-title">Actividad ${i+1} — ${String(r[0]).split('T')[0]}</span></div>
+      <div class="inner-field"><label>Ruta / Sección</label><span style="font-size:13px;color:#6D6D72">Ruta ${r[5]||'—'} / ${r[6]||'—'}</span></div>
+      <div class="inner-field"><label>Estación</label><span style="font-size:13px;color:#6D6D72">${r[8]||'—'} – ${r[9]||'—'}</span></div>
+      <div class="inner-field"><label>Ítems</label><span style="font-size:12px;color:#6D6D72;text-align:right;max-width:55%">${itemsStr}</span></div>
+      <div class="inner-field field-vertical" style="flex-direction:column;align-items:flex-start;gap:4px">
+        <label>Resultado / hallazgo</label>
+        <textarea id="act-resultado-${i}" style="border:none;outline:none;font-size:13px;color:#1C1C1E;background:#F9F9F9;width:100%;resize:none;height:52px;font-family:inherit;line-height:1.4;border-radius:6px;padding:6px" placeholder="Describir resultado...">${r[45]||''}</textarea>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderProblemasInforme(){
+  const problemas=informeData.filter(r=>r[34]==='Sí');
+  const section=document.getElementById('inf-problemas-section');
+  document.getElementById('inf-prob-count').textContent=problemas.length;
+  if(!problemas.length){section.style.display='none';return;}
+  section.style.display='block';
+  document.getElementById('inf-problemas-lista').innerHTML=problemas.map((r,i)=>`
+    <div class="item-block">
+      <div class="block-header"><span class="block-title">Problema ${i+1} — ${String(r[0]).split('T')[0]}</span></div>
+      <div class="inner-field"><label>Tipo</label><span style="font-size:13px;color:#6D6D72">${r[35]||'—'}</span></div>
+      <div class="inner-field"><label>Severidad</label><span style="font-size:13px;color:#6D6D72">${r[36]||'—'}</span></div>
+      <div class="inner-field"><label>Observación</label><span style="font-size:13px;color:#6D6D72">${r[37]||'—'}</span></div>
+      <div class="inner-field"><label>Descripción</label><span style="font-size:12px;color:#6D6D72;text-align:right;max-width:55%">${r[38]||'—'}</span></div>
+      <div class="inner-field"><label>Corregido</label><span style="font-size:13px;color:#6D6D72">${r[39]||'—'}</span></div>
+    </div>`).join('');
+}
+
+function renderVisitasInforme(){
+  let todasVisitas=[];
+  informeData.filter(r=>r[32]==='Sí').forEach(r=>{
+    try{JSON.parse(r[33]||'[]').forEach(v=>todasVisitas.push({...v,fecha:String(r[0]).split('T')[0]}));}catch(e){}
+  });
+  const section=document.getElementById('inf-visitas-section');
+  document.getElementById('inf-vis-count').textContent=todasVisitas.length;
+  if(!todasVisitas.length){section.style.display='none';return;}
+  section.style.display='block';
+  document.getElementById('inf-visitas-lista').innerHTML=todasVisitas.map((v,i)=>`
+    <div class="item-block">
+      <div class="block-header"><span class="block-title">Visita ${i+1} — ${v.fecha}</span></div>
+      <div class="inner-field"><label>Tipo</label><span style="font-size:13px;color:#6D6D72">${v.tipo||'—'}</span></div>
+      <div class="inner-field"><label>Visitante</label><span style="font-size:13px;color:#6D6D72">${v.nombre||'—'}</span></div>
+      <div class="inner-field"><label>Hora</label><span style="font-size:13px;color:#6D6D72">${v.hora||'—'}</span></div>
+      <div class="inner-field"><label>Motivo</label><span style="font-size:12px;color:#6D6D72;text-align:right;max-width:55%">${v.motivo||'—'}</span></div>
+    </div>`).join('');
+}
+
+function generarInforme(){
+  const inspVal=document.getElementById('inf-inspector').value;
+  const mes=parseInt(document.getElementById('inf-mes').value);
+  const anio=parseInt(document.getElementById('inf-anio').value);
+  const inspNombre=inspVal.split('|')[0];
+  const inspCod=inspVal.split('|')[1];
+  const numControl=`COFEC(1-4)-INS${inspCod}-${String(mes).padStart(3,'0')}-${anio}`;
+  const mesNombre=MESES_ES[mes];
+  const frentes=[...new Set(informeData.map(r=>`Ruta ${r[5]} / Sec. ${r[6]}`))].join(', ');
+
+  const actHTML=informeData.map((r,i)=>{
+    let items=[];try{items=JSON.parse(r[15]||'[]');}catch(e){}
+    const itemsStr=items.map(it=>`${it.codigo}: ${it.cantidad} ${it.unidad}`).join(', ')||'—';
+    const resultado=document.getElementById('act-resultado-'+i)?.value||r[45]||'—';
+    const infDiarios=[...new Set(items.map(it=>it.informe).filter(Boolean))].join(', ')||'—';
+    return`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${String(r[0]).split('T')[0]}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">Ruta ${r[5]||'—'} / Sec. ${r[6]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[8]||'—'} – ${r[9]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${itemsStr}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${infDiarios}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${resultado}</td></tr>`;
+  }).join('');
+
+  const problemas=informeData.filter(r=>r[34]==='Sí');
+  const probHTML=problemas.length?problemas.map((r,i)=>`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${String(r[0]).split('T')[0]}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">Ruta ${r[5]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[35]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[36]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[37]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[39]||'—'}</td></tr>`).join(''):'<tr><td colspan="7" style="text-align:center;padding:10px;font-size:11px;color:#6D6D72">No se detectaron problemas técnicos</td></tr>';
+
+  let todasVisitas=[];
+  informeData.filter(r=>r[32]==='Sí').forEach(r=>{try{JSON.parse(r[33]||'[]').forEach(v=>todasVisitas.push({...v,fecha:String(r[0]).split('T')[0]}));}catch(e){}});
+  const visHTML=todasVisitas.length?todasVisitas.map((v,i)=>`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.fecha}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.tipo||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.nombre||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.hora||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.motivo||'—'}</td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:10px;font-size:11px;color:#6D6D72">No se registraron visitas</td></tr>';
+
+  document.getElementById('informe-preview-content').innerHTML=`
+  <style>
+    @media print{body *{visibility:hidden}#informe-preview-content,#informe-preview-content *{visibility:visible}#informe-preview-content{position:absolute;left:0;top:0;width:100%}}
+    .ih{background:#16375C;color:white;padding:16px;text-align:center;border-radius:8px 8px 0 0}
+    .ish{background:#1F3864;color:rgba(255,255,255,0.85);padding:8px 16px;text-align:center;font-size:12px;border-radius:0 0 8px 8px;margin-bottom:16px}
+    .ist{background:#2E75B6;color:white;padding:6px 12px;font-size:12px;font-weight:600;border-radius:6px;margin-bottom:8px;text-transform:uppercase}
+    .ic{background:white;border:1px solid #BDD7EE;border-radius:8px;padding:12px;margin-bottom:8px}
+    .ifl{display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid #EBF3FB;font-size:12px}
+    .ifl:last-child{border-bottom:none}
+    .inat{font-size:12px;color:#1C1C1E;line-height:1.6;padding:8px;background:#F9F9F9;border-radius:6px;margin-bottom:8px;white-space:pre-wrap}
+    .inl{font-size:11px;font-weight:600;color:#16375C;margin-bottom:4px;text-transform:uppercase}
+    table{width:100%;border-collapse:collapse}
+    th{background:#1F3864;color:white;padding:6px 8px;font-size:11px;font-weight:600;text-align:left}
+  </style>
+  <div class="ih"><div style="font-size:18px;font-weight:700">Informe Mensual de Gestión</div><div style="font-size:13px;margin-top:4px">Contrato Servicios de Apoyo por Demanda</div><div style="font-size:12px;margin-top:2px;opacity:0.8">CONSORCIO FAMCOVA – ESTRATEGA – CCOCIMO</div></div>
+  <div class="ish">lcorrales@famcova.net | cevchsa@gmail.com | ccocimo@gmail.com | Tel: (506) 4080-2323</div>
+  <div style="text-align:right;font-size:10px;color:#6D6D72;margin-bottom:16px">Control: ${numControl} | Versión: 01 | Elaboró: ${inspNombre}</div>
+  <div style="margin-bottom:16px"><div class="ist">1. Datos de identificación</div>
+  <div class="ic">
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Número de licitación</span><span>Servicios de Apoyo Técnico, Región Central</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Tipo de servicio</span><span>Inspector de Obra Vial</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Zona</span><span>1-4</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Mes y año</span><span>${mesNombre} ${anio}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Contratista</span><span>MECO</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Responsable</span><span>${inspNombre}</span></div>
+  </div></div>
+  <div style="margin-bottom:16px"><div class="ist">2. Resumen ejecutivo</div>
+  <div class="ic">
+    <div class="inl">Síntesis de actividades</div><div class="inat">${document.getElementById('inf-sintesis').value||'—'}</div>
+    <div class="inl">Principales resultados</div><div class="inat">${document.getElementById('inf-resultados').value||'—'}</div>
+    <div class="inl">Hallazgos o incidencias</div><div class="inat">${document.getElementById('inf-hallazgos').value||'—'}</div>
+    <div class="inl">Riesgos identificados</div><div class="inat">${document.getElementById('inf-riesgos').value||'—'}</div>
+    <div class="inl">Acciones correctivas</div><div class="inat">${document.getElementById('inf-acciones').value||'—'}</div>
+    <div class="ifl" style="margin-top:8px"><span style="color:#6D6D72;font-weight:500">Entregables</span><span>Informes diarios de inspección</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Estado general</span><span style="font-weight:600;color:#16375C">${document.getElementById('inf-estado').value}</span></div>
+  </div></div>
+  <div style="margin-bottom:16px"><div class="ist">3. Datos generales del período</div>
+  <div class="ic">
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Período cubierto</span><span>${document.getElementById('inf-periodo').value||'—'}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Días laborados</span><span>${document.getElementById('inf-dias').value||'—'}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Jornadas</span><span>${document.getElementById('inf-jornadas').value||'—'}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Frentes atendidos</span><span>${document.getElementById('inf-frentes').value||'—'}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Rutas / Frentes</span><span style="font-size:11px;max-width:60%;text-align:right">${frentes}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Solicitudes Administración</span><span>${document.getElementById('inf-solicitudes').value||'0'}</span></div>
+  </div></div>
+  <div style="margin-bottom:16px"><div class="ist">4. Actividades ejecutadas</div>
+  <div style="overflow-x:auto"><table><thead><tr><th style="width:30px">#</th><th>Fecha</th><th>Ruta/Sección</th><th>Estación</th><th>Ítem/Cantidad</th><th>Inf. Diario</th><th>Resultado/Hallazgo</th></tr></thead><tbody>${actHTML}</tbody></table></div></div>
+  <div style="margin-bottom:16px"><div class="ist">5. Problemas técnicos detectados</div>
+  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Ruta</th><th>Tipo</th><th>Severidad</th><th>Observación</th><th>Corregido</th></tr></thead><tbody>${probHTML}</tbody></table></div></div>
+  <div style="margin-bottom:16px"><div class="ist">6. Visitas al frente de trabajo</div>
+  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Tipo de visita</th><th>Visitante</th><th>Hora</th><th>Motivo</th></tr></thead><tbody>${visHTML}</tbody></table></div></div>
+  <div style="text-align:center;margin-top:48px">
+    <div style="border-top:1px solid #1C1C1E;width:200px;margin:0 auto;padding-top:6px;font-size:12px">${inspNombre}<br><span style="font-size:10px;color:#6D6D72">Inspector de Obra Vial – FAMCOVA</span></div>
+    <div style="font-size:10px;color:#6D6D72;margin-top:16px">${numControl} | ${mesNombre} ${anio} | Generado: ${new Date().toLocaleDateString('es-CR')}</div>
+  </div>`;
+  showPage('page-preview');
+}
+
+window.addEventListener('online',()=>{if(getBorradores().length>0){toast('Conexión detectada – enviando borradores...');setTimeout(enviarTodosBorradores,1500);}});
 document.getElementById('f-fecha').value=new Date().toISOString().split('T')[0];
 cargarRutas();cargarItems();renderBorradores();
 </script>
