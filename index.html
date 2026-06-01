@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Bitácora FAMCOVA">
+<meta name="apple-mobile-web-app-title" content="Bitacora FAMCOVA">
 <link rel="apple-touch-icon" href="icon.png">
-<title>Bitácora de Inspección FAMCOVA</title>  
+<title>Bitacora de Inspeccion FAMCOVA</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F2F2F7;color:#1C1C1E;min-height:100vh}
@@ -44,6 +44,7 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
 .btn-secondary{width:100%;padding:10px;background:#EBF3FB;color:#16375C;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
 .btn-borrador{width:100%;padding:10px;background:#FFF3E0;color:#7A4500;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
 .btn-danger{width:100%;padding:10px;background:#FFEBEE;color:#8B1A1A;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
+.btn-firma{width:100%;padding:16px;background:#1A5C2E;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px;font-family:inherit;letter-spacing:0.02em}
 .btn-remove{padding:4px 10px;background:#FFEBEE;color:#8B1A1A;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
 .btn-primary:active,.btn-secondary:active,.btn-borrador:active{opacity:0.8}
 .btn-primary:disabled{opacity:0.5}
@@ -81,67 +82,105 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
 .resultado-title{font-size:13px;font-weight:600;color:#1C1C1E}
 .resultado-sub{font-size:11px;color:#6D6D72;margin-top:3px}
 .edit-banner{background:#EBF3FB;border-radius:12px;padding:10px 16px;margin-bottom:8px;font-size:12px;color:#16375C;font-weight:500;text-align:center}
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;background:#F2F2F7}
+.login-logo{width:72px;height:72px;background:#16375C;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px}
+.login-title{font-size:20px;font-weight:700;color:#1C1C1E;margin-bottom:6px;text-align:center}
+.login-sub{font-size:13px;color:#6D6D72;margin-bottom:28px;text-align:center}
+.inspector-btn{width:100%;max-width:340px;padding:14px 16px;background:#fff;border:0.5px solid #E5E5EA;border-radius:12px;font-size:15px;font-weight:600;color:#1C1C1E;cursor:pointer;font-family:inherit;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.inspector-btn:active{background:#EBF3FB}
+.inspector-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+/* FIRMA */
+.firma-box{background:#fff;border-radius:16px;padding:24px;text-align:center;margin-bottom:12px}
+.firma-icon{font-size:48px;margin-bottom:12px}
+.firma-nombre{font-size:20px;font-weight:700;color:#16375C;margin-bottom:4px}
+.firma-fecha{font-size:13px;color:#6D6D72;margin-bottom:4px}
+.firma-control{font-size:11px;color:#6D6D72;margin-bottom:16px;font-family:monospace}
+.firma-linea{border-top:2px solid #1C1C1E;margin:16px auto;width:200px;padding-top:8px;font-size:12px;color:#6D6D72}
 </style>
 </head>
 <body>
 
-<div class="page active" id="page-home">
+<!-- LOGIN -->
+<div class="page active" id="page-login">
+  <div class="login-wrap">
+    <div class="login-logo">📋</div>
+    <div class="login-title">Bitacora de Inspeccion</div>
+    <div class="login-sub">FAMCOVA – Zona 1-4 Region Central<br>Selecciona tu nombre para continuar</div>
+    <button class="inspector-btn" onclick="seleccionarInspector('Jaime Vargas','06')">
+      <div class="inspector-avatar" style="background:#185FA5">JV</div>Jaime Vargas
+    </button>
+    <button class="inspector-btn" onclick="seleccionarInspector('Juan Diego Aguero','20')">
+      <div class="inspector-avatar" style="background:#1D9E75">JD</div>Juan Diego Aguero
+    </button>
+    <button class="inspector-btn" onclick="seleccionarInspector('Jairo Mendez','22')">
+      <div class="inspector-avatar" style="background:#BA7517">JM</div>Jairo Mendez
+    </button>
+    <button class="inspector-btn" onclick="seleccionarInspector('Robnel Ugalde','24')">
+      <div class="inspector-avatar" style="background:#D85A30">RU</div>Robnel Ugalde
+    </button>
+    <button class="inspector-btn" onclick="seleccionarInspector('Jose A. Madriz','13')">
+      <div class="inspector-avatar" style="background:#534AB7">JA</div>Jose A. Madriz
+    </button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="page" id="page-home">
   <div class="header">
-    <h1>Bitácora de Inspección</h1>
-    <p>FAMCOVA – Sistema de registro de campo</p>
+    <h1>Bitacora de Inspeccion</h1>
+    <p id="home-inspector-label">FAMCOVA - Sistema de registro de campo</p>
   </div>
   <div class="content">
     <div class="section">
       <button class="home-btn" onclick="nuevoRegistro()">
         <div class="home-btn-icon" style="background:#EBF3FB">📝</div>
-        <div><div class="home-btn-title">Nuevo registro</div><div class="home-btn-sub">Registrar una nueva jornada de inspección</div></div>
+        <div><div class="home-btn-title">Nuevo registro</div><div class="home-btn-sub">Registrar una nueva jornada de inspeccion</div></div>
       </button>
       <button class="home-btn" onclick="abrirGeneradorInforme()">
         <div class="home-btn-icon" style="background:#FFF3E0">📄</div>
-        <div><div class="home-btn-title">Generar informe mensual</div><div class="home-btn-sub">Crear informe mensual desde la bitácora</div></div>
+        <div><div class="home-btn-title">Generar informe mensual</div><div class="home-btn-sub">Crear informe mensual desde la bitacora</div></div>
       </button>
       <button class="home-btn" onclick="mostrarBuscador()">
         <div class="home-btn-icon" style="background:#E8F8EE">🔍</div>
-        <div><div class="home-btn-title">Editar registro enviado</div><div class="home-btn-sub">Buscar y editar un registro ya guardado en Sheets</div></div>
+        <div><div class="home-btn-title">Editar registro de hoy</div><div class="home-btn-sub">Buscar y editar un registro del dia actual</div></div>
       </button>
     </div>
     <div class="section" id="seccion-borradores">
       <div class="section-title">Borradores pendientes <span id="badge-count" style="background:#FF9500;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:4px"></span></div>
       <div id="lista-borradores"><div class="empty-state">Sin borradores pendientes</div></div>
-      <button class="btn-secondary" id="btn-enviar-todos" style="display:none" onclick="enviarTodosBorradores()">📤 Enviar todos los borradores</button>
+      <button class="btn-secondary" id="btn-enviar-todos" style="display:none" onclick="enviarTodosBorradores()">Enviar todos los borradores</button>
     </div>
     <div class="section" id="seccion-buscador" style="display:none">
-      <div class="section-title">Buscar registro enviado</div>
+      <div class="section-title">Buscar registro de hoy</div>
       <div class="card">
-        <div class="field"><label>Inspector</label>
-          <select id="buscar-inspector" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;-webkit-appearance:none;font-family:inherit">
-            <option value="">Seleccionar...</option>
-            <option>Jaime Vargas</option><option>Juan Diego Aguero</option>
-            <option>Jairo Mendez</option><option>Robnel Ugalde</option><option>Jose A. Madriz</option>
-          </select>
-        </div>
-        <div class="field"><label>Fecha</label><input type="date" id="buscar-fecha" style="color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;font-family:inherit"></div>
+        <div class="field"><label>Inspector</label><span id="buscar-inspector-label" style="font-size:14px;color:#16375C;font-weight:600"></span></div>
+        <div class="field"><label>Fecha</label><span id="buscar-fecha-label" style="font-size:14px;color:#16375C;font-weight:600"></span></div>
       </div>
       <button class="btn-primary" onclick="buscarRegistro()">Buscar registro</button>
       <div id="resultados-busqueda" style="margin-top:10px"></div>
     </div>
+    <div style="margin-top:16px;text-align:center">
+      <button onclick="cerrarSesion()" style="background:none;border:none;color:#C7C7CC;font-size:12px;cursor:pointer;font-family:inherit">Cambiar inspector</button>
+    </div>
   </div>
 </div>
 
+<!-- FORM -->
 <div class="page" id="page-form">
   <div class="header">
     <div class="header-actions">
-      <button class="btn-back" onclick="volverHome()">← Inicio</button>
+      <button class="btn-back" onclick="volverHome()">Inicio</button>
       <span style="color:#fff;font-size:13px;font-weight:500" id="form-mode-label">Nuevo registro</span>
       <div style="width:60px"></div>
     </div>
-    <h1 style="margin-top:6px">Bitácora de Inspección</h1>
-    <p>FAMCOVA – Registro diario de campo</p>
+    <h1 style="margin-top:6px">Bitacora de Inspeccion</h1>
+    <p>FAMCOVA - Registro diario de campo</p>
   </div>
   <div class="content">
-    <div class="edit-banner" id="edit-banner" style="display:none">✏️ Modo edición — guardá para actualizar el registro</div>
+    <div class="edit-banner" id="edit-banner" style="display:none">Modo edicion - guarda para actualizar el registro</div>
     <div class="section">
-      <div class="section-title">Identificación</div>
+      <div class="section-title">Identificacion</div>
       <div class="card">
         <div class="field"><label>Fecha</label><input type="date" id="f-fecha" onchange="actualizarCodigo()"></div>
         <div class="field"><label>Inspector</label>
@@ -170,17 +209,17 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
           </select>
         </div>
       </div>
-      <div class="num-control" id="num-control-display">Número de control: —</div>
+      <div class="num-control" id="num-control-display">Numero de control: -</div>
     </div>
     <div class="section">
-      <div class="section-title">Ubicación</div>
+      <div class="section-title">Ubicacion</div>
       <div class="card">
         <div class="field"><label>Ruta</label><select id="f-ruta" onchange="actualizarSecciones()"><option value="">Seleccionar...</option></select></div>
-        <div class="field"><label>Sección de control</label><select id="f-seccion" onchange="mostrarDescripcion()"><option value="">Seleccionar...</option></select></div>
+        <div class="field"><label>Seccion de control</label><select id="f-seccion" onchange="mostrarDescripcion()"><option value="">Seleccionar...</option></select></div>
         <div class="field-desc" id="desc-seccion" style="display:none"><p id="desc-texto"></p></div>
         <div class="field"><label>Km inicio</label><input type="text" id="f-km-inicio" placeholder="Ej: 12+890"></div>
         <div class="field"><label>Km final</label><input type="text" id="f-km-final" placeholder="Ej: 15+470"></div>
-        <div class="field"><label>Localización referencia</label><input type="text" id="f-localizacion" placeholder="Ej: Frente al puente"></div>
+        <div class="field"><label>Localizacion referencia</label><input type="text" id="f-localizacion" placeholder="Ej: Frente al puente"></div>
       </div>
     </div>
     <div class="section">
@@ -191,21 +230,21 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
       </div>
     </div>
     <div class="section">
-      <div class="section-title">Ítems inspeccionados</div>
+      <div class="section-title">Items inspeccionados</div>
       <div id="items-container"></div>
-      <button class="btn-secondary" onclick="agregarItem()">+ Agregar ítem</button>
+      <button class="btn-secondary" onclick="agregarItem()">+ Agregar item</button>
     </div>
     <div class="section">
       <div class="section-title">Dispositivos de seguridad</div>
       <div class="card">
-        <div class="field"><label>Velocidad de diseño (km/h)</label>
+        <div class="field"><label>Velocidad de diseno (km/h)</label>
           <select id="f-velocidad"><option value="">Seleccionar...</option><option>20</option><option>30</option><option>40</option><option>60</option><option>80</option></select>
         </div>
         <div style="padding:10px 16px;border-bottom:0.5px solid #E5E5EA">
-          <div style="font-size:13px;font-weight:600;color:#6D6D72;margin-bottom:8px">RÓTULOS</div>
-          <div class="inner-field"><label>Rótulos lado derecho (LD)</label><input type="number" id="f-rotulos-ld" min="0" placeholder="0"></div>
-          <div class="inner-field"><label>Rótulos lado izquierdo (LI)</label><input type="number" id="f-rotulos-li" min="0" placeholder="0"></div>
-          <div class="inner-field"><div class="toggle-wrap"><label>Rótulos conformes</label><label class="toggle"><input type="checkbox" id="c-rotulos-conformes" onchange="verificarDispositivosConformes()"><span class="slider"></span></label></div></div>
+          <div style="font-size:13px;font-weight:600;color:#6D6D72;margin-bottom:8px">ROTULOS</div>
+          <div class="inner-field"><label>Rotulos lado derecho (LD)</label><input type="number" id="f-rotulos-ld" min="0" placeholder="0"></div>
+          <div class="inner-field"><label>Rotulos lado izquierdo (LI)</label><input type="number" id="f-rotulos-li" min="0" placeholder="0"></div>
+          <div class="inner-field"><div class="toggle-wrap"><label>Rotulos conformes</label><label class="toggle"><input type="checkbox" id="c-rotulos-conformes" onchange="verificarDispositivosConformes()"><span class="slider"></span></label></div></div>
         </div>
         <div style="padding:10px 16px;border-bottom:0.5px solid #E5E5EA">
           <div style="font-size:13px;font-weight:600;color:#6D6D72;margin-bottom:8px">CONOS</div>
@@ -214,13 +253,13 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
           <div class="inner-field"><label>Altura de conos (m)</label><input type="number" id="f-conos-altura" step="0.01" placeholder="0.00"></div>
           <div class="inner-field"><div class="toggle-wrap"><label>Conos conformes</label><label class="toggle"><input type="checkbox" id="c-conos-conformes" onchange="verificarDispositivosConformes()"><span class="slider"></span></label></div></div>
         </div>
-        <div class="field"><label>Dispositivos conformes (general)</label><span class="conforme-badge" id="badge-dispositivos">—</span></div>
+        <div class="field"><label>Dispositivos conformes (general)</label><span class="conforme-badge" id="badge-dispositivos">-</span></div>
       </div>
     </div>
     <div class="section">
       <div class="section-title">Personal en frente de trabajo</div>
       <div class="card">
-        <div class="field"><div class="toggle-wrap"><label>¿Hay personal en el frente?</label><label class="toggle"><input type="checkbox" id="c-personal" onchange="toggleBloque('personal')"><span class="slider"></span></label></div></div>
+        <div class="field"><div class="toggle-wrap"><label>Hay personal en el frente?</label><label class="toggle"><input type="checkbox" id="c-personal" onchange="toggleBloque('personal')"><span class="slider"></span></label></div></div>
         <div id="bloque-personal" style="display:none;padding:0 16px 12px">
           <div style="font-size:12px;color:#6D6D72;padding:8px 0 6px;font-weight:600">PERSONAL</div>
           <div class="inner-field"><label>Encargado</label><input type="number" id="p-encargado" min="0" placeholder="0"></div>
@@ -230,42 +269,42 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
           <div class="inner-field"><label>Peones</label><input type="number" id="p-peones" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Banderilleros</label><input type="number" id="p-banderilleros" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Personal calificado</label><input type="number" id="p-calificado" min="0" placeholder="0"></div>
-          <div class="inner-field"><div class="toggle-wrap"><label>¿Personal conforme?</label><label class="toggle"><input type="checkbox" id="c-personal-conforme"><span class="slider"></span></label></div></div>
+          <div class="inner-field"><div class="toggle-wrap"><label>Personal conforme?</label><label class="toggle"><input type="checkbox" id="c-personal-conforme"><span class="slider"></span></label></div></div>
         </div>
       </div>
     </div>
     <div class="section">
       <div class="section-title">Maquinaria en frente de trabajo</div>
       <div class="card">
-        <div class="field"><div class="toggle-wrap"><label>¿Hay maquinaria en el frente?</label><label class="toggle"><input type="checkbox" id="c-maquinaria" onchange="toggleBloque('maquinaria')"><span class="slider"></span></label></div></div>
+        <div class="field"><div class="toggle-wrap"><label>Hay maquinaria en el frente?</label><label class="toggle"><input type="checkbox" id="c-maquinaria" onchange="toggleBloque('maquinaria')"><span class="slider"></span></label></div></div>
         <div id="bloque-maquinaria" style="display:none;padding:0 16px 12px">
           <div style="font-size:12px;color:#6D6D72;padding:8px 0 6px;font-weight:600">MAQUINARIA</div>
-          <div class="inner-field"><label>Camión Brigada</label><input type="number" id="m-camion" min="0" placeholder="0"></div>
+          <div class="inner-field"><label>Camion Brigada</label><input type="number" id="m-camion" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Compresor</label><input type="number" id="m-compresor" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Rompedora</label><input type="number" id="m-rompedora" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Retroexcavador</label><input type="number" id="m-retroexcavador" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Perfiladora</label><input type="number" id="m-perfiladora" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Pala Cargadora</label><input type="number" id="m-pala" min="0" placeholder="0"></div>
-          <div class="inner-field"><label>Martillo Hidráulico</label><input type="number" id="m-martillo" min="0" placeholder="0"></div>
+          <div class="inner-field"><label>Martillo Hidraulico</label><input type="number" id="m-martillo" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Cargadores</label><input type="number" id="m-cargadores" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Tanque de Agua</label><input type="number" id="m-tanque-agua" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Niveladora</label><input type="number" id="m-niveladora" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Vagonetas</label><input type="number" id="m-vagonetas" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Tanque de Asfalto</label><input type="number" id="m-tanque-asfalto" min="0" placeholder="0"></div>
-          <div class="inner-field"><div class="toggle-wrap"><label>¿Maquinaria conforme?</label><label class="toggle"><input type="checkbox" id="c-maquinaria-conforme"><span class="slider"></span></label></div></div>
+          <div class="inner-field"><div class="toggle-wrap"><label>Maquinaria conforme?</label><label class="toggle"><input type="checkbox" id="c-maquinaria-conforme"><span class="slider"></span></label></div></div>
         </div>
       </div>
     </div>
     <div class="section">
-      <div class="section-title">Equipo de medición</div>
+      <div class="section-title">Equipo de medicion</div>
       <div class="card">
-        <div class="field"><label>Equipo utilizado</label><input type="text" id="f-equipo" placeholder="Ej: Nivel, flexómetro"></div>
+        <div class="field"><label>Equipo utilizado</label><input type="text" id="f-equipo" placeholder="Ej: Nivel, flexometro"></div>
       </div>
     </div>
     <div class="section">
       <div class="section-title">Visitas al frente de trabajo</div>
       <div class="card">
-        <div class="field"><div class="toggle-wrap"><label>¿Se recibieron visitas?</label><label class="toggle"><input type="checkbox" id="c-visitas" onchange="toggleVisitas()"><span class="slider"></span></label></div></div>
+        <div class="field"><div class="toggle-wrap"><label>Se recibieron visitas?</label><label class="toggle"><input type="checkbox" id="c-visitas" onchange="toggleVisitas()"><span class="slider"></span></label></div></div>
       </div>
       <div id="visitas-container" style="display:none">
         <div id="visitas-lista"></div>
@@ -273,30 +312,30 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
       </div>
     </div>
     <div class="section">
-      <div class="section-title">Problemas técnicos</div>
+      <div class="section-title">Problemas tecnicos</div>
       <div class="card">
-        <div class="field"><div class="toggle-wrap"><label>¿Se detectaron problemas?</label><label class="toggle"><input type="checkbox" id="c-problema" onchange="toggleBloque('problema')"><span class="slider"></span></label></div></div>
+        <div class="field"><div class="toggle-wrap"><label>Se detectaron problemas?</label><label class="toggle"><input type="checkbox" id="c-problema" onchange="toggleBloque('problema')"><span class="slider"></span></label></div></div>
         <div id="bloque-problema" style="display:none">
-          <div class="field"><label>Tipo de problema</label><input type="text" id="f-tipo-problema" placeholder="Ej: Compactación deficiente"></div>
+          <div class="field"><label>Tipo de problema</label><input type="text" id="f-tipo-problema" placeholder="Ej: Compactacion deficiente"></div>
           <div class="field"><label>Severidad</label><select id="f-severidad-problema"><option>Baja</option><option>Media</option><option>Alta</option></select></div>
-          <div class="field"><label>Observación generada</label><select id="f-observacion-tipo"><option>Verbal</option><option>Escrita en bitácora</option><option>Memorando</option></select></div>
-          <div class="field field-vertical"><label>Descripción del problema</label><textarea id="f-desc-problema" placeholder="Describí el problema..."></textarea></div>
-          <div class="field"><div class="toggle-wrap"><label>¿Fue corregido?</label><label class="toggle"><input type="checkbox" id="c-corregido"><span class="slider"></span></label></div></div>
+          <div class="field"><label>Observacion generada</label><select id="f-observacion-tipo"><option>Verbal</option><option>Escrita en bitacora</option><option>Memorando</option></select></div>
+          <div class="field field-vertical"><label>Descripcion del problema</label><textarea id="f-desc-problema" placeholder="Describi el problema..."></textarea></div>
+          <div class="field"><div class="toggle-wrap"><label>Fue corregido?</label><label class="toggle"><input type="checkbox" id="c-corregido"><span class="slider"></span></label></div></div>
         </div>
       </div>
     </div>
     <div class="section">
       <div class="section-title">Botadero</div>
       <div class="card">
-        <div class="field"><div class="toggle-wrap"><label>¿Se utilizó botadero?</label><label class="toggle"><input type="checkbox" id="c-botadero" onchange="toggleBloque('botadero')"><span class="slider"></span></label></div></div>
+        <div class="field"><div class="toggle-wrap"><label>Se utilizo botadero?</label><label class="toggle"><input type="checkbox" id="c-botadero" onchange="toggleBloque('botadero')"><span class="slider"></span></label></div></div>
         <div id="bloque-botadero" style="display:none">
-          <div class="field"><label>Ubicación del botadero</label><input type="text" id="f-botadero-ubicacion" placeholder="Dirección o referencia"></div>
-          <div class="field"><label>Nombre y contacto propietario</label><input type="text" id="f-botadero-propietario" placeholder="Nombre y teléfono"></div>
-          <div class="field"><div class="toggle-wrap"><label>¿Cuenta con autorización?</label><label class="toggle"><input type="checkbox" id="c-botadero-autorizado"><span class="slider"></span></label></div></div>
+          <div class="field"><label>Ubicacion del botadero</label><input type="text" id="f-botadero-ubicacion" placeholder="Direccion o referencia"></div>
+          <div class="field"><label>Nombre y contacto propietario</label><input type="text" id="f-botadero-propietario" placeholder="Nombre y telefono"></div>
+          <div class="field"><div class="toggle-wrap"><label>Cuenta con autorizacion?</label><label class="toggle"><input type="checkbox" id="c-botadero-autorizado"><span class="slider"></span></label></div></div>
           <div class="field"><label>Tipo de material</label>
             <select id="f-botadero-material">
               <option value="">Seleccionar...</option>
-              <option>Orgánico</option><option>Escombros</option><option>Basura inorgánica</option>
+              <option>Organico</option><option>Escombros</option><option>Basura inorganica</option>
               <option>Tierra</option><option>Sedimentos</option><option>Madera</option>
             </select>
           </div>
@@ -307,30 +346,59 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
       <div class="section-title">Observaciones generales</div>
       <div class="card">
         <div class="field field-vertical">
-          <label>Observaciones y memoria de cálculo</label>
+          <label>Observaciones y memoria de calculo</label>
           <textarea id="f-observaciones" placeholder="Observaciones generales de la jornada..."></textarea>
         </div>
       </div>
     </div>
-    <button class="btn-borrador" onclick="guardarBorrador()">💾 Guardar como borrador</button>
-    <button class="btn-primary" id="btn-guardar" onclick="guardar()">Guardar registro de bitácora</button>
-    <button class="btn-danger" id="btn-cancelar-edit" style="display:none" onclick="volverHome()">Cancelar edición</button>
+    <button class="btn-borrador" onclick="guardarBorrador()">Guardar como borrador</button>
+    <button class="btn-firma" id="btn-firmar" onclick="mostrarFirma()">Firmar y guardar registro</button>
+    <button class="btn-danger" id="btn-cancelar-edit" style="display:none" onclick="volverHome()">Cancelar edicion</button>
   </div>
 </div>
 
+<!-- FIRMA -->
+<div class="page" id="page-firma">
+  <div class="header">
+    <div class="header-actions">
+      <button class="btn-back" onclick="showPage('page-form')">Volver</button>
+      <span style="color:#fff;font-size:13px;font-weight:500">Firma digital</span>
+      <div style="width:60px"></div>
+    </div>
+    <h1 style="margin-top:6px">Confirmar y firmar</h1>
+  </div>
+  <div class="content">
+    <div class="firma-box">
+      <div class="firma-icon">✍️</div>
+      <div class="firma-nombre" id="firma-nombre-display"></div>
+      <div class="firma-fecha" id="firma-fecha-display"></div>
+      <div class="firma-control" id="firma-control-display"></div>
+      <div style="font-size:13px;color:#6D6D72;line-height:1.6;margin-bottom:16px">
+        Al firmar confirmo que la informacion registrada en esta bitacora es veridica y corresponde al trabajo inspeccionado el dia de hoy.
+      </div>
+      <div class="firma-linea" id="firma-linea-nombre"></div>
+      <div style="font-size:10px;color:#6D6D72;margin-top:4px">Inspector de Obra Vial - FAMCOVA</div>
+    </div>
+    <div id="firma-resumen" style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;font-size:12px;color:#6D6D72;line-height:1.8"></div>
+    <button class="btn-firma" onclick="guardarConFirma()">Confirmar firma y guardar</button>
+    <button class="btn-secondary" onclick="showPage('page-form')" style="margin-top:6px">Volver a editar</button>
+  </div>
+</div>
+
+<!-- INFORME -->
 <div class="page" id="page-informe">
   <div class="header">
     <div class="header-actions">
-      <button class="btn-back" onclick="volverHome()">← Inicio</button>
+      <button class="btn-back" onclick="volverHome()">Inicio</button>
       <span style="color:#fff;font-size:13px;font-weight:500">Informe Mensual</span>
       <div style="width:60px"></div>
     </div>
     <h1 style="margin-top:6px">Generador de Informe</h1>
-    <p>FAMCOVA – Informe mensual de gestión</p>
+    <p>FAMCOVA - Informe mensual de gestion</p>
   </div>
   <div class="content">
     <div class="section">
-      <div class="section-title">Selección</div>
+      <div class="section-title">Seleccion</div>
       <div class="card">
         <div class="field"><label>Inspector</label>
           <select id="inf-inspector" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;-webkit-appearance:none;font-family:inherit">
@@ -351,7 +419,7 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
             <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
           </select>
         </div>
-        <div class="field"><label>Año</label>
+        <div class="field"><label>Ano</label>
           <select id="inf-anio" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;-webkit-appearance:none;font-family:inherit">
             <option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option>
           </select>
@@ -363,7 +431,7 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
       <div class="section">
         <div class="section-title">Resumen ejecutivo</div>
         <div class="card">
-          <div class="field field-vertical"><label style="font-weight:600">Síntesis de actividades ejecutadas</label><textarea id="inf-sintesis" style="height:100px" placeholder="Describir brevemente las principales actividades..."></textarea></div>
+          <div class="field field-vertical"><label style="font-weight:600">Sintesis de actividades ejecutadas</label><textarea id="inf-sintesis" style="height:100px" placeholder="Describir brevemente las principales actividades..."></textarea></div>
           <div class="field field-vertical"><label style="font-weight:600">Principales resultados</label><textarea id="inf-resultados" style="height:100px" placeholder="Describir los principales resultados obtenidos..."></textarea></div>
           <div class="field field-vertical"><label style="font-weight:600">Hallazgos o incidencias relevantes</label><textarea id="inf-hallazgos" style="height:80px" placeholder="Describir hallazgos o incidencias relevantes..."></textarea></div>
           <div class="field field-vertical"><label style="font-weight:600">Riesgos identificados</label><textarea id="inf-riesgos" style="height:80px" placeholder="Describir riesgos identificados..."></textarea></div>
@@ -376,13 +444,13 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
         </div>
       </div>
       <div class="section">
-        <div class="section-title">Datos generales del período</div>
+        <div class="section-title">Datos generales del periodo</div>
         <div class="card">
-          <div class="field"><label>Período cubierto</label><input type="text" id="inf-periodo" placeholder="Del XX/MM/AAAA al XX/MM/AAAA" style="max-width:55%"></div>
-          <div class="field"><label>Días laborados</label><input type="number" id="inf-dias" min="0" placeholder="0" style="max-width:80px"></div>
+          <div class="field"><label>Periodo cubierto</label><input type="text" id="inf-periodo" placeholder="Del XX/MM/AAAA al XX/MM/AAAA" style="max-width:55%"></div>
+          <div class="field"><label>Dias laborados</label><input type="number" id="inf-dias" min="0" placeholder="0" style="max-width:80px"></div>
           <div class="field"><label>Jornadas realizadas</label><input type="text" id="inf-jornadas" placeholder="Ej: 6:00 am a 4:00 pm" style="max-width:55%"></div>
           <div class="field"><label>Frentes atendidos</label><input type="number" id="inf-frentes" min="0" placeholder="0" style="max-width:80px"></div>
-          <div class="field"><label>Solicitudes de Administración</label><input type="number" id="inf-solicitudes" min="0" value="0" style="max-width:80px"></div>
+          <div class="field"><label>Solicitudes de Administracion</label><input type="number" id="inf-solicitudes" min="0" value="0" style="max-width:80px"></div>
         </div>
       </div>
       <div class="section">
@@ -390,14 +458,14 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
         <div id="inf-actividades-lista"></div>
       </div>
       <div class="section" id="inf-problemas-section" style="display:none">
-        <div class="section-title">Problemas técnicos <span id="inf-prob-count" style="background:#C0392B;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:4px"></span></div>
+        <div class="section-title">Problemas tecnicos <span id="inf-prob-count" style="background:#C0392B;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:4px"></span></div>
         <div id="inf-problemas-lista"></div>
       </div>
       <div class="section" id="inf-visitas-section" style="display:none">
         <div class="section-title">Visitas al frente <span id="inf-vis-count" style="background:#1A5C2E;color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;margin-left:4px"></span></div>
         <div id="inf-visitas-lista"></div>
       </div>
-      <button class="btn-primary" onclick="generarInforme()" style="margin-top:8px">📄 Generar y ver informe</button>
+      <button class="btn-primary" onclick="generarInforme()" style="margin-top:8px">Generar y ver informe</button>
     </div>
   </div>
 </div>
@@ -405,12 +473,12 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
 <div class="page" id="page-preview">
   <div class="header">
     <div class="header-actions">
-      <button class="btn-back" onclick="showPage('page-informe')">← Volver</button>
+      <button class="btn-back" onclick="showPage('page-informe')">Volver</button>
       <span style="color:#fff;font-size:13px;font-weight:500">Vista previa</span>
-      <button class="btn-back" onclick="window.print()">🖨️ Imprimir/PDF</button>
+      <button class="btn-back" onclick="window.print()">Imprimir</button>
     </div>
     <h1 style="margin-top:6px">Informe Mensual</h1>
-    <p>Presioná Imprimir/PDF para guardar</p>
+    <p>Presiona Imprimir para guardar como PDF</p>
   </div>
   <div id="informe-preview-content" style="padding:16px;padding-bottom:40px"></div>
 </div>
@@ -422,20 +490,70 @@ const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwBxQZq2XzRM9mhMvfwdte
 const KPI_SCRIPT='https://script.google.com/macros/s/AKfycbzGTAhyRU1YXEc4DkIyMYe2gH5j7hHXcwlzwAg5-Ud_vuL55a59JDo8Erif3ZSQwx-OSQ/exec';
 let rutasData=[],itemsData=[],itemCount=0,visitaCount=0;
 let modoEdicion=null,editBorradorId=null,editSheetRowIndex=null;
-let informeData=[];
+let informeData=[],rowParaFirmar=null;
+let inspectorActivo=null,inspectorCodigo=null;
 const MESES_ES=['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
+function hoy(){return new Date().toISOString().split('T')[0];}
+
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+// ══ LOGIN ══
+function seleccionarInspector(nombre,codigo){
+  inspectorActivo=nombre;inspectorCodigo=codigo;
+  sessionStorage.setItem('inspector',nombre);sessionStorage.setItem('inspectorCod',codigo);
+  document.getElementById('home-inspector-label').textContent=nombre+' - Inspector activo';
+  document.getElementById('buscar-inspector-label').textContent=nombre;
+  document.getElementById('buscar-fecha-label').textContent=hoy();
+  renderBorradores();showPage('page-home');
+}
+
+function cerrarSesion(){
+  inspectorActivo=null;inspectorCodigo=null;
+  sessionStorage.removeItem('inspector');sessionStorage.removeItem('inspectorCod');
+  showPage('page-login');
+}
+
+function restaurarSesion(){
+  const n=sessionStorage.getItem('inspector');const c=sessionStorage.getItem('inspectorCod');
+  if(n&&c){inspectorActivo=n;inspectorCodigo=c;
+    document.getElementById('home-inspector-label').textContent=n+' - Inspector activo';
+    document.getElementById('buscar-inspector-label').textContent=n;
+    document.getElementById('buscar-fecha-label').textContent=hoy();
+    renderBorradores();showPage('page-home');}
+}
+
 function volverHome(){modoEdicion=null;editBorradorId=null;editSheetRowIndex=null;resetForm();renderBorradores();showPage('page-home');}
-function nuevoRegistro(){modoEdicion=null;editBorradorId=null;editSheetRowIndex=null;resetForm();document.getElementById('form-mode-label').textContent='Nuevo registro';document.getElementById('edit-banner').style.display='none';document.getElementById('btn-guardar').textContent='Guardar registro de bitácora';document.getElementById('btn-cancelar-edit').style.display='none';showPage('page-form');}
-function mostrarBuscador(){const s=document.getElementById('seccion-buscador');s.style.display=s.style.display==='none'?'block':'none';}
+
+function nuevoRegistro(){
+  if(!inspectorActivo){showPage('page-login');return;}
+  modoEdicion=null;editBorradorId=null;editSheetRowIndex=null;resetForm();
+  // Precargar inspector activo
+  const sel=document.getElementById('f-inspector');
+  for(let o of sel.options){if(o.value===inspectorActivo+'|'+inspectorCodigo){sel.value=o.value;break;}}
+  actualizarCodigo();
+  document.getElementById('form-mode-label').textContent='Nuevo registro';
+  document.getElementById('edit-banner').style.display='none';
+  document.getElementById('btn-firmar').textContent='Firmar y guardar registro';
+  document.getElementById('btn-cancelar-edit').style.display='none';
+  showPage('page-form');
+}
+
+function mostrarBuscador(){
+  const s=document.getElementById('seccion-buscador');
+  s.style.display=s.style.display==='none'?'block':'none';
+}
+
 function abrirGeneradorInforme(){document.getElementById('informe-form').style.display='none';showPage('page-informe');}
 
+// ══ BORRADORES ══
 function getBorradores(){try{return JSON.parse(localStorage.getItem('bitacora_borradores')||'[]');}catch(e){return[];}}
 function setBorradores(b){localStorage.setItem('bitacora_borradores',JSON.stringify(b));}
 
 function renderBorradores(){
-  const borradores=getBorradores();
+  const todos=getBorradores();
+  // Solo mostrar borradores del inspector activo
+  const borradores=todos.filter(b=>!inspectorActivo||b.row[2]===inspectorActivo);
   const lista=document.getElementById('lista-borradores');
   const badge=document.getElementById('badge-count');
   const btnEnviar=document.getElementById('btn-enviar-todos');
@@ -444,8 +562,8 @@ function renderBorradores(){
   if(!borradores.length){lista.innerHTML='<div class="empty-state">Sin borradores pendientes</div>';return;}
   lista.innerHTML=borradores.map(b=>`<div class="borrador-item">
     <div class="borrador-item-info">
-      <div class="borrador-item-title">${b.row[2]||'—'} · ${b.row[0]||'—'}</div>
-      <div class="borrador-item-sub">${b.row[5]?'Ruta '+b.row[5]:''} ${b.row[b.row.length-1]?'· '+b.row[b.row.length-1]:''}</div>
+      <div class="borrador-item-title">${b.row[2]||'-'} - ${b.row[0]||'-'}</div>
+      <div class="borrador-item-sub">${b.row[5]?'Ruta '+b.row[5]:''}</div>
     </div>
     <div class="borrador-item-actions">
       <button class="btn-sm btn-sm-edit" onclick="editarBorrador(${b.id})">Editar</button>
@@ -460,30 +578,31 @@ function guardarBorrador(){
   const inspVal=document.getElementById('f-inspector').value;
   if(!fecha||!inspVal){toast('Fecha e inspector son obligatorios',true);return;}
   const borradores=getBorradores();
-  const row=construirRow();
+  const row=construirRow('');
   if(modoEdicion==='borrador'&&editBorradorId){
     const idx=borradores.findIndex(b=>b.id===editBorradorId);
     if(idx>=0)borradores[idx]={...borradores[idx],row,timestamp:new Date().toISOString()};
     else borradores.push({id:Date.now(),timestamp:new Date().toISOString(),row});
   }else{borradores.push({id:Date.now(),timestamp:new Date().toISOString(),row});}
   setBorradores(borradores);
-  toast('💾 Borrador guardado');
-  resetForm();volverHome();
+  toast('Borrador guardado');resetForm();volverHome();
 }
 
 function editarBorrador(id){
   const b=getBorradores().find(x=>x.id===id);if(!b)return;
+  // Verificar que sea del inspector activo
+  if(inspectorActivo&&b.row[2]!==inspectorActivo){toast('Solo puedes editar tus propios registros',true);return;}
   modoEdicion='borrador';editBorradorId=id;
   cargarRowEnFormulario(b.row);
   document.getElementById('form-mode-label').textContent='Editando borrador';
   document.getElementById('edit-banner').style.display='block';
-  document.getElementById('btn-guardar').textContent='Actualizar y enviar';
+  document.getElementById('btn-firmar').textContent='Actualizar y firmar';
   document.getElementById('btn-cancelar-edit').style.display='block';
   showPage('page-form');
 }
 
 function eliminarBorrador(id){
-  if(!confirm('¿Eliminar este borrador?'))return;
+  if(!confirm('Eliminar este borrador?'))return;
   setBorradores(getBorradores().filter(b=>b.id!==id));
   renderBorradores();toast('Borrador eliminado');
 }
@@ -493,8 +612,8 @@ async function enviarBorrador(id){
   try{
     await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:b.row}),headers:{'Content-Type':'application/json'}});
     setBorradores(borradores.filter(x=>x.id!==id));renderBorradores();
-    toast('✓ Registro enviado',false,true);
-  }catch(e){toast('Error de conexión',true);}
+    toast('Registro enviado',false,true);
+  }catch(e){toast('Error de conexion',true);}
 }
 
 async function enviarTodosBorradores(){
@@ -502,27 +621,30 @@ async function enviarTodosBorradores(){
   let enviados=0;const pendientes=[];
   for(const b of borradores){try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:b.row}),headers:{'Content-Type':'application/json'}});enviados++;}catch(e){pendientes.push(b);}}
   setBorradores(pendientes);renderBorradores();
-  if(enviados>0)toast(`✓ ${enviados} borrador(es) enviado(s)`,false,true);else toast('Sin conexión',true);
+  if(enviados>0)toast(enviados+' borrador(es) enviado(s)',false,true);else toast('Sin conexion',true);
 }
 
+// ══ BUSQUEDA - SOLO HOY Y SOLO INSPECTOR PROPIO ══
 async function buscarRegistro(){
-  const insp=document.getElementById('buscar-inspector').value;
-  const fecha=document.getElementById('buscar-fecha').value;
-  if(!insp||!fecha){toast('Seleccioná inspector y fecha',true);return;}
+  if(!inspectorActivo){toast('Selecciona un inspector primero',true);return;}
   const div=document.getElementById('resultados-busqueda');
   div.innerHTML='<div class="empty-state">Buscando...</div>';
   try{
     const res=await fetch(SCRIPT_URL+'?t='+Date.now());
     const json=await res.json();
     const rows=(json.data||[]).slice(1);
-    const encontrados=rows.map((r,i)=>({r,i:i+1})).filter(({r})=>r[2]===insp&&String(r[0]).split('T')[0]===fecha);
-    if(!encontrados.length){div.innerHTML='<div class="empty-state">No se encontraron registros</div>';return;}
+    const encontrados=rows.map((r,i)=>({r,i:i+1})).filter(({r})=>{
+      const esPropio=r[2]===inspectorActivo;
+      const esHoy=String(r[0]).split('T')[0]===hoy();
+      return esPropio&&esHoy;
+    });
+    if(!encontrados.length){div.innerHTML='<div class="empty-state">No hay registros de hoy para editar</div>';return;}
     div.innerHTML=encontrados.map(({r,i})=>`<div class="resultado-item" onclick="editarRegistroSheet(${i})">
-      <div class="resultado-title">${r[2]} · ${String(r[0]).split('T')[0]}</div>
-      <div class="resultado-sub">Ruta ${r[5]||'—'} · Sec. ${r[6]||'—'} · ${r[r.length-1]||''}</div>
-      <div style="font-size:11px;color:#007AFF;margin-top:4px">Tocar para editar →</div>
+      <div class="resultado-title">${r[2]} - ${String(r[0]).split('T')[0]}</div>
+      <div class="resultado-sub">Ruta ${r[5]||'-'} / Sec. ${r[6]||'-'}</div>
+      <div style="font-size:11px;color:#007AFF;margin-top:4px">Tocar para editar</div>
     </div>`).join('');
-  }catch(e){div.innerHTML='<div class="empty-state">Error de conexión</div>';}
+  }catch(e){div.innerHTML='<div class="empty-state">Error de conexion</div>';}
 }
 
 async function editarRegistroSheet(rowIndex){
@@ -531,129 +653,73 @@ async function editarRegistroSheet(rowIndex){
     const res=await fetch(SCRIPT_URL+'?t='+Date.now());
     const json=await res.json();
     const row=(json.data||[]).slice(1)[rowIndex-1];if(!row)return;
+    // Verificar que sea del inspector activo y de hoy
+    if(inspectorActivo&&row[2]!==inspectorActivo){toast('Solo puedes editar tus propios registros',true);return;}
+    if(String(row[0]).split('T')[0]!==hoy()){toast('Solo puedes editar registros del dia de hoy',true);return;}
     modoEdicion='sheet';editSheetRowIndex=rowIndex;
     cargarRowEnFormulario(row);
     document.getElementById('form-mode-label').textContent='Editando registro';
     document.getElementById('edit-banner').style.display='block';
-    document.getElementById('btn-guardar').textContent='Actualizar registro';
+    document.getElementById('btn-firmar').textContent='Actualizar y firmar';
     document.getElementById('btn-cancelar-edit').style.display='block';
     document.getElementById('seccion-buscador').style.display='none';
     showPage('page-form');
   }catch(e){toast('Error al cargar registro',true);}
 }
 
-function cargarRowEnFormulario(row){
-  resetForm();
-  setTimeout(()=>{
-    document.getElementById('f-fecha').value=String(row[0]).split('T')[0];
-    const inspSel=document.getElementById('f-inspector');
-    for(let o of inspSel.options){if(o.value.startsWith(row[2]+'|')){inspSel.value=o.value;break;}}
-    document.getElementById('f-contrato').value=row[4]||'';
-    document.getElementById('f-empresa').value=row[14]||'';
-    document.getElementById('f-clima').value=row[13]||'';
-    actualizarCodigo();
-    document.getElementById('f-ruta').value=row[5]||'';
-    if(row[5])actualizarSecciones();
-    setTimeout(()=>{document.getElementById('f-seccion').value=row[6]||'';mostrarDescripcion();},300);
-    document.getElementById('f-km-inicio').value=row[8]||'';
-    document.getElementById('f-km-final').value=row[9]||'';
-    document.getElementById('f-localizacion').value=row[10]||'';
-    document.getElementById('f-hora-inicio').value=row[11]||'';
-    document.getElementById('f-hora-final').value=row[12]||'';
-    try{
-      const items=JSON.parse(row[15]||'[]');
-      document.getElementById('items-container').innerHTML='';itemCount=0;
-      items.forEach(item=>{
-        itemCount++;const id=itemCount;
-        const contrato=document.getElementById('f-contrato').value;
-        const filtrados=contrato?itemsData.filter(i=>i.contrato===contrato):itemsData;
-        const opts=filtrados.map(i=>`<option value="${i.codigo}|${i.unidad}" data-unidad="${i.unidad}">${i.codigo} – ${i.desc}</option>`).join('');
-        const div=document.createElement('div');div.className='item-block';div.id='item-block-'+id;
-        div.innerHTML=`<div class="block-header"><span class="block-title">Ítem ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarItem(${id})">Eliminar</button>`:''}</div>
-          <div class="inner-field"><label>Ítem</label><select class="item-select" id="item-sel-${id}" onchange="actualizarUnidad(${id})" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option>${opts}</select></div>
-          <div class="inner-field"><label>Unidad</label><input type="text" id="item-unidad-${id}" readonly style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#6D6D72;font-family:inherit"></div>
-          <div class="inner-field"><label>Cantidad</label><input type="number" id="item-cant-${id}" min="0" step="0.01" placeholder="0.00"></div>
-          <div class="inner-field"><label>No. Informe diario</label><input type="text" id="item-informe-${id}" placeholder="Ej: 001"></div>
-          <div class="inner-field"><label>No. Registro de medición</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001"></div>`;
-        document.getElementById('items-container').appendChild(div);
-        document.getElementById('item-sel-'+id).value=item.codigo+'|'+item.unidad;
-        document.getElementById('item-unidad-'+id).value=item.unidad||'';
-        document.getElementById('item-cant-'+id).value=item.cantidad||'';
-        document.getElementById('item-informe-'+id).value=item.informe||'';
-        document.getElementById('item-regmed-'+id).value=item.regmed||'';
-      });
-      if(itemCount===0)agregarItem();
-    }catch(e){agregarItem();}
-    document.getElementById('f-velocidad').value=row[16]||'';
-    document.getElementById('f-rotulos-ld').value=row[17]||'';
-    document.getElementById('f-rotulos-li').value=row[18]||'';
-    document.getElementById('c-rotulos-conformes').checked=row[19]==='Sí';
-    document.getElementById('f-conos-cantidad').value=row[20]||'';
-    document.getElementById('f-conos-distancia').value=row[21]||'';
-    document.getElementById('f-conos-altura').value=row[22]||'';
-    document.getElementById('c-conos-conformes').checked=row[23]==='Sí';
-    verificarDispositivosConformes();
-    const tienePersonal=row[25]==='Sí';
-    document.getElementById('c-personal').checked=tienePersonal;
-    if(tienePersonal){
-      document.getElementById('bloque-personal').style.display='block';
-      const map={'Encargado':'p-encargado','Chofer':'p-chofer','Operador':'p-operador','Ayudantes':'p-ayudantes','Peones':'p-peones','Banderilleros':'p-banderilleros','Calificado':'p-calificado'};
-      (row[26]||'').split(',').forEach(p=>{const[k,v]=p.trim().split(':');if(map[k])document.getElementById(map[k]).value=v||'';});
-      document.getElementById('c-personal-conforme').checked=row[27]==='Sí';
-    }
-    const tieneMaq=row[28]==='Sí';
-    document.getElementById('c-maquinaria').checked=tieneMaq;
-    if(tieneMaq){
-      document.getElementById('bloque-maquinaria').style.display='block';
-      const map={'Camión':'m-camion','Compresor':'m-compresor','Rompedora':'m-rompedora','Retroexcavador':'m-retroexcavador','Perfiladora':'m-perfiladora','Pala':'m-pala','Martillo':'m-martillo','Cargadores':'m-cargadores','TanqueAgua':'m-tanque-agua','Niveladora':'m-niveladora','Vagonetas':'m-vagonetas','TanqueAsfalto':'m-tanque-asfalto'};
-      (row[29]||'').split(',').forEach(p=>{const[k,v]=p.trim().split(':');if(map[k])document.getElementById(map[k]).value=v||'';});
-      document.getElementById('c-maquinaria-conforme').checked=row[30]==='Sí';
-    }
-    document.getElementById('f-equipo').value=row[31]||'';
-    const tieneVisitas=row[32]==='Sí';
-    document.getElementById('c-visitas').checked=tieneVisitas;
-    if(tieneVisitas){
-      document.getElementById('visitas-container').style.display='block';
-      try{
-        JSON.parse(row[33]||'[]').forEach(v=>{
-          visitaCount++;const id=visitaCount;
-          const div=document.createElement('div');div.className='visita-block';div.id='visita-block-'+id;
-          div.innerHTML=`<div class="block-header"><span class="block-title">Visita ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarVisita(${id})">Eliminar</button>`:''}</div>
-            <div class="inner-field"><label>Tipo de visita</label><select id="visita-tipo-${id}" style="max-width:55%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option><option>CONAVI</option><option>Supervisión FAMCOVA</option><option>Contratista</option><option>Auditoría</option><option>SETENA</option><option>Otra</option></select></div>
-            <div class="inner-field"><label>Nombre del visitante</label><input type="text" id="visita-nombre-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
-            <div class="inner-field"><label>Hora</label><input type="time" id="visita-hora-${id}" style="color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
-            <div class="inner-field"><label>Motivo</label><input type="text" id="visita-motivo-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>`;
-          document.getElementById('visitas-lista').appendChild(div);
-          document.getElementById('visita-tipo-'+id).value=v.tipo||'';
-          document.getElementById('visita-nombre-'+id).value=v.nombre||'';
-          document.getElementById('visita-hora-'+id).value=v.hora||'';
-          document.getElementById('visita-motivo-'+id).value=v.motivo||'';
-        });
-      }catch(e){}
-    }
-    const tieneProb=row[34]==='Sí';
-    document.getElementById('c-problema').checked=tieneProb;
-    if(tieneProb){
-      document.getElementById('bloque-problema').style.display='block';
-      document.getElementById('f-tipo-problema').value=row[35]||'';
-      document.getElementById('f-severidad-problema').value=row[36]||'Baja';
-      document.getElementById('f-observacion-tipo').value=row[37]||'Verbal';
-      document.getElementById('f-desc-problema').value=row[38]||'';
-      document.getElementById('c-corregido').checked=row[39]==='Sí';
-    }
-    const tieneBotadero=row[40]==='Sí';
-    document.getElementById('c-botadero').checked=tieneBotadero;
-    if(tieneBotadero){
-      document.getElementById('bloque-botadero').style.display='block';
-      document.getElementById('f-botadero-ubicacion').value=row[41]||'';
-      document.getElementById('f-botadero-propietario').value=row[42]||'';
-      document.getElementById('c-botadero-autorizado').checked=row[43]==='Sí';
-      document.getElementById('f-botadero-material').value=row[44]||'';
-    }
-    document.getElementById('f-observaciones').value=row[45]||'';
-  },100);
+// ══ FIRMA ══
+function mostrarFirma(){
+  const fecha=document.getElementById('f-fecha').value;
+  const inspVal=document.getElementById('f-inspector').value;
+  const ruta=document.getElementById('f-ruta').value;
+  const contrato=document.getElementById('f-contrato').value;
+  if(!fecha){toast('Ingresa la fecha',true);return;}
+  if(!inspVal){toast('Selecciona un inspector',true);return;}
+  if(!ruta){toast('Selecciona una ruta',true);return;}
+  if(!contrato){toast('Selecciona un contrato',true);return;}
+  const numControl=generarNumControl();
+  const inspNombre=inspVal.split('|')[0];
+  const firma=inspNombre+' | '+new Date().toLocaleString('es-CR');
+  rowParaFirmar=construirRow(firma);
+  document.getElementById('firma-nombre-display').textContent=inspNombre;
+  document.getElementById('firma-fecha-display').textContent='Fecha: '+fecha;
+  document.getElementById('firma-control-display').textContent=numControl;
+  document.getElementById('firma-linea-nombre').textContent=inspNombre;
+  const items=recopilarItems();
+  document.getElementById('firma-resumen').innerHTML=
+    '<strong>Ruta:</strong> '+ruta+(document.getElementById('f-seccion').value?' / Sec. '+document.getElementById('f-seccion').value:'')+'<br>'+
+    '<strong>Contrato:</strong> '+contrato+'<br>'+
+    '<strong>Items:</strong> '+items.length+' item(s) registrado(s)<br>'+
+    '<strong>Horario:</strong> '+(document.getElementById('f-hora-inicio').value||'-')+' a '+(document.getElementById('f-hora-final').value||'-');
+  showPage('page-firma');
 }
 
+async function guardarConFirma(){
+  if(!rowParaFirmar){toast('Error: no hay datos para guardar',true);return;}
+  const btn=document.querySelector('[onclick="guardarConFirma()"]');
+  btn.disabled=true;btn.textContent='Guardando...';
+  try{
+    if(modoEdicion==='sheet'&&editSheetRowIndex){
+      await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:rowParaFirmar,updateRow:editSheetRowIndex}),headers:{'Content-Type':'application/json'}});
+    }else{
+      await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:rowParaFirmar}),headers:{'Content-Type':'application/json'}});
+    }
+    if(modoEdicion==='borrador'&&editBorradorId)setBorradores(getBorradores().filter(b=>b.id!==editBorradorId));
+    toast('Registro firmado y guardado correctamente',false,true);
+    rowParaFirmar=null;
+    setTimeout(()=>{resetForm();volverHome();},1200);
+  }catch(e){
+    toast('Sin conexion - guardando como borrador',true);
+    const borradores=getBorradores();
+    borradores.push({id:Date.now(),timestamp:new Date().toISOString(),row:rowParaFirmar});
+    setBorradores(borradores);
+    rowParaFirmar=null;
+    setTimeout(()=>{resetForm();volverHome();},1200);
+  }
+  btn.disabled=false;btn.textContent='Confirmar firma y guardar';
+}
+
+// ══ RUTAS E ITEMS ══
 async function cargarRutas(){
   try{
     const res=await fetch(KPI_SCRIPT+'?sheet=RUTAS&t='+Date.now());
@@ -677,11 +743,10 @@ async function cargarItems(){
 
 function filtrarItems(){
   document.querySelectorAll('.item-select').forEach(sel=>{
-    const contrato=document.getElementById('f-contrato').value;
-    const cur=sel.value;
-    sel.innerHTML='<option value="">Seleccionar ítem...</option>';
+    const contrato=document.getElementById('f-contrato').value;const cur=sel.value;
+    sel.innerHTML='<option value="">Seleccionar item...</option>';
     (contrato?itemsData.filter(i=>i.contrato===contrato):itemsData).forEach(i=>{
-      const opt=document.createElement('option');opt.value=i.codigo+'|'+i.unidad;opt.textContent=i.codigo+' – '+i.desc;opt.dataset.unidad=i.unidad;
+      const opt=document.createElement('option');opt.value=i.codigo+'|'+i.unidad;opt.textContent=i.codigo+' - '+i.desc;opt.dataset.unidad=i.unidad;
       if(i.codigo+'|'+i.unidad===cur)opt.selected=true;sel.appendChild(opt);
     });
   });
@@ -691,25 +756,25 @@ function agregarItem(){
   itemCount++;const id=itemCount;
   const contrato=document.getElementById('f-contrato').value;
   const filtrados=contrato?itemsData.filter(i=>i.contrato===contrato):itemsData;
-  const opts=filtrados.map(i=>`<option value="${i.codigo}|${i.unidad}" data-unidad="${i.unidad}">${i.codigo} – ${i.desc}</option>`).join('');
+  const opts=filtrados.map(i=>`<option value="${i.codigo}|${i.unidad}" data-unidad="${i.unidad}">${i.codigo} - ${i.desc}</option>`).join('');
   const div=document.createElement('div');div.className='item-block';div.id='item-block-'+id;
-  div.innerHTML=`<div class="block-header"><span class="block-title">Ítem ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarItem(${id})">Eliminar</button>`:''}</div>
-    <div class="inner-field"><label>Ítem</label><select class="item-select" id="item-sel-${id}" onchange="actualizarUnidad(${id})" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar ítem...</option>${opts}</select></div>
+  div.innerHTML=`<div class="block-header"><span class="block-title">Item ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarItem(${id})">Eliminar</button>`:''}</div>
+    <div class="inner-field"><label>Item</label><select class="item-select" id="item-sel-${id}" onchange="actualizarUnidad(${id})" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar item...</option>${opts}</select></div>
     <div class="inner-field"><label>Unidad</label><input type="text" id="item-unidad-${id}" readonly style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#6D6D72;font-family:inherit"></div>
     <div class="inner-field"><label>Cantidad</label><input type="number" id="item-cant-${id}" min="0" step="0.01" placeholder="0.00"></div>
     <div class="inner-field"><label>No. Informe diario</label><input type="text" id="item-informe-${id}" placeholder="Ej: 001"></div>
-    <div class="inner-field"><label>No. Registro de medición</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001 (si aplica)"></div>`;
+    <div class="inner-field"><label>No. Registro de medicion</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001"></div>`;
   document.getElementById('items-container').appendChild(div);
 }
 
-function actualizarUnidad(id){const sel=document.getElementById('item-sel-'+id);const opt=sel.options[sel.selectedIndex];document.getElementById('item-unidad-'+id).value=opt?opt.dataset.unidad||'':'';}
+function actualizarUnidad(id){const sel=document.getElementById('item-sel-'+id);const opt=sel.options[sel.selectedIndex];document.getElementById('item-unidad-'+id).value=opt?opt.dataset.unidad||''  :'';}
 function eliminarItem(id){const el=document.getElementById('item-block-'+id);if(el)el.remove();}
 
 function agregarVisita(){
   visitaCount++;const id=visitaCount;
   const div=document.createElement('div');div.className='visita-block';div.id='visita-block-'+id;
   div.innerHTML=`<div class="block-header"><span class="block-title">Visita ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarVisita(${id})">Eliminar</button>`:''}</div>
-    <div class="inner-field"><label>Tipo de visita</label><select id="visita-tipo-${id}" style="max-width:55%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option><option>CONAVI</option><option>Supervisión FAMCOVA</option><option>Contratista</option><option>Auditoría</option><option>SETENA</option><option>Otra</option></select></div>
+    <div class="inner-field"><label>Tipo de visita</label><select id="visita-tipo-${id}" style="max-width:55%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option><option>CONAVI</option><option>Supervision FAMCOVA</option><option>Contratista</option><option>Auditoria</option><option>SETENA</option><option>Otra</option></select></div>
     <div class="inner-field"><label>Nombre del visitante</label><input type="text" id="visita-nombre-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
     <div class="inner-field"><label>Hora</label><input type="time" id="visita-hora-${id}" style="color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
     <div class="inner-field"><label>Motivo</label><input type="text" id="visita-motivo-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>`;
@@ -717,38 +782,37 @@ function agregarVisita(){
 }
 
 function eliminarVisita(id){const el=document.getElementById('visita-block-'+id);if(el)el.remove();}
-
 function actualizarSecciones(){
-  const ruta=document.getElementById('f-ruta').value;
-  const sel=document.getElementById('f-seccion');
-  sel.innerHTML='<option value="">Seleccionar...</option>';
-  document.getElementById('desc-seccion').style.display='none';
+  const ruta=document.getElementById('f-ruta').value;const sel=document.getElementById('f-seccion');
+  sel.innerHTML='<option value="">Seleccionar...</option>';document.getElementById('desc-seccion').style.display='none';
   if(!ruta)return;
   rutasData.filter(r=>r.ruta===ruta).forEach(s=>{const opt=document.createElement('option');opt.value=s.seccion;opt.textContent=s.seccion;opt.dataset.desc=s.desc;sel.appendChild(opt);});
 }
-
 function mostrarDescripcion(){
   const sel=document.getElementById('f-seccion');const opt=sel.options[sel.selectedIndex];const desc=opt?opt.dataset.desc:'';
   const box=document.getElementById('desc-seccion');
   if(desc&&desc!=='undefined'){document.getElementById('desc-texto').textContent=desc;box.style.display='block';}else box.style.display='none';
 }
-
 function actualizarCodigo(){
   const inspVal=document.getElementById('f-inspector').value;const fecha=document.getElementById('f-fecha').value;
-  if(!inspVal||!fecha){document.getElementById('num-control-display').textContent='Número de control: —';return;}
+  if(!inspVal||!fecha){document.getElementById('num-control-display').textContent='Numero de control: -';return;}
   const cod=inspVal.split('|')[1]||'00';const mes=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');const anio=new Date(fecha+'T12:00:00').getFullYear();
-  document.getElementById('num-control-display').textContent=`Número de control: COFEC(1-4)-INS${cod}-${mes}-${anio}`;
+  document.getElementById('num-control-display').textContent='Numero de control: COFEC(1-4)-INS'+cod+'-'+mes+'-'+anio;
 }
-
+function generarNumControl(){
+  const inspVal=document.getElementById('f-inspector').value;const fecha=document.getElementById('f-fecha').value;
+  if(!inspVal||!fecha)return'';
+  const cod=inspVal.split('|')[1]||'00';const mes=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');const anio=new Date(fecha+'T12:00:00').getFullYear();
+  return'COFEC(1-4)-INS'+cod+'-'+mes+'-'+anio;
+}
 function verificarDispositivosConformes(){
   const r=document.getElementById('c-rotulos-conformes').checked;const c=document.getElementById('c-conos-conformes').checked;
   const badge=document.getElementById('badge-dispositivos');
-  badge.textContent=r&&c?'✓ Conformes':'✗ No conformes';badge.className='conforme-badge '+(r&&c?'badge-ok':'badge-no');
+  badge.textContent=r&&c?'Conformes':'No conformes';badge.className='conforme-badge '+(r&&c?'badge-ok':'badge-no');
 }
-
 function toggleBloque(nombre){document.getElementById('bloque-'+nombre).style.display=document.getElementById('c-'+nombre).checked?'block':'none';}
 function toggleVisitas(){const show=document.getElementById('c-visitas').checked;document.getElementById('visitas-container').style.display=show?'block':'none';if(show&&visitaCount===0)agregarVisita();}
-function si(v){return v?'Sí':'No';}
+function si(v){return v?'Si':'No';}
 
 function recopilarItems(){
   const items=[];
@@ -777,41 +841,129 @@ function personalResumen(){
 
 function maquinariaResumen(){
   if(!document.getElementById('c-maquinaria').checked)return'';
-  return[['Camión','m-camion'],['Compresor','m-compresor'],['Rompedora','m-rompedora'],['Retroexcavador','m-retroexcavador'],['Perfiladora','m-perfiladora'],['Pala','m-pala'],['Martillo','m-martillo'],['Cargadores','m-cargadores'],['TanqueAgua','m-tanque-agua'],['Niveladora','m-niveladora'],['Vagonetas','m-vagonetas'],['TanqueAsfalto','m-tanque-asfalto']]
+  return[['Camion','m-camion'],['Compresor','m-compresor'],['Rompedora','m-rompedora'],['Retroexcavador','m-retroexcavador'],['Perfiladora','m-perfiladora'],['Pala','m-pala'],['Martillo','m-martillo'],['Cargadores','m-cargadores'],['TanqueAgua','m-tanque-agua'],['Niveladora','m-niveladora'],['Vagonetas','m-vagonetas'],['TanqueAsfalto','m-tanque-asfalto']]
     .filter(([_,id])=>+document.getElementById(id).value>0).map(([n,id])=>n+':'+document.getElementById(id).value).join(', ');
 }
 
-function generarNumControl(){
-  const inspVal=document.getElementById('f-inspector').value;const fecha=document.getElementById('f-fecha').value;
-  if(!inspVal||!fecha)return'';
-  const cod=inspVal.split('|')[1]||'00';const mes=String(new Date(fecha+'T12:00:00').getMonth()+1).padStart(3,'0');const anio=new Date(fecha+'T12:00:00').getFullYear();
-  return`COFEC(1-4)-INS${cod}-${mes}-${anio}`;
-}
-
-function construirRow(){
+function construirRow(firma){
   const fecha=document.getElementById('f-fecha').value;const inspVal=document.getElementById('f-inspector').value;
   const secSel=document.getElementById('f-seccion');const secOpt=secSel.options[secSel.selectedIndex];
   const tieneProblema=document.getElementById('c-problema').checked;const tieneBotadero=document.getElementById('c-botadero').checked;
   const tieneVisitas=document.getElementById('c-visitas').checked;const rotulos=document.getElementById('c-rotulos-conformes').checked;const conos=document.getElementById('c-conos-conformes').checked;
   const mes=new Date(fecha+'T12:00:00').toLocaleString('es-CR',{month:'long',year:'numeric'});
-  return[fecha,mes,inspVal.split('|')[0],inspVal.split('|')[1],document.getElementById('f-contrato').value,document.getElementById('f-ruta').value,secSel.value,secOpt?secOpt.dataset.desc||'':'',document.getElementById('f-km-inicio').value,document.getElementById('f-km-final').value,document.getElementById('f-localizacion').value,document.getElementById('f-hora-inicio').value,document.getElementById('f-hora-final').value,document.getElementById('f-clima').value,document.getElementById('f-empresa').value,JSON.stringify(recopilarItems()),document.getElementById('f-velocidad').value,document.getElementById('f-rotulos-ld').value||'0',document.getElementById('f-rotulos-li').value||'0',si(rotulos),document.getElementById('f-conos-cantidad').value||'0',document.getElementById('f-conos-distancia').value||'0',document.getElementById('f-conos-altura').value||'0',si(conos),si(rotulos&&conos),si(document.getElementById('c-personal').checked),personalResumen(),si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),si(document.getElementById('c-maquinaria').checked),maquinariaResumen(),si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),document.getElementById('f-equipo').value,si(tieneVisitas),tieneVisitas?JSON.stringify(recopilarVisitas()):'',si(tieneProblema),tieneProblema?document.getElementById('f-tipo-problema').value:'',tieneProblema?document.getElementById('f-severidad-problema').value:'',tieneProblema?document.getElementById('f-observacion-tipo').value:'',tieneProblema?document.getElementById('f-desc-problema').value:'',tieneProblema?si(document.getElementById('c-corregido').checked):'',si(tieneBotadero),tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',tieneBotadero?document.getElementById('f-botadero-propietario').value:'',tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',tieneBotadero?document.getElementById('f-botadero-material').value:'',document.getElementById('f-observaciones').value,'',generarNumControl()];
+  return[fecha,mes,inspVal.split('|')[0],inspVal.split('|')[1],document.getElementById('f-contrato').value,document.getElementById('f-ruta').value,secSel.value,secOpt?secOpt.dataset.desc||'':'',document.getElementById('f-km-inicio').value,document.getElementById('f-km-final').value,document.getElementById('f-localizacion').value,document.getElementById('f-hora-inicio').value,document.getElementById('f-hora-final').value,document.getElementById('f-clima').value,document.getElementById('f-empresa').value,JSON.stringify(recopilarItems()),document.getElementById('f-velocidad').value,document.getElementById('f-rotulos-ld').value||'0',document.getElementById('f-rotulos-li').value||'0',si(rotulos),document.getElementById('f-conos-cantidad').value||'0',document.getElementById('f-conos-distancia').value||'0',document.getElementById('f-conos-altura').value||'0',si(conos),si(rotulos&&conos),si(document.getElementById('c-personal').checked),personalResumen(),si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),si(document.getElementById('c-maquinaria').checked),maquinariaResumen(),si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),document.getElementById('f-equipo').value,si(tieneVisitas),tieneVisitas?JSON.stringify(recopilarVisitas()):'',si(tieneProblema),tieneProblema?document.getElementById('f-tipo-problema').value:'',tieneProblema?document.getElementById('f-severidad-problema').value:'',tieneProblema?document.getElementById('f-observacion-tipo').value:'',tieneProblema?document.getElementById('f-desc-problema').value:'',tieneProblema?si(document.getElementById('c-corregido').checked):'',si(tieneBotadero),tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',tieneBotadero?document.getElementById('f-botadero-propietario').value:'',tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',tieneBotadero?document.getElementById('f-botadero-material').value:'',document.getElementById('f-observaciones').value,firma||'',generarNumControl()];
 }
 
-async function guardar(){
-  const fecha=document.getElementById('f-fecha').value;const inspVal=document.getElementById('f-inspector').value;
-  const ruta=document.getElementById('f-ruta').value;const contrato=document.getElementById('f-contrato').value;
-  if(!fecha){toast('Ingresá la fecha',true);return;}if(!inspVal){toast('Seleccioná un inspector',true);return;}
-  if(!ruta){toast('Seleccioná una ruta',true);return;}if(!contrato){toast('Seleccioná un contrato',true);return;}
-  const btn=document.getElementById('btn-guardar');btn.disabled=true;btn.textContent='Guardando...';
-  const row=construirRow();
-  try{
-    const body=modoEdicion==='sheet'&&editSheetRowIndex?{row,updateRow:editSheetRowIndex}:{row};
-    await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(body),headers:{'Content-Type':'application/json'}});
-    if(modoEdicion==='borrador'&&editBorradorId)setBorradores(getBorradores().filter(b=>b.id!==editBorradorId));
-    toast('✓ Registro guardado correctamente',false,true);
-    setTimeout(()=>{resetForm();volverHome();},1000);
-  }catch(e){toast('Sin conexión – guardando como borrador',true);guardarBorrador();}
-  btn.disabled=false;btn.textContent=modoEdicion?'Actualizar registro':'Guardar registro de bitácora';
+function cargarRowEnFormulario(row){
+  resetForm();
+  setTimeout(()=>{
+    document.getElementById('f-fecha').value=String(row[0]).split('T')[0];
+    const inspSel=document.getElementById('f-inspector');
+    for(let o of inspSel.options){if(o.value.startsWith(row[2]+'|')){inspSel.value=o.value;break;}}
+    document.getElementById('f-contrato').value=row[4]||'';
+    document.getElementById('f-empresa').value=row[14]||'';
+    document.getElementById('f-clima').value=row[13]||'';
+    actualizarCodigo();
+    document.getElementById('f-ruta').value=row[5]||'';
+    if(row[5])actualizarSecciones();
+    setTimeout(()=>{document.getElementById('f-seccion').value=row[6]||'';mostrarDescripcion();},300);
+    document.getElementById('f-km-inicio').value=row[8]||'';
+    document.getElementById('f-km-final').value=row[9]||'';
+    document.getElementById('f-localizacion').value=row[10]||'';
+    document.getElementById('f-hora-inicio').value=row[11]||'';
+    document.getElementById('f-hora-final').value=row[12]||'';
+    try{
+      const items=JSON.parse(row[15]||'[]');
+      document.getElementById('items-container').innerHTML='';itemCount=0;
+      items.forEach(item=>{
+        itemCount++;const id=itemCount;
+        const contrato=document.getElementById('f-contrato').value;
+        const filtrados=contrato?itemsData.filter(i=>i.contrato===contrato):itemsData;
+        const opts=filtrados.map(i=>`<option value="${i.codigo}|${i.unidad}" data-unidad="${i.unidad}">${i.codigo} - ${i.desc}</option>`).join('');
+        const div=document.createElement('div');div.className='item-block';div.id='item-block-'+id;
+        div.innerHTML=`<div class="block-header"><span class="block-title">Item ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarItem(${id})">Eliminar</button>`:''}</div>
+          <div class="inner-field"><label>Item</label><select class="item-select" id="item-sel-${id}" onchange="actualizarUnidad(${id})" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option>${opts}</select></div>
+          <div class="inner-field"><label>Unidad</label><input type="text" id="item-unidad-${id}" readonly style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#6D6D72;font-family:inherit"></div>
+          <div class="inner-field"><label>Cantidad</label><input type="number" id="item-cant-${id}" min="0" step="0.01" placeholder="0.00"></div>
+          <div class="inner-field"><label>No. Informe diario</label><input type="text" id="item-informe-${id}" placeholder="Ej: 001"></div>
+          <div class="inner-field"><label>No. Registro de medicion</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001"></div>`;
+        document.getElementById('items-container').appendChild(div);
+        document.getElementById('item-sel-'+id).value=item.codigo+'|'+item.unidad;
+        document.getElementById('item-unidad-'+id).value=item.unidad||'';
+        document.getElementById('item-cant-'+id).value=item.cantidad||'';
+        document.getElementById('item-informe-'+id).value=item.informe||'';
+        document.getElementById('item-regmed-'+id).value=item.regmed||'';
+      });
+      if(itemCount===0)agregarItem();
+    }catch(e){agregarItem();}
+    document.getElementById('f-velocidad').value=row[16]||'';
+    document.getElementById('f-rotulos-ld').value=row[17]||'';
+    document.getElementById('f-rotulos-li').value=row[18]||'';
+    document.getElementById('c-rotulos-conformes').checked=row[19]==='Si';
+    document.getElementById('f-conos-cantidad').value=row[20]||'';
+    document.getElementById('f-conos-distancia').value=row[21]||'';
+    document.getElementById('f-conos-altura').value=row[22]||'';
+    document.getElementById('c-conos-conformes').checked=row[23]==='Si';
+    verificarDispositivosConformes();
+    const tienePersonal=row[25]==='Si';
+    document.getElementById('c-personal').checked=tienePersonal;
+    if(tienePersonal){
+      document.getElementById('bloque-personal').style.display='block';
+      const map={'Encargado':'p-encargado','Chofer':'p-chofer','Operador':'p-operador','Ayudantes':'p-ayudantes','Peones':'p-peones','Banderilleros':'p-banderilleros','Calificado':'p-calificado'};
+      (row[26]||'').split(',').forEach(p=>{const[k,v]=p.trim().split(':');if(map[k])document.getElementById(map[k]).value=v||'';});
+      document.getElementById('c-personal-conforme').checked=row[27]==='Si';
+    }
+    const tieneMaq=row[28]==='Si';
+    document.getElementById('c-maquinaria').checked=tieneMaq;
+    if(tieneMaq){
+      document.getElementById('bloque-maquinaria').style.display='block';
+      const map={'Camion':'m-camion','Compresor':'m-compresor','Rompedora':'m-rompedora','Retroexcavador':'m-retroexcavador','Perfiladora':'m-perfiladora','Pala':'m-pala','Martillo':'m-martillo','Cargadores':'m-cargadores','TanqueAgua':'m-tanque-agua','Niveladora':'m-niveladora','Vagonetas':'m-vagonetas','TanqueAsfalto':'m-tanque-asfalto'};
+      (row[29]||'').split(',').forEach(p=>{const[k,v]=p.trim().split(':');if(map[k])document.getElementById(map[k]).value=v||'';});
+      document.getElementById('c-maquinaria-conforme').checked=row[30]==='Si';
+    }
+    document.getElementById('f-equipo').value=row[31]||'';
+    const tieneVisitas=row[32]==='Si';
+    document.getElementById('c-visitas').checked=tieneVisitas;
+    if(tieneVisitas){
+      document.getElementById('visitas-container').style.display='block';
+      try{
+        JSON.parse(row[33]||'[]').forEach(v=>{
+          visitaCount++;const id=visitaCount;
+          const div=document.createElement('div');div.className='visita-block';div.id='visita-block-'+id;
+          div.innerHTML=`<div class="block-header"><span class="block-title">Visita ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarVisita(${id})">Eliminar</button>`:''}</div>
+            <div class="inner-field"><label>Tipo de visita</label><select id="visita-tipo-${id}" style="max-width:55%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option><option>CONAVI</option><option>Supervision FAMCOVA</option><option>Contratista</option><option>Auditoria</option><option>SETENA</option><option>Otra</option></select></div>
+            <div class="inner-field"><label>Nombre del visitante</label><input type="text" id="visita-nombre-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
+            <div class="inner-field"><label>Hora</label><input type="time" id="visita-hora-${id}" style="color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
+            <div class="inner-field"><label>Motivo</label><input type="text" id="visita-motivo-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>`;
+          document.getElementById('visitas-lista').appendChild(div);
+          document.getElementById('visita-tipo-'+id).value=v.tipo||'';
+          document.getElementById('visita-nombre-'+id).value=v.nombre||'';
+          document.getElementById('visita-hora-'+id).value=v.hora||'';
+          document.getElementById('visita-motivo-'+id).value=v.motivo||'';
+        });
+      }catch(e){}
+    }
+    const tieneProb=row[34]==='Si';
+    document.getElementById('c-problema').checked=tieneProb;
+    if(tieneProb){
+      document.getElementById('bloque-problema').style.display='block';
+      document.getElementById('f-tipo-problema').value=row[35]||'';
+      document.getElementById('f-severidad-problema').value=row[36]||'Baja';
+      document.getElementById('f-observacion-tipo').value=row[37]||'Verbal';
+      document.getElementById('f-desc-problema').value=row[38]||'';
+      document.getElementById('c-corregido').checked=row[39]==='Si';
+    }
+    const tieneBotadero=row[40]==='Si';
+    document.getElementById('c-botadero').checked=tieneBotadero;
+    if(tieneBotadero){
+      document.getElementById('bloque-botadero').style.display='block';
+      document.getElementById('f-botadero-ubicacion').value=row[41]||'';
+      document.getElementById('f-botadero-propietario').value=row[42]||'';
+      document.getElementById('c-botadero-autorizado').checked=row[43]==='Si';
+      document.getElementById('f-botadero-material').value=row[44]||'';
+    }
+    document.getElementById('f-observaciones').value=row[45]||'';
+  },100);
 }
 
 function resetForm(){
@@ -819,8 +971,8 @@ function resetForm(){
   ['f-inspector','f-contrato','f-ruta','f-clima','f-velocidad','f-botadero-material'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-seccion').innerHTML='<option value="">Seleccionar...</option>';
   document.getElementById('desc-seccion').style.display='none';
-  document.getElementById('num-control-display').textContent='Número de control: —';
-  document.getElementById('badge-dispositivos').textContent='—';
+  document.getElementById('num-control-display').textContent='Numero de control: -';
+  document.getElementById('badge-dispositivos').textContent='-';
   document.getElementById('badge-dispositivos').className='conforme-badge';
   ['f-rotulos-ld','f-rotulos-li','f-conos-cantidad','f-conos-distancia','f-conos-altura','p-encargado','p-chofer','p-operador','p-ayudantes','p-peones','p-banderilleros','p-calificado','m-camion','m-compresor','m-rompedora','m-retroexcavador','m-perfiladora','m-pala','m-martillo','m-cargadores','m-tanque-agua','m-niveladora','m-vagonetas','m-tanque-asfalto'].forEach(id=>document.getElementById(id).value='');
   document.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false);
@@ -828,7 +980,7 @@ function resetForm(){
   document.getElementById('items-container').innerHTML='';
   document.getElementById('visitas-lista').innerHTML='';
   itemCount=0;visitaCount=0;
-  document.getElementById('f-fecha').value=new Date().toISOString().split('T')[0];
+  document.getElementById('f-fecha').value=hoy();
 }
 
 function toast(msg,err=false,ok=false){
@@ -837,13 +989,13 @@ function toast(msg,err=false,ok=false){
   setTimeout(()=>t.className='toast',3500);
 }
 
-// ══ GENERADOR DE INFORME MENSUAL ══
+// ══ INFORME MENSUAL ══
 async function cargarDatosInforme(){
   const inspVal=document.getElementById('inf-inspector').value;
   const mes=parseInt(document.getElementById('inf-mes').value);
   const anio=parseInt(document.getElementById('inf-anio').value);
-  if(!inspVal){toast('Seleccioná un inspector',true);return;}
-  if(!mes){toast('Seleccioná un mes',true);return;}
+  if(!inspVal){toast('Selecciona un inspector',true);return;}
+  if(!mes){toast('Selecciona un mes',true);return;}
   const inspNombre=inspVal.split('|')[0];
   const btn=document.querySelector('[onclick="cargarDatosInforme()"]');
   btn.textContent='Cargando...';btn.disabled=true;
@@ -858,16 +1010,16 @@ async function cargarDatosInforme(){
     });
     if(!informeData.length){toast('No hay registros para ese mes',true);btn.textContent='Cargar datos del mes';btn.disabled=false;return;}
     const fechas=informeData.map(r=>new Date(String(r[0]).split('T')[0]+'T12:00:00')).sort((a,b)=>a-b);
-    const fmt=d=>`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-    document.getElementById('inf-periodo').value=`Del ${fmt(fechas[0])} al ${fmt(fechas[fechas.length-1])}`;
+    const fmt=d=>d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+    document.getElementById('inf-periodo').value='Del '+fmt(fechas[0])+' al '+fmt(fechas[fechas.length-1]);
     document.getElementById('inf-dias').value=informeData.length;
     document.getElementById('inf-frentes').value=[...new Set(informeData.map(r=>r[5]+'-'+r[6]))].length;
     document.getElementById('inf-jornadas').value='6:00 am a 4:00 pm';
     renderActividadesInforme();renderProblemasInforme();renderVisitasInforme();
     document.getElementById('informe-form').style.display='block';
     document.getElementById('informe-form').scrollIntoView({behavior:'smooth'});
-    toast(`✓ ${informeData.length} registros cargados`,false,true);
-  }catch(e){toast('Error de conexión',true);}
+    toast(informeData.length+' registros cargados',false,true);
+  }catch(e){toast('Error de conexion',true);}
   btn.textContent='Cargar datos del mes';btn.disabled=false;
 }
 
@@ -875,12 +1027,13 @@ function renderActividadesInforme(){
   document.getElementById('inf-act-count').textContent=informeData.length;
   document.getElementById('inf-actividades-lista').innerHTML=informeData.map((r,i)=>{
     let items=[];try{items=JSON.parse(r[15]||'[]');}catch(e){}
-    const itemsStr=items.map(it=>`${it.codigo}: ${it.cantidad} ${it.unidad}`).join(', ')||'—';
+    const itemsStr=items.map(it=>it.codigo+': '+it.cantidad+' '+it.unidad).join(', ')||'-';
     return`<div class="item-block">
-      <div class="block-header"><span class="block-title">Actividad ${i+1} — ${String(r[0]).split('T')[0]}</span></div>
-      <div class="inner-field"><label>Ruta / Sección</label><span style="font-size:13px;color:#6D6D72">Ruta ${r[5]||'—'} / ${r[6]||'—'}</span></div>
-      <div class="inner-field"><label>Estación</label><span style="font-size:13px;color:#6D6D72">${r[8]||'—'} – ${r[9]||'—'}</span></div>
-      <div class="inner-field"><label>Ítems</label><span style="font-size:12px;color:#6D6D72;text-align:right;max-width:55%">${itemsStr}</span></div>
+      <div class="block-header"><span class="block-title">Actividad ${i+1} - ${String(r[0]).split('T')[0]}</span></div>
+      <div class="inner-field"><label>Ruta / Seccion</label><span style="font-size:13px;color:#6D6D72">Ruta ${r[5]||'-'} / ${r[6]||'-'}</span></div>
+      <div class="inner-field"><label>Estacion</label><span style="font-size:13px;color:#6D6D72">${r[8]||'-'} - ${r[9]||'-'}</span></div>
+      <div class="inner-field"><label>Items</label><span style="font-size:12px;color:#6D6D72;text-align:right;max-width:55%">${itemsStr}</span></div>
+      ${r[46]?'<div class="inner-field"><label>Firmado</label><span style="font-size:11px;color:#1A5C2E">'+r[46]+'</span></div>':''}
       <div class="inner-field field-vertical" style="flex-direction:column;align-items:flex-start;gap:4px">
         <label>Resultado / hallazgo</label>
         <textarea id="act-resultado-${i}" style="border:none;outline:none;font-size:13px;color:#1C1C1E;background:#F9F9F9;width:100%;resize:none;height:52px;font-family:inherit;line-height:1.4;border-radius:6px;padding:6px" placeholder="Describir resultado...">${r[45]||''}</textarea>
@@ -890,25 +1043,23 @@ function renderActividadesInforme(){
 }
 
 function renderProblemasInforme(){
-  const problemas=informeData.filter(r=>r[34]==='Sí');
+  const problemas=informeData.filter(r=>r[34]==='Si');
   const section=document.getElementById('inf-problemas-section');
   document.getElementById('inf-prob-count').textContent=problemas.length;
   if(!problemas.length){section.style.display='none';return;}
   section.style.display='block';
   document.getElementById('inf-problemas-lista').innerHTML=problemas.map((r,i)=>`
     <div class="item-block">
-      <div class="block-header"><span class="block-title">Problema ${i+1} — ${String(r[0]).split('T')[0]}</span></div>
-      <div class="inner-field"><label>Tipo</label><span style="font-size:13px;color:#6D6D72">${r[35]||'—'}</span></div>
-      <div class="inner-field"><label>Severidad</label><span style="font-size:13px;color:#6D6D72">${r[36]||'—'}</span></div>
-      <div class="inner-field"><label>Observación</label><span style="font-size:13px;color:#6D6D72">${r[37]||'—'}</span></div>
-      <div class="inner-field"><label>Descripción</label><span style="font-size:12px;color:#6D6D72;text-align:right;max-width:55%">${r[38]||'—'}</span></div>
-      <div class="inner-field"><label>Corregido</label><span style="font-size:13px;color:#6D6D72">${r[39]||'—'}</span></div>
+      <div class="block-header"><span class="block-title">Problema ${i+1} - ${String(r[0]).split('T')[0]}</span></div>
+      <div class="inner-field"><label>Tipo</label><span style="font-size:13px;color:#6D6D72">${r[35]||'-'}</span></div>
+      <div class="inner-field"><label>Severidad</label><span style="font-size:13px;color:#6D6D72">${r[36]||'-'}</span></div>
+      <div class="inner-field"><label>Corregido</label><span style="font-size:13px;color:#6D6D72">${r[39]||'-'}</span></div>
     </div>`).join('');
 }
 
 function renderVisitasInforme(){
   let todasVisitas=[];
-  informeData.filter(r=>r[32]==='Sí').forEach(r=>{
+  informeData.filter(r=>r[32]==='Si').forEach(r=>{
     try{JSON.parse(r[33]||'[]').forEach(v=>todasVisitas.push({...v,fecha:String(r[0]).split('T')[0]}));}catch(e){}
   });
   const section=document.getElementById('inf-visitas-section');
@@ -917,11 +1068,10 @@ function renderVisitasInforme(){
   section.style.display='block';
   document.getElementById('inf-visitas-lista').innerHTML=todasVisitas.map((v,i)=>`
     <div class="item-block">
-      <div class="block-header"><span class="block-title">Visita ${i+1} — ${v.fecha}</span></div>
-      <div class="inner-field"><label>Tipo</label><span style="font-size:13px;color:#6D6D72">${v.tipo||'—'}</span></div>
-      <div class="inner-field"><label>Visitante</label><span style="font-size:13px;color:#6D6D72">${v.nombre||'—'}</span></div>
-      <div class="inner-field"><label>Hora</label><span style="font-size:13px;color:#6D6D72">${v.hora||'—'}</span></div>
-      <div class="inner-field"><label>Motivo</label><span style="font-size:12px;color:#6D6D72;text-align:right;max-width:55%">${v.motivo||'—'}</span></div>
+      <div class="block-header"><span class="block-title">Visita ${i+1} - ${v.fecha}</span></div>
+      <div class="inner-field"><label>Tipo</label><span style="font-size:13px;color:#6D6D72">${v.tipo||'-'}</span></div>
+      <div class="inner-field"><label>Visitante</label><span style="font-size:13px;color:#6D6D72">${v.nombre||'-'}</span></div>
+      <div class="inner-field"><label>Hora</label><span style="font-size:13px;color:#6D6D72">${v.hora||'-'}</span></div>
     </div>`).join('');
 }
 
@@ -931,86 +1081,75 @@ function generarInforme(){
   const anio=parseInt(document.getElementById('inf-anio').value);
   const inspNombre=inspVal.split('|')[0];
   const inspCod=inspVal.split('|')[1];
-  const numControl=`COFEC(1-4)-INS${inspCod}-${String(mes).padStart(3,'0')}-${anio}`;
+  const numControl='COFEC(1-4)-INS'+inspCod+'-'+String(mes).padStart(3,'0')+'-'+anio;
   const mesNombre=MESES_ES[mes];
-  const frentes=[...new Set(informeData.map(r=>`Ruta ${r[5]} / Sec. ${r[6]}`))].join(', ');
-
+  const frentes=[...new Set(informeData.map(r=>'Ruta '+r[5]+' / Sec. '+r[6]))].join(', ');
   const actHTML=informeData.map((r,i)=>{
     let items=[];try{items=JSON.parse(r[15]||'[]');}catch(e){}
-    const itemsStr=items.map(it=>`${it.codigo}: ${it.cantidad} ${it.unidad}`).join(', ')||'—';
-    const resultado=document.getElementById('act-resultado-'+i)?.value||r[45]||'—';
-    const infDiarios=[...new Set(items.map(it=>it.informe).filter(Boolean))].join(', ')||'—';
-    return`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${String(r[0]).split('T')[0]}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">Ruta ${r[5]||'—'} / Sec. ${r[6]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[8]||'—'} – ${r[9]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${itemsStr}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${infDiarios}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${resultado}</td></tr>`;
+    const itemsStr=items.map(it=>it.codigo+': '+it.cantidad+' '+it.unidad).join(', ')||'-';
+    const resultado=document.getElementById('act-resultado-'+i)?.value||r[45]||'-';
+    const infDiarios=[...new Set(items.map(it=>it.informe).filter(Boolean))].join(', ')||'-';
+    const firmado=r[46]||'Sin firma';
+    return`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${String(r[0]).split('T')[0]}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">Ruta ${r[5]||'-'} / ${r[6]||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[8]||'-'} - ${r[9]||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${itemsStr}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${infDiarios}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${resultado}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:10px;color:#1A5C2E">${firmado}</td></tr>`;
   }).join('');
-
-  const problemas=informeData.filter(r=>r[34]==='Sí');
-  const probHTML=problemas.length?problemas.map((r,i)=>`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${String(r[0]).split('T')[0]}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">Ruta ${r[5]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[35]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[36]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[37]||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[39]||'—'}</td></tr>`).join(''):'<tr><td colspan="7" style="text-align:center;padding:10px;font-size:11px;color:#6D6D72">No se detectaron problemas técnicos</td></tr>';
-
+  const problemas=informeData.filter(r=>r[34]==='Si');
+  const probHTML=problemas.length?problemas.map((r,i)=>`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${String(r[0]).split('T')[0]}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">Ruta ${r[5]||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[35]||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[36]||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[37]||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${r[39]||'-'}</td></tr>`).join(''):'<tr><td colspan="7" style="text-align:center;padding:10px;font-size:11px;color:#6D6D72">No se detectaron problemas tecnicos</td></tr>';
   let todasVisitas=[];
-  informeData.filter(r=>r[32]==='Sí').forEach(r=>{try{JSON.parse(r[33]||'[]').forEach(v=>todasVisitas.push({...v,fecha:String(r[0]).split('T')[0]}));}catch(e){}});
-  const visHTML=todasVisitas.length?todasVisitas.map((v,i)=>`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.fecha}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.tipo||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.nombre||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.hora||'—'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.motivo||'—'}</td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:10px;font-size:11px;color:#6D6D72">No se registraron visitas</td></tr>';
-
+  informeData.filter(r=>r[32]==='Si').forEach(r=>{try{JSON.parse(r[33]||'[]').forEach(v=>todasVisitas.push({...v,fecha:String(r[0]).split('T')[0]}));}catch(e){}});
+  const visHTML=todasVisitas.length?todasVisitas.map((v,i)=>`<tr><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${i+1}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.fecha}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.tipo||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.nombre||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.hora||'-'}</td><td style="border:1px solid #BDD7EE;padding:6px 8px;font-size:11px">${v.motivo||'-'}</td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:10px;font-size:11px;color:#6D6D72">No se registraron visitas</td></tr>';
   document.getElementById('informe-preview-content').innerHTML=`
-  <style>
-    @media print{body *{visibility:hidden}#informe-preview-content,#informe-preview-content *{visibility:visible}#informe-preview-content{position:absolute;left:0;top:0;width:100%}}
-    .ih{background:#16375C;color:white;padding:16px;text-align:center;border-radius:8px 8px 0 0}
-    .ish{background:#1F3864;color:rgba(255,255,255,0.85);padding:8px 16px;text-align:center;font-size:12px;border-radius:0 0 8px 8px;margin-bottom:16px}
-    .ist{background:#2E75B6;color:white;padding:6px 12px;font-size:12px;font-weight:600;border-radius:6px;margin-bottom:8px;text-transform:uppercase}
-    .ic{background:white;border:1px solid #BDD7EE;border-radius:8px;padding:12px;margin-bottom:8px}
-    .ifl{display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid #EBF3FB;font-size:12px}
-    .ifl:last-child{border-bottom:none}
-    .inat{font-size:12px;color:#1C1C1E;line-height:1.6;padding:8px;background:#F9F9F9;border-radius:6px;margin-bottom:8px;white-space:pre-wrap}
-    .inl{font-size:11px;font-weight:600;color:#16375C;margin-bottom:4px;text-transform:uppercase}
-    table{width:100%;border-collapse:collapse}
-    th{background:#1F3864;color:white;padding:6px 8px;font-size:11px;font-weight:600;text-align:left}
-  </style>
-  <div class="ih"><div style="font-size:18px;font-weight:700">Informe Mensual de Gestión</div><div style="font-size:13px;margin-top:4px">Contrato Servicios de Apoyo por Demanda</div><div style="font-size:12px;margin-top:2px;opacity:0.8">CONSORCIO FAMCOVA – ESTRATEGA – CCOCIMO</div></div>
+  <style>@media print{body *{visibility:hidden}#informe-preview-content,#informe-preview-content *{visibility:visible}#informe-preview-content{position:absolute;left:0;top:0;width:100%}}
+  .ih{background:#16375C;color:white;padding:16px;text-align:center;border-radius:8px 8px 0 0}
+  .ish{background:#1F3864;color:rgba(255,255,255,0.85);padding:8px 16px;text-align:center;font-size:12px;border-radius:0 0 8px 8px;margin-bottom:16px}
+  .ist{background:#2E75B6;color:white;padding:6px 12px;font-size:12px;font-weight:600;border-radius:6px;margin-bottom:8px;text-transform:uppercase}
+  .ic{background:white;border:1px solid #BDD7EE;border-radius:8px;padding:12px;margin-bottom:8px}
+  .ifl{display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid #EBF3FB;font-size:12px}
+  .ifl:last-child{border-bottom:none}
+  .inat{font-size:12px;color:#1C1C1E;line-height:1.6;padding:8px;background:#F9F9F9;border-radius:6px;margin-bottom:8px;white-space:pre-wrap}
+  .inl{font-size:11px;font-weight:600;color:#16375C;margin-bottom:4px;text-transform:uppercase}
+  table{width:100%;border-collapse:collapse}th{background:#1F3864;color:white;padding:6px 8px;font-size:11px;font-weight:600;text-align:left}</style>
+  <div class="ih"><div style="font-size:18px;font-weight:700">Informe Mensual de Gestion</div><div style="font-size:13px;margin-top:4px">Contrato Servicios de Apoyo por Demanda</div><div style="font-size:12px;margin-top:2px;opacity:0.8">CONSORCIO FAMCOVA - ESTRATEGA - CCOCIMO</div></div>
   <div class="ish">lcorrales@famcova.net | cevchsa@gmail.com | ccocimo@gmail.com | Tel: (506) 4080-2323</div>
-  <div style="text-align:right;font-size:10px;color:#6D6D72;margin-bottom:16px">Control: ${numControl} | Versión: 01 | Elaboró: ${inspNombre}</div>
-  <div style="margin-bottom:16px"><div class="ist">1. Datos de identificación</div>
-  <div class="ic">
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Número de licitación</span><span>Servicios de Apoyo Técnico, Región Central</span></div>
+  <div style="text-align:right;font-size:10px;color:#6D6D72;margin-bottom:16px">Control: ${numControl} | Version: 01 | Elaboro: ${inspNombre}</div>
+  <div style="margin-bottom:16px"><div class="ist">1. Datos de identificacion</div><div class="ic">
     <div class="ifl"><span style="color:#6D6D72;font-weight:500">Tipo de servicio</span><span>Inspector de Obra Vial</span></div>
     <div class="ifl"><span style="color:#6D6D72;font-weight:500">Zona</span><span>1-4</span></div>
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Mes y año</span><span>${mesNombre} ${anio}</span></div>
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Contratista</span><span>MECO</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Mes y ano</span><span>${mesNombre} ${anio}</span></div>
     <div class="ifl"><span style="color:#6D6D72;font-weight:500">Responsable</span><span>${inspNombre}</span></div>
   </div></div>
-  <div style="margin-bottom:16px"><div class="ist">2. Resumen ejecutivo</div>
-  <div class="ic">
-    <div class="inl">Síntesis de actividades</div><div class="inat">${document.getElementById('inf-sintesis').value||'—'}</div>
-    <div class="inl">Principales resultados</div><div class="inat">${document.getElementById('inf-resultados').value||'—'}</div>
-    <div class="inl">Hallazgos o incidencias</div><div class="inat">${document.getElementById('inf-hallazgos').value||'—'}</div>
-    <div class="inl">Riesgos identificados</div><div class="inat">${document.getElementById('inf-riesgos').value||'—'}</div>
-    <div class="inl">Acciones correctivas</div><div class="inat">${document.getElementById('inf-acciones').value||'—'}</div>
-    <div class="ifl" style="margin-top:8px"><span style="color:#6D6D72;font-weight:500">Entregables</span><span>Informes diarios de inspección</span></div>
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Estado general</span><span style="font-weight:600;color:#16375C">${document.getElementById('inf-estado').value}</span></div>
+  <div style="margin-bottom:16px"><div class="ist">2. Resumen ejecutivo</div><div class="ic">
+    <div class="inl">Sintesis de actividades</div><div class="inat">${document.getElementById('inf-sintesis').value||'-'}</div>
+    <div class="inl">Principales resultados</div><div class="inat">${document.getElementById('inf-resultados').value||'-'}</div>
+    <div class="inl">Hallazgos o incidencias</div><div class="inat">${document.getElementById('inf-hallazgos').value||'-'}</div>
+    <div class="inl">Riesgos identificados</div><div class="inat">${document.getElementById('inf-riesgos').value||'-'}</div>
+    <div class="inl">Acciones correctivas</div><div class="inat">${document.getElementById('inf-acciones').value||'-'}</div>
+    <div class="ifl" style="margin-top:8px"><span style="color:#6D6D72;font-weight:500">Estado general</span><span style="font-weight:600;color:#16375C">${document.getElementById('inf-estado').value}</span></div>
   </div></div>
-  <div style="margin-bottom:16px"><div class="ist">3. Datos generales del período</div>
-  <div class="ic">
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Período cubierto</span><span>${document.getElementById('inf-periodo').value||'—'}</span></div>
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Días laborados</span><span>${document.getElementById('inf-dias').value||'—'}</span></div>
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Jornadas</span><span>${document.getElementById('inf-jornadas').value||'—'}</span></div>
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Frentes atendidos</span><span>${document.getElementById('inf-frentes').value||'—'}</span></div>
+  <div style="margin-bottom:16px"><div class="ist">3. Datos generales del periodo</div><div class="ic">
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Periodo cubierto</span><span>${document.getElementById('inf-periodo').value||'-'}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Dias laborados</span><span>${document.getElementById('inf-dias').value||'-'}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Jornadas</span><span>${document.getElementById('inf-jornadas').value||'-'}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Frentes atendidos</span><span>${document.getElementById('inf-frentes').value||'-'}</span></div>
     <div class="ifl"><span style="color:#6D6D72;font-weight:500">Rutas / Frentes</span><span style="font-size:11px;max-width:60%;text-align:right">${frentes}</span></div>
-    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Solicitudes Administración</span><span>${document.getElementById('inf-solicitudes').value||'0'}</span></div>
+    <div class="ifl"><span style="color:#6D6D72;font-weight:500">Solicitudes Administracion</span><span>${document.getElementById('inf-solicitudes').value||'0'}</span></div>
   </div></div>
   <div style="margin-bottom:16px"><div class="ist">4. Actividades ejecutadas</div>
-  <div style="overflow-x:auto"><table><thead><tr><th style="width:30px">#</th><th>Fecha</th><th>Ruta/Sección</th><th>Estación</th><th>Ítem/Cantidad</th><th>Inf. Diario</th><th>Resultado/Hallazgo</th></tr></thead><tbody>${actHTML}</tbody></table></div></div>
-  <div style="margin-bottom:16px"><div class="ist">5. Problemas técnicos detectados</div>
-  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Ruta</th><th>Tipo</th><th>Severidad</th><th>Observación</th><th>Corregido</th></tr></thead><tbody>${probHTML}</tbody></table></div></div>
-  <div style="margin-bottom:16px"><div class="ist">6. Visitas al frente de trabajo</div>
-  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Tipo de visita</th><th>Visitante</th><th>Hora</th><th>Motivo</th></tr></thead><tbody>${visHTML}</tbody></table></div></div>
+  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Ruta/Seccion</th><th>Estacion</th><th>Item/Cantidad</th><th>Inf. Diario</th><th>Resultado</th><th>Firma</th></tr></thead><tbody>${actHTML}</tbody></table></div></div>
+  <div style="margin-bottom:16px"><div class="ist">5. Problemas tecnicos</div>
+  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Ruta</th><th>Tipo</th><th>Severidad</th><th>Observacion</th><th>Corregido</th></tr></thead><tbody>${probHTML}</tbody></table></div></div>
+  <div style="margin-bottom:16px"><div class="ist">6. Visitas al frente</div>
+  <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Tipo</th><th>Visitante</th><th>Hora</th><th>Motivo</th></tr></thead><tbody>${visHTML}</tbody></table></div></div>
   <div style="text-align:center;margin-top:48px">
-    <div style="border-top:1px solid #1C1C1E;width:200px;margin:0 auto;padding-top:6px;font-size:12px">${inspNombre}<br><span style="font-size:10px;color:#6D6D72">Inspector de Obra Vial – FAMCOVA</span></div>
+    <div style="border-top:1px solid #1C1C1E;width:200px;margin:0 auto;padding-top:6px;font-size:12px">${inspNombre}<br><span style="font-size:10px;color:#6D6D72">Inspector de Obra Vial - FAMCOVA</span></div>
     <div style="font-size:10px;color:#6D6D72;margin-top:16px">${numControl} | ${mesNombre} ${anio} | Generado: ${new Date().toLocaleDateString('es-CR')}</div>
   </div>`;
   showPage('page-preview');
 }
 
-window.addEventListener('online',()=>{if(getBorradores().length>0){toast('Conexión detectada – enviando borradores...');setTimeout(enviarTodosBorradores,1500);}});
-document.getElementById('f-fecha').value=new Date().toISOString().split('T')[0];
-cargarRutas();cargarItems();renderBorradores();
+window.addEventListener('online',()=>{if(getBorradores().length>0){toast('Conexion detectada - enviando borradores...');setTimeout(enviarTodosBorradores,1500);}});
+document.getElementById('f-fecha').value=hoy();
+cargarRutas();cargarItems();
+restaurarSesion();
 </script>
 </body>
 </html>
