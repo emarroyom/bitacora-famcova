@@ -83,6 +83,15 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
 .resultado-sub{font-size:11px;color:#6D6D72;margin-top:3px}
 .edit-banner{background:#EBF3FB;border-radius:12px;padding:10px 16px;margin-bottom:8px;font-size:12px;color:#16375C;font-weight:500;text-align:center}
 /* LOGIN */
+.pin-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.pin-box{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:320px;text-align:center}
+.pin-title{font-size:16px;font-weight:700;color:#1C1C1E;margin-bottom:6px}
+.pin-sub{font-size:12px;color:#6D6D72;margin-bottom:16px}
+.pin-input{width:100%;padding:12px;border:1.5px solid #E5E5EA;border-radius:10px;font-size:22px;text-align:center;font-family:inherit;outline:none;letter-spacing:8px;margin-bottom:12px}
+.pin-input:focus{border-color:#16375C}
+.pin-btn{width:100%;padding:12px;background:#16375C;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:8px}
+.pin-cancel{width:100%;padding:10px;background:none;border:none;color:#6D6D72;font-size:14px;cursor:pointer;font-family:inherit}
+
 .login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;background:#F2F2F7}
 .login-logo{width:72px;height:72px;background:#16375C;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px}
 .login-title{font-size:20px;font-weight:700;color:#1C1C1E;margin-bottom:6px;text-align:center}
@@ -122,6 +131,18 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
     <button class="inspector-btn" onclick="seleccionarInspector('Jose A. Madriz','13')">
       <div class="inspector-avatar" style="background:#534AB7">JA</div>Jose A. Madriz
     </button>
+    <button onclick="mostrarPinAdmin()" style="background:none;border:none;color:#C7C7CC;font-size:11px;cursor:pointer;font-family:inherit;margin-top:16px;padding:8px">Acceso administrativo</button>
+  </div>
+</div>
+
+<!-- PIN OVERLAY -->
+<div class="pin-overlay" id="pin-overlay" style="display:none">
+  <div class="pin-box">
+    <div class="pin-title">Acceso administrativo</div>
+    <div class="pin-sub">Ingresa el PIN para continuar</div>
+    <input class="pin-input" type="password" inputmode="numeric" maxlength="4" id="pin-input" placeholder="****" onkeyup="if(event.key==='Enter')verificarPin()">
+    <button class="pin-btn" onclick="verificarPin()">Ingresar</button>
+    <button class="pin-cancel" onclick="cerrarPin()">Cancelar</button>
   </div>
 </div>
 
@@ -152,17 +173,15 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
       <button class="btn-secondary" id="btn-enviar-todos" style="display:none" onclick="enviarTodosBorradores()">Enviar todos los borradores</button>
     </div>
     <div class="section" id="seccion-buscador" style="display:none">
-      <div class="section-title">Buscar registro de hoy</div>
+      <div class="section-title" id="buscar-section-title">Buscar registro de hoy</div>
       <div class="card">
         <div class="field"><label>Inspector</label><span id="buscar-inspector-label" style="font-size:14px;color:#16375C;font-weight:600"></span></div>
-        <div class="field"><label>Fecha</label><span id="buscar-fecha-label" style="font-size:14px;color:#16375C;font-weight:600"></span></div>
+        <div class="field" id="buscar-fecha-row"><label>Fecha</label><span id="buscar-fecha-label" style="font-size:14px;color:#16375C;font-weight:600"></span></div>
       </div>
       <button class="btn-primary" onclick="buscarRegistro()">Buscar registro</button>
       <div id="resultados-busqueda" style="margin-top:10px"></div>
     </div>
-    <div style="margin-top:16px;text-align:center">
-      <button onclick="cerrarSesion()" style="background:none;border:none;color:#C7C7CC;font-size:12px;cursor:pointer;font-family:inherit">Cambiar inspector</button>
-    </div>
+    <div id="admin-change-btn" style="display:none;margin-top:16px;text-align:center"><button onclick="cerrarSesion()" style="background:none;border:none;color:#C7C7CC;font-size:12px;cursor:pointer;font-family:inherit">Cambiar perfil (admin)</button></div>
   </div>
 </div>
 
@@ -250,7 +269,7 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
           <div style="font-size:13px;font-weight:600;color:#6D6D72;margin-bottom:8px">CONOS</div>
           <div class="inner-field"><label>Cantidad de conos</label><input type="number" id="f-conos-cantidad" min="0" placeholder="0"></div>
           <div class="inner-field"><label>Distancia entre conos (m)</label><input type="number" id="f-conos-distancia" min="0" placeholder="0"></div>
-          <div class="inner-field"><label>Altura de conos (m)</label><input type="number" id="f-conos-altura" step="0.01" placeholder="0.00"></div>
+          <div class="inner-field"><label>Altura de conos (m)</label><input type="text" inputmode="decimal" id="f-conos-altura" placeholder="0,00" style="max-width:80px;border:none;outline:none;font-size:15px;background:transparent;text-align:right;font-family:inherit"></div>
           <div class="inner-field"><div class="toggle-wrap"><label>Conos conformes</label><label class="toggle"><input type="checkbox" id="c-conos-conformes" onchange="verificarDispositivosConformes()"><span class="slider"></span></label></div></div>
         </div>
         <div class="field"><label>Dispositivos conformes (general)</label><span class="conforme-badge" id="badge-dispositivos">-</span></div>
@@ -489,6 +508,39 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwBxQZq2XzRM9mhMvfwdteoJbx3N5OD_kiIKOhi5KmanzpOZOhL2fQmIIvAnZblwbhjpg/exec';
 const KPI_SCRIPT='https://script.google.com/macros/s/AKfycbzGTAhyRU1YXEc4DkIyMYe2gH5j7hHXcwlzwAg5-Ud_vuL55a59JDo8Erif3ZSQwx-OSQ/exec';
 let rutasData=[],itemsData=[],itemCount=0,visitaCount=0;
+
+let modoAdmin = false;
+const ADMIN_PIN = '1234'; // Cambia este PIN
+
+function mostrarPinAdmin(){
+  document.getElementById('pin-overlay').style.display='flex';
+  document.getElementById('pin-input').value='';
+  setTimeout(()=>document.getElementById('pin-input').focus(),100);
+}
+
+function cerrarPin(){
+  document.getElementById('pin-overlay').style.display='none';
+}
+
+function verificarPin(){
+  const pin=document.getElementById('pin-input').value;
+  if(pin===ADMIN_PIN){
+    modoAdmin=true;
+    inspectorActivo='Administrador';inspectorCodigo='00';
+    document.getElementById('pin-overlay').style.display='none';
+    document.getElementById('home-inspector-label').textContent='Modo administrador - acceso total';
+    document.getElementById('buscar-inspector-label').textContent='Todos los inspectores';
+    document.getElementById('buscar-fecha-label').textContent='Busqueda sin restriccion de fecha';
+    // Show admin change button
+    document.getElementById('admin-change-btn').style.display='block';
+    renderBorradores();showPage('page-home');
+  }else{
+    document.getElementById('pin-input').value='';
+    document.getElementById('pin-input').style.borderColor='#C0392B';
+    setTimeout(()=>document.getElementById('pin-input').style.borderColor='#E5E5EA',1000);
+  }
+}
+
 let modoEdicion=null,editBorradorId=null,editSheetRowIndex=null;
 let informeData=[],rowParaFirmar=null;
 let inspectorActivo=null,inspectorCodigo=null;
@@ -501,7 +553,7 @@ function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.
 // ══ LOGIN ══
 function seleccionarInspector(nombre,codigo){
   inspectorActivo=nombre;inspectorCodigo=codigo;
-  sessionStorage.setItem('inspector',nombre);sessionStorage.setItem('inspectorCod',codigo);
+  localStorage.setItem('inspector',nombre);localStorage.setItem('inspectorCod',codigo);
   document.getElementById('home-inspector-label').textContent=nombre+' - Inspector activo';
   document.getElementById('buscar-inspector-label').textContent=nombre;
   document.getElementById('buscar-fecha-label').textContent=hoy();
@@ -510,12 +562,12 @@ function seleccionarInspector(nombre,codigo){
 
 function cerrarSesion(){
   inspectorActivo=null;inspectorCodigo=null;
-  sessionStorage.removeItem('inspector');sessionStorage.removeItem('inspectorCod');
+  localStorage.removeItem('inspector');localStorage.removeItem('inspectorCod');
   showPage('page-login');
 }
 
 function restaurarSesion(){
-  const n=sessionStorage.getItem('inspector');const c=sessionStorage.getItem('inspectorCod');
+  const n=localStorage.getItem('inspector');const c=localStorage.getItem('inspectorCod');
   if(n&&c){inspectorActivo=n;inspectorCodigo=c;
     document.getElementById('home-inspector-label').textContent=n+' - Inspector activo';
     document.getElementById('buscar-inspector-label').textContent=n;
@@ -553,7 +605,7 @@ function setBorradores(b){localStorage.setItem('bitacora_borradores',JSON.string
 function renderBorradores(){
   const todos=getBorradores();
   // Solo mostrar borradores del inspector activo
-  const borradores=todos.filter(b=>!inspectorActivo||b.row[2]===inspectorActivo);
+  const borradores=modoAdmin?todos:todos.filter(b=>!inspectorActivo||b.row[2]===inspectorActivo);
   const lista=document.getElementById('lista-borradores');
   const badge=document.getElementById('badge-count');
   const btnEnviar=document.getElementById('btn-enviar-todos');
@@ -634,6 +686,7 @@ async function buscarRegistro(){
     const json=await res.json();
     const rows=(json.data||[]).slice(1);
     const encontrados=rows.map((r,i)=>({r,i:i+1})).filter(({r})=>{
+      if(modoAdmin)return true;
       const esPropio=r[2]===inspectorActivo;
       const esHoy=String(r[0]).split('T')[0]===hoy();
       return esPropio&&esHoy;
@@ -653,9 +706,9 @@ async function editarRegistroSheet(rowIndex){
     const res=await fetch(SCRIPT_URL+'?t='+Date.now());
     const json=await res.json();
     const row=(json.data||[]).slice(1)[rowIndex-1];if(!row)return;
-    // Verificar que sea del inspector activo y de hoy
-    if(inspectorActivo&&row[2]!==inspectorActivo){toast('Solo puedes editar tus propios registros',true);return;}
-    if(String(row[0]).split('T')[0]!==hoy()){toast('Solo puedes editar registros del dia de hoy',true);return;}
+    // Verificar que sea del inspector activo y de hoy (solo si no es admin)
+    if(!modoAdmin&&inspectorActivo&&row[2]!==inspectorActivo){toast('Solo puedes editar tus propios registros',true);return;}
+    if(!modoAdmin&&String(row[0]).split('T')[0]!==hoy()){toast('Solo puedes editar registros del dia de hoy',true);return;}
     modoEdicion='sheet';editSheetRowIndex=rowIndex;
     cargarRowEnFormulario(row);
     document.getElementById('form-mode-label').textContent='Editando registro';
@@ -761,7 +814,7 @@ function agregarItem(){
   div.innerHTML=`<div class="block-header"><span class="block-title">Item ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarItem(${id})">Eliminar</button>`:''}</div>
     <div class="inner-field"><label>Item</label><select class="item-select" id="item-sel-${id}" onchange="actualizarUnidad(${id})" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar item...</option>${opts}</select></div>
     <div class="inner-field"><label>Unidad</label><input type="text" id="item-unidad-${id}" readonly style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#6D6D72;font-family:inherit"></div>
-    <div class="inner-field"><label>Cantidad</label><input type="number" id="item-cant-${id}" min="0" step="0.01" placeholder="0.00"></div>
+    <div class="inner-field"><label>Cantidad</label><input type="text" inputmode="decimal" id="item-cant-${id}" placeholder="0,00" style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
     <div class="inner-field"><label>No. Informe diario</label><input type="text" id="item-informe-${id}" placeholder="Ej: 001"></div>
     <div class="inner-field"><label>No. Registro de medicion</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001"></div>`;
   document.getElementById('items-container').appendChild(div);
@@ -776,7 +829,7 @@ function agregarVisita(){
   div.innerHTML=`<div class="block-header"><span class="block-title">Visita ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarVisita(${id})">Eliminar</button>`:''}</div>
     <div class="inner-field"><label>Tipo de visita</label><select id="visita-tipo-${id}" style="max-width:55%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option><option>CONAVI</option><option>Supervision FAMCOVA</option><option>Contratista</option><option>Auditoria</option><option>SETENA</option><option>Otra</option></select></div>
     <div class="inner-field"><label>Nombre del visitante</label><input type="text" id="visita-nombre-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
-    <div class="inner-field"><label>Hora</label><input type="time" id="visita-hora-${id}" style="color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
+    <div class="inner-field" style="min-height:44px"><label>Hora</label><input type="time" id="visita-hora-${id}" style="color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;text-align:right;font-family:inherit;width:120px"></div>
     <div class="inner-field"><label>Motivo</label><input type="text" id="visita-motivo-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>`;
   document.getElementById('visitas-lista').appendChild(div);
 }
@@ -851,7 +904,7 @@ function construirRow(firma){
   const tieneProblema=document.getElementById('c-problema').checked;const tieneBotadero=document.getElementById('c-botadero').checked;
   const tieneVisitas=document.getElementById('c-visitas').checked;const rotulos=document.getElementById('c-rotulos-conformes').checked;const conos=document.getElementById('c-conos-conformes').checked;
   const mes=new Date(fecha+'T12:00:00').toLocaleString('es-CR',{month:'long',year:'numeric'});
-  return[fecha,mes,inspVal.split('|')[0],inspVal.split('|')[1],document.getElementById('f-contrato').value,document.getElementById('f-ruta').value,secSel.value,secOpt?secOpt.dataset.desc||'':'',document.getElementById('f-km-inicio').value,document.getElementById('f-km-final').value,document.getElementById('f-localizacion').value,document.getElementById('f-hora-inicio').value,document.getElementById('f-hora-final').value,document.getElementById('f-clima').value,document.getElementById('f-empresa').value,JSON.stringify(recopilarItems()),document.getElementById('f-velocidad').value,document.getElementById('f-rotulos-ld').value||'0',document.getElementById('f-rotulos-li').value||'0',si(rotulos),document.getElementById('f-conos-cantidad').value||'0',document.getElementById('f-conos-distancia').value||'0',document.getElementById('f-conos-altura').value||'0',si(conos),si(rotulos&&conos),si(document.getElementById('c-personal').checked),personalResumen(),si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),si(document.getElementById('c-maquinaria').checked),maquinariaResumen(),si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),document.getElementById('f-equipo').value,si(tieneVisitas),tieneVisitas?JSON.stringify(recopilarVisitas()):'',si(tieneProblema),tieneProblema?document.getElementById('f-tipo-problema').value:'',tieneProblema?document.getElementById('f-severidad-problema').value:'',tieneProblema?document.getElementById('f-observacion-tipo').value:'',tieneProblema?document.getElementById('f-desc-problema').value:'',tieneProblema?si(document.getElementById('c-corregido').checked):'',si(tieneBotadero),tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',tieneBotadero?document.getElementById('f-botadero-propietario').value:'',tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',tieneBotadero?document.getElementById('f-botadero-material').value:'',document.getElementById('f-observaciones').value,firma||'','',generarNumControl()];
+  return[fecha,mes,inspVal.split('|')[0],inspVal.split('|')[1],document.getElementById('f-contrato').value,document.getElementById('f-ruta').value,secSel.value,secOpt?secOpt.dataset.desc||'':'',document.getElementById('f-km-inicio').value,document.getElementById('f-km-final').value,document.getElementById('f-localizacion').value,document.getElementById('f-hora-inicio').value,document.getElementById('f-hora-final').value,document.getElementById('f-clima').value,document.getElementById('f-empresa').value,JSON.stringify(recopilarItems()),document.getElementById('f-velocidad').value,document.getElementById('f-rotulos-ld').value||'0',document.getElementById('f-rotulos-li').value||'0',si(rotulos),document.getElementById('f-conos-cantidad').value||'0',document.getElementById('f-conos-distancia').value||'0',document.getElementById('f-conos-altura').value||'0',si(conos),si(rotulos&&conos),si(document.getElementById('c-personal').checked),personalResumen(),si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),si(document.getElementById('c-maquinaria').checked),maquinariaResumen(),si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),document.getElementById('f-equipo').value,si(tieneVisitas),tieneVisitas?JSON.stringify(recopilarVisitas()):'',si(tieneProblema),tieneProblema?document.getElementById('f-tipo-problema').value:'',tieneProblema?document.getElementById('f-severidad-problema').value:'',tieneProblema?document.getElementById('f-observacion-tipo').value:'',tieneProblema?document.getElementById('f-desc-problema').value:'',tieneProblema?si(document.getElementById('c-corregido').checked):'',si(tieneBotadero),tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',tieneBotadero?document.getElementById('f-botadero-propietario').value:'',tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',tieneBotadero?document.getElementById('f-botadero-material').value:'',document.getElementById('f-observaciones').value,firma||'',generarNumControl()];
 }
 
 function cargarRowEnFormulario(row){
@@ -884,7 +937,7 @@ function cargarRowEnFormulario(row){
         div.innerHTML=`<div class="block-header"><span class="block-title">Item ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarItem(${id})">Eliminar</button>`:''}</div>
           <div class="inner-field"><label>Item</label><select class="item-select" id="item-sel-${id}" onchange="actualizarUnidad(${id})" style="max-width:60%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option>${opts}</select></div>
           <div class="inner-field"><label>Unidad</label><input type="text" id="item-unidad-${id}" readonly style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;color:#6D6D72;font-family:inherit"></div>
-          <div class="inner-field"><label>Cantidad</label><input type="number" id="item-cant-${id}" min="0" step="0.01" placeholder="0.00"></div>
+          <div class="inner-field"><label>Cantidad</label><input type="text" inputmode="decimal" id="item-cant-${id}" placeholder="0,00" style="max-width:80px;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
           <div class="inner-field"><label>No. Informe diario</label><input type="text" id="item-informe-${id}" placeholder="Ej: 001"></div>
           <div class="inner-field"><label>No. Registro de medicion</label><input type="text" id="item-regmed-${id}" placeholder="Ej: RM-001"></div>`;
         document.getElementById('items-container').appendChild(div);
@@ -933,7 +986,7 @@ function cargarRowEnFormulario(row){
           div.innerHTML=`<div class="block-header"><span class="block-title">Visita ${id}</span>${id>1?`<button class="btn-remove" onclick="eliminarVisita(${id})">Eliminar</button>`:''}</div>
             <div class="inner-field"><label>Tipo de visita</label><select id="visita-tipo-${id}" style="max-width:55%;color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;-webkit-appearance:none;text-align:right;font-family:inherit"><option value="">Seleccionar...</option><option>CONAVI</option><option>Supervision FAMCOVA</option><option>Contratista</option><option>Auditoria</option><option>SETENA</option><option>Otra</option></select></div>
             <div class="inner-field"><label>Nombre del visitante</label><input type="text" id="visita-nombre-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
-            <div class="inner-field"><label>Hora</label><input type="time" id="visita-hora-${id}" style="color:#007AFF;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>
+            <div class="inner-field" style="min-height:44px"><label>Hora</label><input type="time" id="visita-hora-${id}" style="color:#007AFF;border:none;outline:none;font-size:15px;background:transparent;text-align:right;font-family:inherit;width:120px"></div>
             <div class="inner-field"><label>Motivo</label><input type="text" id="visita-motivo-${id}" style="max-width:55%;border:none;outline:none;font-size:14px;background:transparent;text-align:right;font-family:inherit"></div>`;
           document.getElementById('visitas-lista').appendChild(div);
           document.getElementById('visita-tipo-'+id).value=v.tipo||'';
