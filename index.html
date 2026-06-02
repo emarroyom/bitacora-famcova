@@ -829,7 +829,7 @@ function registrarGPS(){
       gpsPrecision = Math.round(pos.coords.accuracy);
 
       // Mostrar mapa
-      const mapUrl = 'https://staticmap.openstreetmap.de/staticmap.php?center='+gpsLat+','+gpsLng+'&zoom=16&size=300x160&markers='+gpsLat+','+gpsLng+',red-pushpin';
+      const mapUrl = 'https://www.openstreetmap.org/export/embed.html?bbox='+(parseFloat(gpsLng)-0.002)+','+(parseFloat(gpsLat)-0.002)+','+(parseFloat(gpsLng)+0.002)+','+(parseFloat(gpsLat)+0.002)+'&layer=mapnik&marker='+gpsLat+','+gpsLng;
       map.src = mapUrl;
       map.style.display = 'block';
 
