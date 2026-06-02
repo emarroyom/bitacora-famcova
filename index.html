@@ -100,6 +100,16 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
 .inspector-btn:active{background:#EBF3FB}
 .inspector-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
 
+
+/* GPS */
+.gps-section{background:#fff;border-radius:12px;overflow:hidden;margin-bottom:8px}
+.gps-field{padding:16px;display:flex;flex-direction:column;gap:12px}
+.gps-btn{width:100%;padding:12px;background:#EBF3FB;color:#16375C;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+.gps-btn.ok{background:#E8F8EE;color:#1A5C2E}
+.gps-btn.error{background:#FFEBEE;color:#8B1A1A}
+.gps-map{width:100%;height:160px;border-radius:10px;object-fit:cover;display:none;border:1px solid #E5E5EA}
+.gps-coords{font-size:11px;color:#6D6D72;text-align:center;display:none}
+.gps-required{font-size:11px;color:#FF9500;text-align:center;margin-top:4px}
 /* FOTO */
 .foto-section{background:#fff;border-radius:12px;overflow:hidden;margin-bottom:8px}
 .foto-field{padding:16px;display:flex;flex-direction:column;align-items:center;gap:12px}
@@ -381,6 +391,19 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
       </div>
     </div>
     <div class="section">
+      <div class="section-title">Ubicacion GPS</div>
+      <div class="gps-section">
+        <div class="gps-field">
+          <button class="gps-btn" id="gps-btn" onclick="registrarGPS()">
+            <span>📍</span><span id="gps-btn-text">Registrar mi ubicacion actual</span>
+          </button>
+          <img id="gps-map" class="gps-map" alt="Mapa de ubicacion">
+          <div class="gps-coords" id="gps-coords"></div>
+          <div class="gps-required" id="gps-required">La ubicacion GPS es obligatoria para firmar</div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
       <div class="section-title">Fotografia del dia</div>
       <div class="foto-section">
         <div class="foto-field">
@@ -389,7 +412,7 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
             <div class="foto-placeholder-text">Tocar para adjuntar fotografia</div>
           </div>
           <img id="foto-preview" class="foto-preview" alt="Foto adjunta">
-          <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="previsualizarFoto(this)">
+          <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="previsualizarFoto(this)"><div style="font-size:10px;color:#C7C7CC;text-align:center;margin-top:4px">Solo camara - no se permite galeria</div>
           <button class="foto-change" id="foto-change-btn" style="display:none" onclick="document.getElementById('foto-input').click()">Cambiar foto</button>
         </div>
       </div>
@@ -534,7 +557,7 @@ const KPI_SCRIPT='https://script.google.com/macros/s/AKfycbzGTAhyRU1YXEc4DkIyMYe
 let rutasData=[],itemsData=[],itemCount=0,visitaCount=0;
 
 let modoAdmin = false;
-const ADMIN_PIN = '1202'; // Cambia este PIN
+const ADMIN_PIN = '1234'; // Cambia este PIN
 
 function mostrarPinAdmin(){
   document.getElementById('pin-overlay').style.display='flex';
@@ -754,6 +777,7 @@ function mostrarFirma(){
   if(!inspVal){toast('Selecciona un inspector',true);return;}
   if(!ruta){toast('Selecciona una ruta',true);return;}
   if(!contrato){toast('Selecciona un contrato',true);return;}
+  if(!gpsLat||!gpsLng){toast('Debes registrar tu ubicacion GPS antes de firmar',true);document.getElementById('gps-required').style.display='block';document.getElementById('gps-btn').scrollIntoView({behavior:'smooth'});return;}
   const numControl=generarNumControl();
   const inspNombre=inspVal.split('|')[0];
   const firma=inspNombre+' | '+new Date().toLocaleString('es-CR');
@@ -764,15 +788,86 @@ function mostrarFirma(){
   document.getElementById('firma-linea-nombre').textContent=inspNombre;
   const items=recopilarItems();
   const fotoStatus = fotoBase64 ? '📷 Foto adjunta' : '⚠️ Sin fotografia adjunta';
+  const gpsStatus = gpsLat ? '📍 '+gpsLat+', '+gpsLng+' (+/-'+gpsPrecision+'m)' : '⚠️ Sin GPS';
   document.getElementById('firma-resumen').innerHTML=
     '<strong>Ruta:</strong> '+ruta+(document.getElementById('f-seccion').value?' / Sec. '+document.getElementById('f-seccion').value:'')+'<br>'+
     '<strong>Contrato:</strong> '+contrato+'<br>'+
     '<strong>Items:</strong> '+items.length+' item(s) registrado(s)<br>'+
     '<strong>Horario:</strong> '+(document.getElementById('f-hora-inicio').value||'-')+' a '+(document.getElementById('f-hora-final').value||'-')+'<br>'+
-    '<strong>Foto:</strong> '+fotoStatus;
+    '<strong>Foto:</strong> '+fotoStatus+'<br>'+
+    '<strong>GPS:</strong> '+gpsStatus;
   showPage('page-firma');
 }
 
+
+
+let gpsLat = null;
+let gpsLng = null;
+let gpsPrecision = null;
+
+function registrarGPS(){
+  const btn = document.getElementById('gps-btn');
+  const btnText = document.getElementById('gps-btn-text');
+  const coords = document.getElementById('gps-coords');
+  const map = document.getElementById('gps-map');
+  const required = document.getElementById('gps-required');
+
+  btnText.textContent = 'Obteniendo ubicacion...';
+  btn.disabled = true;
+
+  if(!navigator.geolocation){
+    btnText.textContent = 'GPS no disponible en este dispositivo';
+    btn.classList.add('error');
+    btn.disabled = false;
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      gpsLat = pos.coords.latitude.toFixed(6);
+      gpsLng = pos.coords.longitude.toFixed(6);
+      gpsPrecision = Math.round(pos.coords.accuracy);
+
+      // Mostrar mapa
+      const mapUrl = 'https://staticmap.openstreetmap.de/staticmap.php?center='+gpsLat+','+gpsLng+'&zoom=16&size=300x160&markers='+gpsLat+','+gpsLng+',red-pushpin';
+      map.src = mapUrl;
+      map.style.display = 'block';
+
+      // Mostrar coordenadas
+      coords.textContent = gpsLat + ' N, ' + gpsLng + ' O  —  Precision: +/-' + gpsPrecision + 'm';
+      coords.style.display = 'block';
+
+      // Actualizar boton
+      btn.classList.add('ok');
+      btnText.textContent = 'Ubicacion registrada correctamente';
+      btn.disabled = false;
+      required.style.display = 'none';
+    },
+    function(err){
+      let msg = 'Error al obtener GPS';
+      if(err.code === 1) msg = 'Permiso de ubicacion denegado';
+      if(err.code === 2) msg = 'GPS no disponible';
+      if(err.code === 3) msg = 'Tiempo de espera agotado';
+      btnText.textContent = msg + ' - Tocar para reintentar';
+      btn.classList.remove('ok');
+      btn.classList.add('error');
+      btn.disabled = false;
+    },
+    {enableHighAccuracy: true, timeout: 15000, maximumAge: 0}
+  );
+}
+
+function resetGPS(){
+  gpsLat = null; gpsLng = null; gpsPrecision = null;
+  const btn = document.getElementById('gps-btn');
+  btn.className = 'gps-btn';
+  btn.disabled = false;
+  document.getElementById('gps-btn-text').textContent = 'Registrar mi ubicacion actual';
+  document.getElementById('gps-map').style.display = 'none';
+  document.getElementById('gps-map').src = '';
+  document.getElementById('gps-coords').style.display = 'none';
+  document.getElementById('gps-required').style.display = 'block';
+}
 
 let fotoBase64 = null;
 let fotoMimeType = null;
@@ -1031,7 +1126,7 @@ function construirRow(firma){
   const tieneProblema=document.getElementById('c-problema').checked;const tieneBotadero=document.getElementById('c-botadero').checked;
   const tieneVisitas=document.getElementById('c-visitas').checked;const rotulos=document.getElementById('c-rotulos-conformes').checked;const conos=document.getElementById('c-conos-conformes').checked;
   const mes=new Date(fecha+'T12:00:00').toLocaleString('es-CR',{month:'long',year:'numeric'});
-  return[fecha,mes,inspVal.split('|')[0],inspVal.split('|')[1],document.getElementById('f-contrato').value,document.getElementById('f-ruta').value,secSel.value,secOpt?secOpt.dataset.desc||'':'',document.getElementById('f-km-inicio').value,document.getElementById('f-km-final').value,document.getElementById('f-localizacion').value,document.getElementById('f-hora-inicio').value,document.getElementById('f-hora-final').value,document.getElementById('f-clima').value,document.getElementById('f-empresa').value,JSON.stringify(recopilarItems()),document.getElementById('f-velocidad').value,document.getElementById('f-rotulos-ld').value||'0',document.getElementById('f-rotulos-li').value||'0',si(rotulos),document.getElementById('f-conos-cantidad').value||'0',document.getElementById('f-conos-distancia').value||'0',document.getElementById('f-conos-altura').value||'0',si(conos),si(rotulos&&conos),si(document.getElementById('c-personal').checked),personalResumen(),si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),si(document.getElementById('c-maquinaria').checked),maquinariaResumen(),si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),document.getElementById('f-equipo').value,si(tieneVisitas),tieneVisitas?JSON.stringify(recopilarVisitas()):'',si(tieneProblema),tieneProblema?document.getElementById('f-tipo-problema').value:'',tieneProblema?document.getElementById('f-severidad-problema').value:'',tieneProblema?document.getElementById('f-observacion-tipo').value:'',tieneProblema?document.getElementById('f-desc-problema').value:'',tieneProblema?si(document.getElementById('c-corregido').checked):'',si(tieneBotadero),tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',tieneBotadero?document.getElementById('f-botadero-propietario').value:'',tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',tieneBotadero?document.getElementById('f-botadero-material').value:'',document.getElementById('f-observaciones').value,firma||'',generarNumControl()];
+  return[fecha,mes,inspVal.split('|')[0],inspVal.split('|')[1],document.getElementById('f-contrato').value,document.getElementById('f-ruta').value,secSel.value,secOpt?secOpt.dataset.desc||'':'',document.getElementById('f-km-inicio').value,document.getElementById('f-km-final').value,document.getElementById('f-localizacion').value,document.getElementById('f-hora-inicio').value,document.getElementById('f-hora-final').value,document.getElementById('f-clima').value,document.getElementById('f-empresa').value,JSON.stringify(recopilarItems()),document.getElementById('f-velocidad').value,document.getElementById('f-rotulos-ld').value||'0',document.getElementById('f-rotulos-li').value||'0',si(rotulos),document.getElementById('f-conos-cantidad').value||'0',document.getElementById('f-conos-distancia').value||'0',document.getElementById('f-conos-altura').value||'0',si(conos),si(rotulos&&conos),si(document.getElementById('c-personal').checked),personalResumen(),si(document.getElementById('c-personal').checked&&document.getElementById('c-personal-conforme').checked),si(document.getElementById('c-maquinaria').checked),maquinariaResumen(),si(document.getElementById('c-maquinaria').checked&&document.getElementById('c-maquinaria-conforme').checked),document.getElementById('f-equipo').value,si(tieneVisitas),tieneVisitas?JSON.stringify(recopilarVisitas()):'',si(tieneProblema),tieneProblema?document.getElementById('f-tipo-problema').value:'',tieneProblema?document.getElementById('f-severidad-problema').value:'',tieneProblema?document.getElementById('f-observacion-tipo').value:'',tieneProblema?document.getElementById('f-desc-problema').value:'',tieneProblema?si(document.getElementById('c-corregido').checked):'',si(tieneBotadero),tieneBotadero?document.getElementById('f-botadero-ubicacion').value:'',tieneBotadero?document.getElementById('f-botadero-propietario').value:'',tieneBotadero?si(document.getElementById('c-botadero-autorizado').checked):'',tieneBotadero?document.getElementById('f-botadero-material').value:'',document.getElementById('f-observaciones').value,firma||'','',generarNumControl(),(gpsLat&&gpsLng?gpsLat+','+gpsLng+' (+/-'+(gpsPrecision||'?')+'m)':'Sin GPS')];
 }
 
 function cargarRowEnFormulario(row){
@@ -1161,6 +1256,7 @@ function resetForm(){
   document.getElementById('visitas-lista').innerHTML='';
   itemCount=0;visitaCount=0;
   resetFoto();
+  resetGPS();
   document.getElementById('f-fecha').value=hoy();
 }
 
@@ -1193,8 +1289,7 @@ async function cargarDatosInforme(){
     const fechas=informeData.map(r=>new Date(String(r[0]).split('T')[0]+'T12:00:00')).sort((a,b)=>a-b);
     const fmt=d=>d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
     document.getElementById('inf-periodo').value='Del '+fmt(fechas[0])+' al '+fmt(fechas[fechas.length-1]);
-    var diasDelMes=new Date(anio,mes,0).getDate();
-    document.getElementById('inf-dias').value=diasDelMes;
+    document.getElementById('inf-dias').value=informeData.length;
     document.getElementById('inf-frentes').value=[...new Set(informeData.map(r=>r[5]+'-'+r[6]))].length;
     document.getElementById('inf-jornadas').value='6:00 am a 4:00 pm';
     renderActividadesInforme();renderProblemasInforme();renderVisitasInforme();
