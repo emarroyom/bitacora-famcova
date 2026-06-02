@@ -107,7 +107,7 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
 .gps-btn{width:100%;padding:12px;background:#EBF3FB;color:#16375C;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
 .gps-btn.ok{background:#E8F8EE;color:#1A5C2E}
 .gps-btn.error{background:#FFEBEE;color:#8B1A1A}
-.gps-map{width:100%;height:160px;border-radius:10px;object-fit:cover;display:none;border:1px solid #E5E5EA}
+.gps-map{width:100%;height:200px;border-radius:10px;display:none;border:1px solid #E5E5EA}
 .gps-coords{font-size:11px;color:#6D6D72;text-align:center;display:none}
 .gps-required{font-size:11px;color:#FF9500;text-align:center;margin-top:4px}
 /* FOTO */
@@ -397,7 +397,7 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
           <button class="gps-btn" id="gps-btn" onclick="registrarGPS()">
             <span>📍</span><span id="gps-btn-text">Registrar mi ubicacion actual</span>
           </button>
-          <img id="gps-map" class="gps-map" alt="Mapa de ubicacion">
+          <iframe id="gps-map" class="gps-map" frameborder="0" scrolling="no" allowfullscreen></iframe>
           <div class="gps-coords" id="gps-coords"></div>
           <div class="gps-required" id="gps-required">La ubicacion GPS es obligatoria para firmar</div>
         </div>
@@ -829,9 +829,10 @@ function registrarGPS(){
       gpsPrecision = Math.round(pos.coords.accuracy);
 
       // Mostrar mapa
-      const mapUrl = 'https://www.openstreetmap.org/export/embed.html?bbox='+(parseFloat(gpsLng)-0.002)+','+(parseFloat(gpsLat)-0.002)+','+(parseFloat(gpsLng)+0.002)+','+(parseFloat(gpsLat)+0.002)+'&layer=mapnik&marker='+gpsLat+','+gpsLng;
-      map.src = mapUrl;
-      map.style.display = 'block';
+      const bbox=(parseFloat(gpsLng)-0.002)+','+(parseFloat(gpsLat)-0.002)+','+(parseFloat(gpsLng)+0.002)+','+(parseFloat(gpsLat)+0.002);
+      const mapUrl='https://www.openstreetmap.org/export/embed.html?bbox='+bbox+'&layer=mapnik&marker='+gpsLat+','+gpsLng;
+      map.src=mapUrl;
+      map.style.display='block';
 
       // Mostrar coordenadas
       coords.textContent = gpsLat + ' N, ' + gpsLng + ' O  —  Precision: +/-' + gpsPrecision + 'm';
