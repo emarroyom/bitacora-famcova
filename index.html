@@ -778,6 +778,19 @@ let fotoBase64 = null;
 let fotoMimeType = null;
 let fotoNombre = null;
 
+
+function jsonpGet(url){
+  return new Promise((res,rej)=>{
+    const cb='cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+    const s=document.createElement('script');
+    window[cb]=data=>{res(data);delete window[cb];if(s.parentNode)s.parentNode.removeChild(s);};
+    s.src=url+'&callback='+cb;
+    s.onerror=()=>{delete window[cb];rej(new Error('error'));};
+    document.head.appendChild(s);
+    setTimeout(()=>{delete window[cb];rej(new Error('timeout'));},10000);
+  });
+}
+
 function previsualizarFoto(input){
   const file = input.files[0];
   if(!file) return;
@@ -834,18 +847,25 @@ async function guardarConFirma(){
   const btn=document.querySelector('[onclick="guardarConFirma()"]');
   btn.disabled=true;btn.textContent='Subiendo foto...';
 
-  // Subir foto si existe
+  // Subir foto si existe y obtener URL real
   let fotoUrl = '';
   if(fotoBase64){
     const fecha = document.getElementById('f-fecha').value;
     const mes = fecha ? fecha.slice(0,7) : new Date().toISOString().slice(0,7);
     try{
+      // 1. Subir foto a Drive
       await fetch(SCRIPT_URL,{
         method:'POST',mode:'no-cors',
         body:JSON.stringify({foto:fotoBase64,mimeType:fotoMimeType,nombreArchivo:fotoNombre,inspector:inspectorActivo||'Inspector',mes:mes}),
         headers:{'Content-Type':'application/json'}
       });
-      fotoUrl = 'Foto adjunta: '+fotoNombre;
+      // 2. Esperar un momento y obtener URL via JSONP
+      await new Promise(r=>setTimeout(r,2000));
+      btn.textContent='Obteniendo URL...';
+      try{
+        const urlData = await jsonpGet(SCRIPT_URL+'?action=getFileUrl&inspector='+encodeURIComponent(inspectorActivo||'Inspector')+'&mes='+encodeURIComponent(mes)+'&filename='+encodeURIComponent(fotoNombre));
+        fotoUrl = urlData.url || '';
+      }catch(e2){ fotoUrl = ''; }
     }catch(e){ fotoUrl = ''; }
   }
 
@@ -1189,12 +1209,14 @@ function renderActividadesInforme(){
   document.getElementById('inf-actividades-lista').innerHTML=informeData.map((r,i)=>{
     let items=[];try{items=JSON.parse(r[15]||'[]');}catch(e){}
     const itemsStr=items.map(it=>it.codigo+': '+it.cantidad+' '+it.unidad).join(', ')||'-';
+    const fotoInforme = r[47] ? `<div style="margin-top:8px;text-align:center"><img src="${r[47]}" style="max-width:100%;max-height:200px;border-radius:8px;object-fit:cover" onerror="this.style.display='none'" alt="Foto ${String(r[0]).split('T')[0]}"><div style="font-size:10px;color:#6D6D72;margin-top:4px">Foto - ${String(r[0]).split('T')[0]}</div></div>` : '';
     return`<div class="item-block">
       <div class="block-header"><span class="block-title">Actividad ${i+1} - ${String(r[0]).split('T')[0]}</span></div>
       <div class="inner-field"><label>Ruta / Seccion</label><span style="font-size:13px;color:#6D6D72">Ruta ${r[5]||'-'} / ${r[6]||'-'}</span></div>
       <div class="inner-field"><label>Estacion</label><span style="font-size:13px;color:#6D6D72">${r[8]||'-'} - ${r[9]||'-'}</span></div>
       <div class="inner-field"><label>Items</label><span style="font-size:12px;color:#6D6D72;text-align:right;max-width:55%">${itemsStr}</span></div>
       ${r[46]?'<div class="inner-field"><label>Firmado</label><span style="font-size:11px;color:#1A5C2E">'+r[46]+'</span></div>':''}
+      ${fotoInforme}
       <div class="inner-field field-vertical" style="flex-direction:column;align-items:flex-start;gap:4px">
         <label>Resultado / hallazgo</label>
         <textarea id="act-resultado-${i}" style="border:none;outline:none;font-size:13px;color:#1C1C1E;background:#F9F9F9;width:100%;resize:none;height:52px;font-family:inherit;line-height:1.4;border-radius:6px;padding:6px" placeholder="Describir resultado...">${r[45]||''}</textarea>
@@ -1300,6 +1322,15 @@ function generarInforme(){
   <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Ruta</th><th>Tipo</th><th>Severidad</th><th>Observacion</th><th>Corregido</th></tr></thead><tbody>${probHTML}</tbody></table></div></div>
   <div style="margin-bottom:16px"><div class="ist">6. Visitas al frente</div>
   <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Fecha</th><th>Tipo</th><th>Visitante</th><th>Hora</th><th>Motivo</th></tr></thead><tbody>${visHTML}</tbody></table></div></div>
+  <div style="margin-bottom:16px"><div class="ist">7. Registro fotografico</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:8px">
+    ${informeData.filter(r=>r[47]&&r[47].startsWith('http')).map(r=>`
+      <div style="text-align:center;background:#fff;border-radius:8px;padding:8px;border:1px solid #BDD7EE">
+        <img src="${r[47]}" style="width:100%;max-height:160px;object-fit:cover;border-radius:6px" onerror="this.parentElement.style.display='none'" alt="Foto">
+        <div style="font-size:10px;color:#6D6D72;margin-top:4px;font-weight:600">${String(r[0]).split('T')[0]}</div>
+        <div style="font-size:9px;color:#6D6D72">Ruta ${r[5]||'-'} / ${r[6]||'-'}</div>
+      </div>`).join('')||'<div style="grid-column:1/-1;text-align:center;padding:16px;font-size:12px;color:#6D6D72">Sin fotos registradas este mes</div>'}
+  </div></div>
   <div style="text-align:center;margin-top:48px">
     <div style="border-top:1px solid #1C1C1E;width:200px;margin:0 auto;padding-top:6px;font-size:12px">${inspNombre}<br><span style="font-size:10px;color:#6D6D72">Inspector de Obra Vial - FAMCOVA</span></div>
     <div style="font-size:10px;color:#6D6D72;margin-top:16px">${numControl} | ${mesNombre} ${anio} | Generado: ${new Date().toLocaleDateString('es-CR')}</div>
