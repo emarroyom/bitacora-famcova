@@ -99,6 +99,16 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
 .inspector-btn{width:100%;max-width:340px;padding:14px 16px;background:#fff;border:0.5px solid #E5E5EA;border-radius:12px;font-size:15px;font-weight:600;color:#1C1C1E;cursor:pointer;font-family:inherit;margin-bottom:8px;display:flex;align-items:center;gap:12px}
 .inspector-btn:active{background:#EBF3FB}
 .inspector-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+
+/* FOTO */
+.foto-section{background:#fff;border-radius:12px;overflow:hidden;margin-bottom:8px}
+.foto-field{padding:16px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.foto-preview{width:100%;max-height:220px;border-radius:10px;object-fit:cover;display:none}
+.foto-placeholder{width:100%;height:140px;background:#F2F2F7;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:2px dashed #C7C7CC}
+.foto-placeholder-icon{font-size:32px}
+.foto-placeholder-text{font-size:13px;color:#6D6D72;font-weight:500}
+.foto-change{font-size:12px;color:#007AFF;cursor:pointer;background:none;border:none;font-family:inherit;padding:4px}
+.foto-upload-progress{font-size:12px;color:#16375C;font-weight:500;text-align:center}
 /* FIRMA */
 .firma-box{background:#fff;border-radius:16px;padding:24px;text-align:center;margin-bottom:12px}
 .firma-icon{font-size:48px;margin-bottom:12px}
@@ -370,6 +380,20 @@ input:checked+.slider:before{content:"Si";transform:translateX(36px);color:#34C7
         </div>
       </div>
     </div>
+    <div class="section">
+      <div class="section-title">Fotografia del dia</div>
+      <div class="foto-section">
+        <div class="foto-field">
+          <div class="foto-placeholder" id="foto-placeholder" onclick="document.getElementById('foto-input').click()">
+            <div class="foto-placeholder-icon">📷</div>
+            <div class="foto-placeholder-text">Tocar para adjuntar fotografia</div>
+          </div>
+          <img id="foto-preview" class="foto-preview" alt="Foto adjunta">
+          <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="previsualizarFoto(this)">
+          <button class="foto-change" id="foto-change-btn" style="display:none" onclick="document.getElementById('foto-input').click()">Cambiar foto</button>
+        </div>
+      </div>
+    </div>
     <button class="btn-borrador" onclick="guardarBorrador()">Guardar como borrador</button>
     <button class="btn-firma" id="btn-firmar" onclick="mostrarFirma()">Firmar y guardar registro</button>
     <button class="btn-danger" id="btn-cancelar-edit" style="display:none" onclick="volverHome()">Cancelar edicion</button>
@@ -510,7 +534,7 @@ const KPI_SCRIPT='https://script.google.com/macros/s/AKfycbzGTAhyRU1YXEc4DkIyMYe
 let rutasData=[],itemsData=[],itemCount=0,visitaCount=0;
 
 let modoAdmin = false;
-const ADMIN_PIN = '1202'; // Cambia este PIN
+const ADMIN_PIN = '1234'; // Cambia este PIN
 
 function mostrarPinAdmin(){
   document.getElementById('pin-overlay').style.display='flex';
@@ -739,18 +763,101 @@ function mostrarFirma(){
   document.getElementById('firma-control-display').textContent=numControl;
   document.getElementById('firma-linea-nombre').textContent=inspNombre;
   const items=recopilarItems();
+  const fotoStatus = fotoBase64 ? '📷 Foto adjunta' : '⚠️ Sin fotografia adjunta';
   document.getElementById('firma-resumen').innerHTML=
     '<strong>Ruta:</strong> '+ruta+(document.getElementById('f-seccion').value?' / Sec. '+document.getElementById('f-seccion').value:'')+'<br>'+
     '<strong>Contrato:</strong> '+contrato+'<br>'+
     '<strong>Items:</strong> '+items.length+' item(s) registrado(s)<br>'+
-    '<strong>Horario:</strong> '+(document.getElementById('f-hora-inicio').value||'-')+' a '+(document.getElementById('f-hora-final').value||'-');
+    '<strong>Horario:</strong> '+(document.getElementById('f-hora-inicio').value||'-')+' a '+(document.getElementById('f-hora-final').value||'-')+'<br>'+
+    '<strong>Foto:</strong> '+fotoStatus;
   showPage('page-firma');
+}
+
+
+let fotoBase64 = null;
+let fotoMimeType = null;
+let fotoNombre = null;
+
+function previsualizarFoto(input){
+  const file = input.files[0];
+  if(!file) return;
+  fotoMimeType = file.type;
+  const fecha = document.getElementById('f-fecha').value || new Date().toISOString().split('T')[0];
+  fotoNombre = fecha + '_' + (inspectorActivo||'inspector').replace(/ /g,'_') + '.' + file.name.split('.').pop();
+  const reader = new FileReader();
+  reader.onload = function(e){
+    fotoBase64 = e.target.result.split(',')[1];
+    const preview = document.getElementById('foto-preview');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    document.getElementById('foto-placeholder').style.display = 'none';
+    document.getElementById('foto-change-btn').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function subirFotoaDrive(){
+  if(!fotoBase64) return null;
+  const fecha = document.getElementById('f-fecha').value;
+  const mes = fecha ? fecha.slice(0,7) : new Date().toISOString().slice(0,7);
+  try{
+    const res = await fetch(SCRIPT_URL, {
+      method:'POST',
+      mode:'no-cors',
+      body: JSON.stringify({
+        foto: fotoBase64,
+        mimeType: fotoMimeType,
+        nombreArchivo: fotoNombre,
+        inspector: inspectorActivo || 'Inspector',
+        mes: mes
+      }),
+      headers:{'Content-Type':'application/json'}
+    });
+    // no-cors no devuelve body, guardamos URL predictiva basada en nombre
+    return 'FOTO_PENDIENTE_' + fotoNombre;
+  }catch(e){
+    return null;
+  }
+}
+
+function resetFoto(){
+  fotoBase64 = null; fotoMimeType = null; fotoNombre = null;
+  document.getElementById('foto-preview').style.display = 'none';
+  document.getElementById('foto-preview').src = '';
+  document.getElementById('foto-placeholder').style.display = 'flex';
+  document.getElementById('foto-change-btn').style.display = 'none';
+  document.getElementById('foto-input').value = '';
 }
 
 async function guardarConFirma(){
   if(!rowParaFirmar){toast('Error: no hay datos para guardar',true);return;}
   const btn=document.querySelector('[onclick="guardarConFirma()"]');
-  btn.disabled=true;btn.textContent='Guardando...';
+  btn.disabled=true;btn.textContent='Subiendo foto...';
+
+  // Subir foto si existe
+  let fotoUrl = '';
+  if(fotoBase64){
+    const fecha = document.getElementById('f-fecha').value;
+    const mes = fecha ? fecha.slice(0,7) : new Date().toISOString().slice(0,7);
+    try{
+      await fetch(SCRIPT_URL,{
+        method:'POST',mode:'no-cors',
+        body:JSON.stringify({foto:fotoBase64,mimeType:fotoMimeType,nombreArchivo:fotoNombre,inspector:inspectorActivo||'Inspector',mes:mes}),
+        headers:{'Content-Type':'application/json'}
+      });
+      fotoUrl = 'Foto adjunta: '+fotoNombre;
+    }catch(e){ fotoUrl = ''; }
+  }
+
+  // Insertar fotoUrl en posicion 47 (columna AV)
+  if(rowParaFirmar.length >= 47){
+    rowParaFirmar[47] = fotoUrl;
+  } else {
+    while(rowParaFirmar.length < 47) rowParaFirmar.push('');
+    rowParaFirmar[47] = fotoUrl;
+  }
+
+  btn.textContent='Guardando...';
   try{
     if(modoEdicion==='sheet'&&editSheetRowIndex){
       await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({row:rowParaFirmar,updateRow:editSheetRowIndex}),headers:{'Content-Type':'application/json'}});
@@ -759,14 +866,14 @@ async function guardarConFirma(){
     }
     if(modoEdicion==='borrador'&&editBorradorId)setBorradores(getBorradores().filter(b=>b.id!==editBorradorId));
     toast('Registro firmado y guardado correctamente',false,true);
-    rowParaFirmar=null;
+    rowParaFirmar=null;resetFoto();
     setTimeout(()=>{resetForm();volverHome();},1200);
   }catch(e){
     toast('Sin conexion - guardando como borrador',true);
     const borradores=getBorradores();
     borradores.push({id:Date.now(),timestamp:new Date().toISOString(),row:rowParaFirmar});
     setBorradores(borradores);
-    rowParaFirmar=null;
+    rowParaFirmar=null;resetFoto();
     setTimeout(()=>{resetForm();volverHome();},1200);
   }
   btn.disabled=false;btn.textContent='Confirmar firma y guardar';
@@ -1033,6 +1140,7 @@ function resetForm(){
   document.getElementById('items-container').innerHTML='';
   document.getElementById('visitas-lista').innerHTML='';
   itemCount=0;visitaCount=0;
+  resetFoto();
   document.getElementById('f-fecha').value=hoy();
 }
 
