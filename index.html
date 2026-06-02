@@ -1193,7 +1193,8 @@ async function cargarDatosInforme(){
     const fechas=informeData.map(r=>new Date(String(r[0]).split('T')[0]+'T12:00:00')).sort((a,b)=>a-b);
     const fmt=d=>d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
     document.getElementById('inf-periodo').value='Del '+fmt(fechas[0])+' al '+fmt(fechas[fechas.length-1]);
-    document.getElementById('inf-dias').value=informeData.length;
+    var diasDelMes=new Date(anio,mes,0).getDate();
+    document.getElementById('inf-dias').value=diasDelMes;
     document.getElementById('inf-frentes').value=[...new Set(informeData.map(r=>r[5]+'-'+r[6]))].length;
     document.getElementById('inf-jornadas').value='6:00 am a 4:00 pm';
     renderActividadesInforme();renderProblemasInforme();renderVisitasInforme();
